@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SetMate · Plan de développement</title>
+<style>
+:root{--bg:#08080a;--panel:#141418;--panel2:#1b1b21;--line:#26262e;--line2:#32323c;--txt:#ececf1;--txt2:#b4b4c0;--muted:#7d7d8a;
+  --blue:#2fa4ff;--orange:#ff8a1f;--green:#3ddc84;--red:#ff4d5e;--violet:#a77bff}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:radial-gradient(1200px 700px at 50% -10%,#1a1d2a 0%,var(--bg) 60%) fixed;color:var(--txt);
+  font:15px/1.6 -apple-system,BlinkMacSystemFont,"SF Pro Text","Inter","Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--blue);text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+header.top{position:sticky;top:0;z-index:10;background:rgba(8,8,10,.82);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+header.top .wrap{display:flex;align-items:center;gap:18px;height:56px;overflow-x:auto;scrollbar-width:none}
+header.top .wrap::-webkit-scrollbar{display:none}
+.brand{display:flex;align-items:center;gap:9px;font-weight:800;white-space:nowrap}
+.brand em{font-style:normal;color:var(--blue)}
+.disc{width:24px;height:24px;border-radius:50%;background:conic-gradient(var(--blue),var(--violet),var(--orange),var(--blue));display:grid;place-items:center;animation:spin 8s linear infinite;flex:none}
+.disc::after{content:"";width:7px;height:7px;border-radius:50%;background:var(--bg)}
+@keyframes spin{to{transform:rotate(360deg)}}
+header.top nav{display:flex;gap:4px;margin-left:auto}
+header.top nav a{color:var(--muted);font-size:13px;padding:6px 10px;border-radius:7px;white-space:nowrap}
+header.top nav a:hover{color:var(--txt);background:var(--panel);text-decoration:none}
+.hero{padding:64px 0 40px}
+.kicker{display:inline-flex;gap:8px;align-items:center;font-size:12px;color:var(--blue);background:rgba(47,164,255,.1);border:1px solid #23466a;padding:4px 12px;border-radius:20px}
+.hero h1{font-size:clamp(34px,6vw,56px);line-height:1.05;letter-spacing:-1.2px;margin:18px 0 14px}
+.hero h1 span{background:linear-gradient(90deg,var(--blue),var(--violet),var(--orange));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{font-size:18px;color:var(--txt2);max-width:700px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:30px}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px}
+.kpi b{display:block;font-size:28px;letter-spacing:-.5px}
+.kpi span{color:var(--muted);font-size:13px}
+section{padding:46px 0;border-top:1px solid var(--line)}
+h2{font-size:28px;letter-spacing:-.5px;margin-bottom:6px}
+h2 small{display:block;font-size:13px;color:var(--blue);letter-spacing:1px;text-transform:uppercase;font-weight:700;margin-bottom:6px}
+.intro{color:var(--txt2);margin-bottom:22px;max-width:760px}
+h3{font-size:17px;margin-bottom:6px}
+.grid{display:grid;gap:14px}.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px}
+.card.hi{background:linear-gradient(135deg,rgba(47,164,255,.12),rgba(167,123,255,.05) 60%,var(--panel));border-color:#28415e}
+.card p{color:var(--txt2);font-size:14px}
+.ico{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;margin-bottom:12px}
+.ico svg{width:20px;height:20px}
+.tag{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:5px;background:#24242c;color:#c9c9d3;margin:2px 4px 2px 0;vertical-align:middle}
+.tag.ok{background:rgba(61,220,132,.13);color:var(--green)}.tag.warn{background:rgba(255,138,31,.14);color:var(--orange)}
+.tag.bad{background:rgba(255,77,94,.14);color:var(--red)}.tag.info{background:rgba(47,164,255,.14);color:var(--blue)}.tag.v{background:rgba(167,123,255,.15);color:var(--violet)}
+/* roadmap */
+.road{position:relative;margin-top:8px}
+.ph{display:grid;grid-template-columns:120px 1fr;gap:18px;padding:16px 0;border-bottom:1px dashed var(--line)}
+.ph:last-child{border:0}
+.ph .n{font-weight:800;font-size:13px;color:var(--muted)}
+.ph .n b{display:block;font-size:30px;color:var(--txt);letter-spacing:-1px;line-height:1.1}
+.bar{height:8px;border-radius:4px;background:#1f1f27;margin:10px 0 6px;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:4px}
+/* archi */
+.arch{display:grid;grid-template-columns:1fr 60px 1fr 60px 1fr;align-items:center;gap:0}
+.box{background:var(--panel2);border:1px solid var(--line2);border-radius:12px;padding:14px}
+.box h4{font-size:14px;margin-bottom:4px}
+.box ul{list-style:none;font-size:13px;color:var(--txt2)}
+.box li{padding:3px 0}
+.box li::before{content:"·";color:var(--blue);font-weight:800;margin-right:7px}
+.arrow{text-align:center;color:var(--muted);font-size:22px}
+.ext{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:14px}
+.ext .box{text-align:center;padding:12px 8px}
+.ext .box b{display:block;font-size:13px}
+.ext .box span{font-size:11px;color:var(--muted)}
+/* tâches */
+details.lot{background:var(--panel);border:1px solid var(--line);border-radius:12px;margin-top:10px;overflow:hidden}
+details.lot summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:12px;padding:14px 16px}
+details.lot summary::-webkit-details-marker{display:none}
+details.lot summary .id{font:700 12px ui-monospace,Menlo,monospace;color:var(--blue);background:rgba(47,164,255,.1);padding:3px 8px;border-radius:6px;flex:none}
+details.lot summary .t{font-weight:600;flex:1}
+details.lot summary .chev{color:var(--muted);transition:transform .2s}
+details.lot[open] summary .chev{transform:rotate(90deg)}
+details.lot .body{padding:0 16px 16px 16px;display:grid;grid-template-columns:1fr 1fr;gap:16px;font-size:14px;color:var(--txt2)}
+details.lot .body h5{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px}
+details.lot .body ul{padding-left:18px}
+details.lot .body li{margin:3px 0}
+.full{grid-column:1/-1}
+/* tableaux */
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;color:var(--muted);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.5px;padding:10px;border-bottom:1px solid var(--line)}
+td{padding:11px 10px;border-bottom:1px solid #1e1e26;vertical-align:top;color:var(--txt2)}
+td b{color:var(--txt)}
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--panel)}
+/* étapes une à une */
+.steps{counter-reset:s}
+.st{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--line)}
+.st:last-child{border:0}
+.st::before{counter-increment:s;content:counter(s);width:30px;height:30px;border-radius:50%;background:var(--blue);color:#fff;font-weight:800;display:grid;place-items:center;flex:none}
+.st.o::before{background:var(--orange);color:#140b00}
+.st b{display:block}
+.st p{color:var(--txt2);font-size:14px}
+/* prompt */
+.prompt{position:relative;background:#0c0c10;border:1px solid var(--line2);border-radius:14px;overflow:hidden}
+.prompt .bar2{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--line);background:var(--panel)}
+.prompt pre{padding:16px;max-height:420px;overflow:auto;font:12.5px/1.6 ui-monospace,Menlo,Consolas,monospace;color:#d6d6e0;white-space:pre-wrap}
+.btn{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;gap:7px;padding:7px 14px;border-radius:8px;background:var(--blue);color:#fff;font-weight:600;font-size:13px}
+.btn:hover{filter:brightness(1.12)}
+.btn.ok{background:var(--green);color:#04210f}
+.note{font-size:13px;color:var(--muted);margin-top:10px}
+.src li{margin:7px 0;color:var(--txt2);font-size:14px}
+.src{padding-left:18px}
+footer{padding:40px 0 60px;color:var(--muted);font-size:13px;border-top:1px solid var(--line)}
+@media (max-width:820px){
+  .g2,.g3,.g4,.kpis{grid-template-columns:1fr 1fr}
+  .arch{grid-template-columns:1fr}.arrow{transform:rotate(90deg);padding:4px 0}
+  .ext{grid-template-columns:1fr 1fr}
+  details.lot .body{grid-template-columns:1fr}
+  .ph{grid-template-columns:1fr;gap:4px}
+}
+@media (max-width:520px){.g2,.g3,.g4,.kpis{grid-template-columns:1fr}header.top nav{display:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <div class="brand"><div class="disc"></div><span>Set<em>Mate</em> <span style="color:var(--muted);font-weight:500">· plan</span></span></div>
+  <nav><a href="#modules">Modules</a><a href="#archi">Architecture</a><a href="#feuille">Feuille de route</a><a href="#p0">Phase 0</a><a href="#p1">Phase 1</a><a href="#risques">Risques</a><a href="#actions">À faire</a><a href="#prompt">Prompt</a><a href="#sources">Sources</a></nav>
+</div></header>
+
+<div class="wrap">
+<div class="hero">
+  <span class="kicker">● Plan de développement · v1 · 29/10/2026</span>
+  <h1>Un assistant qui fait gagner<br>des heures à une <span>DJ</span>.</h1>
+  <p class="lead">Ranger 6 000 sons, trouver le son suivant, suivre les tendances, apprendre de chaque soirée. Sur son Mac, avec Serato, et sans jamais toucher à un fichier sans son accord.</p>
+  <div class="kpis">
+    <div class="kpi"><b>4</b><span>modules + 2 bonus</span></div>
+    <div class="kpi"><b>5</b><span>phases, testées sur ses vraies données</span></div>
+    <div class="kpi"><b>≤ 30 €</b><span>par mois de services (estimation)</span></div>
+    <div class="kpi"><b>100 %</b><span>local : sa musique reste sur son Mac</span></div>
+  </div>
+</div>
+
+<section id="modules">
+  <h2><small>Ce qu’on construit</small>Les modules</h2>
+  <p class="intro">Validés avec elle en 7 salves de questions. Chaque module répond à une tâche qui lui coûte du temps aujourd’hui.</p>
+  <div class="grid g4">
+    <div class="card"><div class="ico" style="background:rgba(47,164,255,.14);color:var(--blue)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h4v16H4zM10 4h4v16h-4zM16 5l4 1-3 14-4-1z"/></svg></div><h3>Bibliothèque</h3><p>BPM, tonalité Camelot, genre, énergie, époque. Crates Serato proposées, elle valide. File « À vérifier » pour les cas douteux.</p></div>
+    <div class="card"><div class="ico" style="background:rgba(61,220,132,.13);color:var(--green)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/><path d="M12 3v4"/></svg></div><h3>Son suivant</h3><p>Les 5 meilleurs sons pour enchaîner, avec la raison de chaque note. Set en cours, courbe d’énergie, export crate et clé USB.</p></div>
+    <div class="card"><div class="ico" style="background:rgba(255,138,31,.14);color:var(--orange)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 8-8M15 7h6v6"/></svg></div><h3>Tendances</h3><p>Récap chaque jeudi. « Déjà / Manquant », extrait, BPM, et où placer le son. Liste « À récupérer », détection dans Téléchargements.</p></div>
+    <div class="card"><div class="ico" style="background:rgba(255,77,94,.14);color:var(--red)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3"/></svg></div><h3>Débrief vocal</h3><p>Elle raconte sa soirée. Le logiciel relie ce qu’elle dit aux sons joués, propose des points, elle valide. Les suggestions s’adaptent.</p></div>
+  </div>
+  <div class="grid g3" style="margin-top:14px">
+    <div class="card"><span class="tag v">Ajouté en v2</span><h3 style="margin-top:6px">Accueil et Soirées</h3><p>Prochaine soirée avec checklist de préparation, débriefs en attente, historique de ce qui a été joué.</p></div>
+    <div class="card"><span class="tag v">Ajouté en v2</span><h3 style="margin-top:6px">Sécurité visible</h3><p>Alerte « Serato ouvert », sauvegarde avant chaque écriture, bouton Annuler partout, rien n’est jamais supprimé.</p></div>
+    <div class="card"><span class="tag v">Bonus</span><h3 style="margin-top:6px">Nettoyage et contenus</h3><p>Doublons, qualité audio faible, genres incertains. Idée de contenu TikTok tirée des tendances de la semaine.</p></div>
+  </div>
+  <p class="note">Aperçu cliquable : <a href="apercu.html">apercu.html</a> (même dossier). Données d’exemple, extraits audio réels de 30 s via Deezer.</p>
+</section>
+
+<section id="archi">
+  <h2><small>Comment c’est fait</small>Architecture</h2>
+  <p class="intro">Une application Mac légère. L’interface reprend exactement le design de l’aperçu. Le « moteur » en Python fait le travail lourd. Tout est stocké dans un seul fichier sur son Mac.</p>
+  <div class="arch">
+    <div class="box"><h4>Interface</h4><ul><li>Tauri 2 (app Mac native, légère)</li><li>HTML, CSS, JS repris de l’aperçu</li><li>Écrans : Accueil, Bibliothèque, Son suivant, Soirées, Tendances, Débrief</li></ul></div>
+    <div class="arrow">⇄</div>
+    <div class="box" style="border-color:#28415e"><h4>Moteur (Python 3.12, embarqué)</h4><ul><li>Scan et lecture des tags</li><li>Analyse audio manquante</li><li>Note de compatibilité</li><li>Lecture / écriture Serato</li><li>Collecte des tendances</li></ul></div>
+    <div class="arrow">⇄</div>
+    <div class="box"><h4>Données locales</h4><ul><li>SQLite : sons, crates, sets, soirées, débriefs, préférences apprises</li><li>Sauvegardes du dossier _Serato_</li></ul></div>
+  </div>
+  <div class="ext">
+    <div class="box"><b>Serato</b><span>crates, clé USB, historique</span></div>
+    <div class="box"><b>Téléchargements</b><span>nouveaux fichiers</span></div>
+    <div class="box"><b>Sources tendances</b><span>Apple, Deezer, YouTube, TikTok*</span></div>
+    <div class="box"><b>Whisper local</b><span>voix → texte, sur le Mac</span></div>
+    <div class="box"><b>API Claude</b><span>texte du débrief → points</span></div>
+  </div>
+  <p class="note">* TikTok n’a pas d’accès officiel aux sons tendances. Voir la section Risques.</p>
+</section>
+
+<section id="feuille">
+  <h2><small>Dans quel ordre</small>Feuille de route</h2>
+  <p class="intro">Chaque phase se termine par un test avec elle, sur ses vraies données. Les durées sont des estimations, à réviser après la phase 0.</p>
+  <div class="road">
+    <div class="ph"><div class="n">PHASE<b>0</b></div><div><h3>Vérifications sur son Mac <span class="tag info">1 à 2 jours</span></h3><p style="color:var(--txt2)">Serato, clé USB, historique, sources de tendances, vitesse de la transcription. On valide tout ce qui est une hypothèse.</p><div class="bar"><i style="width:10%;background:var(--blue)"></i></div></div></div>
+    <div class="ph"><div class="n">PHASE<b>1</b></div><div><h3>Bibliothèque + Son suivant + Export <span class="tag info">2 à 3 semaines</span></h3><p style="color:var(--txt2)">Le cœur du logiciel. À la fin : ses crates sont rangées et elle prépare son premier vrai set avec.</p><div class="bar"><i style="width:45%;background:var(--green)"></i></div></div></div>
+    <div class="ph"><div class="n">PHASE<b>2</b></div><div><h3>Tendances <span class="tag info">1 à 2 semaines</span></h3><p style="color:var(--txt2)">Récap du jeudi, « Déjà / Manquant », extraits, liste « À récupérer », détection dans Téléchargements.</p><div class="bar"><i style="width:25%;background:var(--orange)"></i></div></div></div>
+    <div class="ph"><div class="n">PHASE<b>3</b></div><div><h3>Débrief vocal + Soirées <span class="tag info">1 à 2 semaines</span></h3><p style="color:var(--txt2)">Micro, transcription locale, extraction des points, validation, effet sur les suggestions.</p><div class="bar"><i style="width:25%;background:var(--red)"></i></div></div></div>
+    <div class="ph"><div class="n">PHASE<b>4</b></div><div><h3>Bonus et finitions <span class="tag info">selon ses retours</span></h3><p style="color:var(--txt2)">Nettoyage de bibliothèque, idées de contenus, onboarding, icône, signature Apple.</p><div class="bar"><i style="width:15%;background:var(--violet)"></i></div></div></div>
+  </div>
+</section>
+
+<section id="p0">
+  <h2><small>Phase 0 · détaillée</small>Prouver avant de coder</h2>
+  <p class="intro">Tout se fait sur une <b>copie</b> de son dossier Serato. Rien ne touche sa vraie bibliothèque. Chaque test a un plan B.</p>
+  <div class="tw"><table>
+    <thead><tr><th>Test</th><th>Comment on vérifie</th><th>Réussi si</th><th>Plan B si ça échoue</th></tr></thead>
+    <tbody>
+      <tr><td><b>0.1 · Lire ses sons</b></td><td>Script Python (mutagen) sur 100 sons : titre, artiste, BPM et tonalité déjà écrits par Serato</td><td>BPM présent sur au moins 90 % des sons analysés par Serato</td><td>Analyse complète avec Essentia (plus lent, une fois)</td></tr>
+      <tr><td><b>0.2 · Écrire un crate</b></td><td>serato-tools sur la copie : créer « TEST SetMate », ouvrir Serato sur la copie</td><td>Le crate apparaît dans Serato avec les bons sons</td><td>Écrire les crates à la main au format documenté, ou passer par l’import de playlist M3U de Serato</td></tr>
+      <tr><td><b>0.3 · Clé USB</b></td><td>Export d’un crate test vers une clé, branchée sur sa platine ou relue par Serato</td><td>Le crate et les sons sont lisibles depuis la clé</td><td>Copie des fichiers seulement et création du crate par Serato</td></tr>
+      <tr><td><b>0.4 · Historique</b></td><td>Lire une session de son historique Serato (format non officiel)</td><td>La liste des sons joués d’une vraie soirée est retrouvée</td><td>Export officiel de l’historique en CSV depuis Serato, importé par le logiciel</td></tr>
+      <tr><td><b>0.5 · Tendances</b></td><td>Tester chaque source pendant 1 semaine : Apple Music, Deezer, YouTube, TikTok, Shazam</td><td>Au moins 20 sons pertinents pour ses genres chaque jeudi</td><td>TikTok : service de données payant (dans le budget) ou relevé semi-manuel assisté</td></tr>
+      <tr><td><b>0.6 · Transcription</b></td><td>whisper.cpp sur son Mac, un débrief de 2 minutes en français</td><td>Moins de 30 s de traitement, noms de sons reconnus</td><td>Modèle plus petit, ou transcription en ligne avec son accord</td></tr>
+      <tr><td><b>0.7 · Fabriquer l’app</b></td><td>Compiler une app Tauri vide pour Mac (sur un Mac, ou un service de compilation macOS en ligne)</td><td>L’app s’ouvre sur son Mac</td><td>Version web locale lancée par un double-clic, en attendant</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="p1">
+  <h2><small>Phase 1 · détaillée</small>Bibliothèque, Son suivant, Export</h2>
+  <p class="intro">Découpée en lots courts. Chaque lot se teste seul. Clique sur un lot pour le détail.</p>
+  <details class="lot" open><summary><span class="id">L1.1</span><span class="t">Socle : app, base de données, sauvegardes, Annuler</span><span class="chev">›</span></summary><div class="body">
+    <div><h5>À faire</h5><ul><li>Squelette Tauri 2 + moteur Python embarqué</li><li>Base SQLite et migrations</li><li>Journal des actions + Annuler</li><li>Sauvegarde horodatée de _Serato_ avant toute écriture</li></ul></div>
+    <div><h5>Terminé quand</h5><ul><li>L’app s’ouvre, affiche l’accueil</li><li>Une action peut être annulée</li><li>Une sauvegarde se restaure en un clic</li></ul></div></div></details>
+  <details class="lot"><summary><span class="id">L1.2</span><span class="t">Scan et lecture des tags Serato</span><span class="chev">›</span></summary><div class="body">
+    <div><h5>À faire</h5><ul><li>Choix des dossiers, scan en arrière-plan avec progression</li><li>Lecture titre, artiste, BPM, tonalité, durée, qualité (kbps)</li><li>Conversion des tonalités en Camelot</li><li>Surveillance des nouveaux fichiers</li></ul></div>
+    <div><h5>Terminé quand</h5><ul><li>6 000 sons scannés sans bloquer l’interface</li><li>Un nouveau fichier apparaît tout seul</li></ul></div></div></details>
+  <details class="lot"><summary><span class="id">L1.3</span><span class="t">Analyse : BPM manquants, énergie, genre avec niveau de confiance</span><span class="chev">›</span></summary><div class="body">
+    <div><h5>À faire</h5><ul><li>Essentia pour BPM / tonalité manquants et énergie (1 à 10)</li><li>Genre et sous-genre avec un pourcentage de confiance</li><li>Époque via l’année des tags</li><li>Sous 75 % de confiance : file « À vérifier »</li></ul></div>
+    <div><h5>Terminé quand</h5><ul><li>Sur 100 sons tirés au hasard, elle juge au moins 80 % des genres justes</li><li>Ses corrections sont retenues pour les sons similaires</li></ul></div></div></details>
+  <details class="lot"><summary><span class="id">L1.4</span><span class="t">Écran Bibliothèque et file « À vérifier »</span><span class="chev">›</span></summary><div class="body">
+    <div><h5>À faire</h5><ul><li>Tableau triable, recherche, filtres genre et BPM</li><li>Fiche détail : valider ou corriger le genre en un clic</li><li>Doublons et qualité faible : propositions, jamais de suppression</li></ul></div>
+    <div><h5>Terminé quand</h5><ul><li>Recherche instantanée sur 6 000 sons</li><li>Elle vide la file « À vérifier » sans aide</li></ul></div></div></details>
+  <details class="lot"><summary><span class="id">L1.5</span><span class="t">Crates proposées et écriture sûre dans Serato</span><span class="chev">›</span></summary><div class="body">
+    <div><h5>À faire</h5><ul><li>Règles de crates (genre, BPM, énergie, époque) avec compteur</li><li>Détection de Serato ouvert : écriture bloquée et message clair</li><li>Sauvegarde, écriture, relecture de vérification</li></ul></div>
+    <div><h5>Terminé quand</h5><ul><li>Les crates cochées apparaissent dans Serato</li><li>Annuler les retire proprement</li></ul></div></div></details>
+  <details class="lot"><summary><span class="id">L1.6</span><span class="t">Son suivant : note de compatibilité</span><span class="chev">›</span></summary><div class="body">
+    <div><h5>Règle de calcul (validée dans l’aperçu)</h5><ul><li>40 % BPM : 100 % jusqu’à 2 % de pitch, 0 % au-delà de 8 %, double et moitié acceptés</li><li>40 % tonalité : roue Camelot (même, voisine, relative, +2)</li><li>20 % fraîcheur : joué il y a moins de 14 jours = pénalité</li><li>Bonus et malus appris des débriefs, option direction d’énergie</li></ul></div>
+    <div><h5>Terminé quand</h5><ul><li>Pour 10 sons de départ, au moins 3 suggestions sur 5 jugées jouables par elle</li><li>Chaque note affiche ses raisons</li></ul></div></div></details>
+  <details class="lot"><summary><span class="id">L1.7</span><span class="t">Set en cours et exports (crate + clé USB)</span><span class="chev">›</span></summary><div class="body">
+    <div><h5>À faire</h5><ul><li>Set : ordre, déplacer, retirer, durée, courbe d’énergie, alertes de transition</li><li>Export crate dans l’ordre</li><li>Export clé : place libre vérifiée, copie avec progression, crates existants gardés</li></ul></div>
+    <div><h5>Terminé quand</h5><ul><li>Elle joue un vrai set préparé avec le logiciel, depuis la clé</li></ul></div></div></details>
+</section>
+
+<section id="risques">
+  <h2><small>Ce qui peut coincer</small>Risques et plans B</h2>
+  <p class="intro">Vérifiés le 29/10/2026 sur les sources listées en bas de page. Les points marqués « à tester » restent des hypothèses jusqu’à la phase 0.</p>
+  <div class="tw"><table>
+    <thead><tr><th>Risque</th><th>Ce qu’on sait</th><th>Niveau</th><th>Réponse</th></tr></thead>
+    <tbody>
+      <tr><td><b>Format Serato non officiel</b></td><td>Crates et historique sont des formats binaires documentés par la communauté. La bibliothèque serato-tools (licence MIT, version 4.0.2 d’août 2026) lit et écrit les crates et exporte sur clé USB.</td><td><span class="tag warn">Moyen</span></td><td>Toujours sur copie d’abord, sauvegarde, Serato fermé, relecture après écriture</td></tr>
+      <tr><td><b>Pas d’accès officiel aux tendances TikTok</b></td><td>Aucune API officielle trouvée pour les sons tendances. Seuls des outils tiers lisent le Creative Center, sans garantie et avec un risque vis-à-vis des conditions de TikTok.</td><td><span class="tag bad">Élevé</span></td><td>Décision en phase 0 : service tiers payant ou relevé semi-manuel. Les autres sources compensent</td></tr>
+      <tr><td><b>Spotify fermé aux nouvelles applis</b></td><td>Depuis le 27/11/2024, les nouvelles applis n’ont plus accès aux playlists éditoriales, à l’analyse audio (BPM) ni aux recommandations.</td><td><span class="tag ok">Contourné</span></td><td>Charts via Apple Music et Deezer, BPM via nos propres analyses</td></tr>
+      <tr><td><b>Licence des modèles de genre</b></td><td>Les modèles Essentia sont sous licence CC BY-NC-SA 4.0 : usage non commercial.</td><td><span class="tag ok">OK en perso</span></td><td>À revoir seulement si le logiciel est vendu un jour (licence commerciale sur demande)</td></tr>
+      <tr><td><b>Compiler pour Mac depuis Windows</b></td><td>Une app Mac se fabrique sur un Mac ou un service de compilation macOS. Sans compte Apple Developer (99 $ par an), macOS affiche un avertissement au premier lancement.</td><td><span class="tag warn">Moyen</span></td><td>« Clic droit &gt; Ouvrir » au début, compte Apple en phase 4 si besoin</td></tr>
+      <tr><td><b>Fichiers issus de convertisseurs</b></td><td>Qualité souvent faible, tags incomplets. Télécharger depuis YouTube est contraire à leurs conditions : le logiciel ne le fera pas.</td><td><span class="tag info">Géré</span></td><td>Badge qualité, liste « À récupérer », reconnaissance des fichiers qu’elle ajoute elle-même</td></tr>
+      <tr><td><b>Transcription en français</b></td><td>whisper.cpp tourne en local sur Mac avec accélération Apple. Aucun test publié en français trouvé.</td><td><span class="tag warn">À tester</span></td><td>Test 0.6 sur son Mac, avec ses mots à elle</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="actions">
+  <h2><small>Qui fait quoi</small>Les prochaines actions</h2>
+  <p class="intro">Une action à la fois. Chaque étape est courte.</p>
+  <div class="grid g2">
+    <div class="card"><h3>Elle (la DJ) · 15 minutes</h3><div class="steps">
+      <div class="st o"><div><b>Modèle de son Mac</b><p>Menu Pomme  > « À propos de ce Mac ». Une capture d’écran suffit.</p></div></div>
+      <div class="st o"><div><b>Version de Serato</b><p>Dans Serato : Aide > À propos. Une capture d’écran suffit.</p></div></div>
+      <div class="st o"><div><b>Une copie de son dossier _Serato_</b><p>Dossier Musique > _Serato_, copié sur une clé. On travaille uniquement sur cette copie.</p></div></div>
+      <div class="st o"><div><b>Les 3 questions ouvertes</b><p>Nom du logiciel, pays suivis, lieu de la soirée dit à l’oral ou choisi dans une liste.</p></div></div>
+    </div></div>
+    <div class="card"><h3>Sabri</h3><div class="steps">
+      <div class="st"><div><b>Accès à un Mac pour compiler</b><p>Le sien à elle pendant une session, ou un service de compilation macOS en ligne.</p></div></div>
+      <div class="st"><div><b>Lancer la phase 0</b><p>Ouvrir un atelier Claude Code dans ce dossier et coller le prompt ci-dessous.</p></div></div>
+      <div class="st"><div><b>Décider la source TikTok</b><p>Après la semaine de test 0.5 : service payant ou relevé semi-manuel.</p></div></div>
+      <div class="st"><div><b>Montrer l’aperçu</b><p>apercu.html : 2 minutes suffisent pour valider le ressenti avant de coder.</p></div></div>
+    </div></div>
+  </div>
+</section>
+
+<section id="prompt">
+  <h2><small>Pour l’atelier de code</small>Prompt de démarrage</h2>
+  <p class="intro">À coller dans une session Claude Code ouverte dans le dossier du projet. Il cadre les règles de sécurité et démarre par la phase 0.</p>
+  <div class="prompt"><div class="bar2"><span style="font-size:13px;color:var(--muted)">prompt_atelier.txt</span><button class="btn" id="cp" onclick="copyPrompt()">Copier</button></div>
+<pre id="pp">Tu développes SetMate, une application Mac pour une DJ qui utilise Serato DJ. Lis d’abord CAHIER_DES_CHARGES.md, plan_developpement.html et apercu.html dans ce dossier. L’aperçu est la référence visuelle et fonctionnelle : reprends son design (sombre, style Serato) et sa logique de note de compatibilité.
+
+RÈGLES NON NÉGOCIABLES
+1. Il propose, elle valide : aucun fichier audio modifié, déplacé, renommé ou supprimé sans clic explicite. Jamais de suppression : on masque.
+2. Avant toute écriture dans le dossier _Serato_ : vérifier que Serato est fermé (sinon bloquer avec un message clair), faire une sauvegarde horodatée, écrire, relire pour vérifier.
+3. Chaque action a un Annuler.
+4. Aucun téléchargement depuis YouTube, TikTok ou SoundCloud.
+5. Données locales (SQLite). Seuls le texte des débriefs et les requêtes de tendances sortent du Mac.
+6. Interface entièrement en français, simple, tutoiement.
+
+STACK
+Tauri 2 (interface HTML/CSS/JS) + moteur Python 3.12 embarqué en sidecar (PyInstaller). mutagen pour les tags, serato-tools (MIT) pour crates et export USB, Essentia pour l’analyse manquante (modèles CC BY-NC-SA : usage personnel seulement), whisper.cpp local pour la voix, API Claude pour structurer le débrief en JSON.
+
+ÉTAPE ACTUELLE : PHASE 0 UNIQUEMENT
+Écris des scripts de test indépendants, à lancer sur une COPIE du dossier _Serato_ (chemin passé en argument, jamais le vrai dossier par défaut) :
+0.1 lecture des tags sur 100 sons (taux de BPM et tonalité présents)
+0.2 création d’un crate « TEST SetMate » sur la copie
+0.3 export d’un crate vers une clé USB
+0.4 lecture d’une session d’historique (et plan B : import du CSV exporté par Serato)
+0.5 collecte de tendances : Apple Music, Deezer, YouTube ; rapport sur TikTok et Shazam (pas d’API officielle connue)
+0.6 transcription whisper.cpp d’un audio français de 2 minutes, avec durée mesurée
+0.7 app Tauri vide compilée pour macOS
+Pour chaque test : sortie brute, code de sortie, résultat réussi / échoué selon le critère du plan, et le plan B si échec. Ne passe pas à la phase 1 sans mon accord. Ne présente jamais une simulation comme un test réel.</pre></div>
+  <p class="note">Le prompt démarre volontairement par la phase 0 : on ne construit rien sur une hypothèse non vérifiée.</p>
+</section>
+
+<section id="sources">
+  <h2><small>Vérifications</small>Sources consultées le 29/10/2026</h2>
+  <ul class="src">
+    <li><a href="https://pypi.org/project/serato-tools/">serato-tools sur PyPI</a> : crates, smart crates, export clé USB, licence MIT, Python 3.12+, version 4.0.2 du 17/08/2026</li>
+    <li><a href="https://support.serato.com/hc/en-us/articles/204022904">Support Serato</a> : dossier Subcrates, stockage des crates</li>
+    <li><a href="https://support.serato.com/hc/en-us/articles/223455687">Support Serato</a> : export officiel de l’historique (txt, csv, m3u)</li>
+    <li><a href="https://www.npmjs.com/package/seratolibraryparser">seratolibraryparser</a> et <a href="https://pkg.go.dev/github.com/robyeates/seratoparser@v0.0.0-20220213220446-cd949d7ecbd6">seratoparser</a> : lecture non officielle des sessions d’historique</li>
+    <li><a href="https://developer.spotify.com/blog/2024-11-27-changes-to-the-web-api">Blog développeurs Spotify, 27/11/2024</a> : restrictions pour les nouvelles applications</li>
+    <li><a href="https://essentia.upf.edu/models.html">Modèles Essentia</a> : licence CC BY-NC-SA 4.0, Discogs-EffNet (400 styles)</li>
+    <li><a href="https://v2.tauri.app/fr/develop/sidecar/">Documentation Tauri 2</a> : binaires embarqués (sidecar)</li>
+    <li><a href="https://developer.apple.com/forums/thread/746992">Forum développeurs Apple</a> : notarisation incluse dans l’abonnement développeur</li>
+    <li><a href="https://fossies.org/linux/whisper.cpp/README.md">README whisper.cpp</a> : accélération Core ML sur Mac, modèle large-v3-turbo</li>
+    <li><a href="https://apify.com/xtracto/tiktok-trending-scraper">Exemple d’outil tiers TikTok</a> : seules options trouvées, non officielles</li>
+    <li>API Deezer : recherche et extraits de 30 s testés en direct dans l’aperçu le 29/10/2026 (12 sons sur 12 trouvés)</li>
+  </ul>
+  <p class="note">Non vérifié à ce jour : le prix exact du compte Apple Developer sur le site d’Apple, le format précis du flux Apple Music, les tarifs des services de données TikTok. Ce sera fait en phase 0.</p>
+</section>
+</div>
+
+<footer><div class="wrap">SetMate · plan de développement v1 · préparé le 29/10/2026 · fichiers : CAHIER_DES_CHARGES.md, apercu.html, plan_developpement.html</div></footer>
+
+<script>
+function copyPrompt(){
+  const t=document.getElementById("pp").innerText,b=document.getElementById("cp");
+  const ok=()=>{b.textContent="Copié ✓";b.classList.add("ok");setTimeout(()=>{b.textContent="Copier";b.classList.remove("ok")},2000);};
+  if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(t).then(ok,fallback);else fallback();
+  function fallback(){const a=document.createElement("textarea");a.value=t;document.body.appendChild(a);a.select();try{document.execCommand("copy");ok();}catch(e){b.textContent="Sélectionne le texte";}a.remove();}
+}
+</script>
+</body>
+</html>
