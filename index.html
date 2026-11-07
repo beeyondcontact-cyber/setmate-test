@@ -250,6 +250,47 @@ code{font:12px ui-monospace,Menlo,monospace;background:var(--panel3);padding:1px
 @media (max-width:760px){.recbar{top:58px}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 .btn,.search,.nb,.chip,.pill,.ib,.play,.mic,.mi,.seg button{box-sizing:border-box}
+/* 1.10 · Mode soirée (A-IP-01) */
+#soir{position:fixed;inset:0;z-index:9000;background:var(--bg);color:var(--txt);display:flex;flex-direction:column;gap:12px;padding:calc(12px + env(safe-area-inset-top)) 14px calc(14px + env(safe-area-inset-bottom));overflow:auto;-webkit-overflow-scrolling:touch}
+#soir .sh{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
+#soir .sh b{color:var(--txt);font-size:15px}
+#soir .sw{font-size:12px;padding:8px 10px;border-radius:10px;background:var(--panel2)}
+#soir .sw.ok{color:var(--green)}#soir .sw.warn{color:var(--orange);background:rgba(255,138,31,.12)}
+#soir .scur{display:flex;gap:12px;align-items:center;background:var(--panel);border-radius:16px;padding:12px}
+#soir .scur .t{min-width:0;flex:1}#soir .scur b{display:block;font-size:19px;line-height:1.2;overflow:hidden;text-overflow:ellipsis}
+#soir .sbtn{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;text-align:center;border-radius:20px;font-weight:800;padding:12px;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+#soir .sbig{min-height:30vh;background:var(--green);color:#04210f;font-size:30px}
+#soir .sbig small{font-size:14px;font-weight:600;opacity:.85;max-width:92%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#soir .sbtn:active{transform:scale(.98);filter:brightness(.92)}
+#soir .s2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+#soir .sok,#soir .sko{min-height:84px;font-size:20px;background:var(--panel2);border:2px solid var(--line2)}
+#soir .sok.on{background:rgba(61,220,132,.2);border-color:var(--green);color:var(--green)}
+#soir .sko.on{background:rgba(255,77,94,.2);border-color:var(--red);color:var(--red)}
+#soir .sreq{background:var(--panel);border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:8px}
+#soir .sreq .row2{display:flex;gap:8px}
+#soir input{all:unset;box-sizing:border-box;flex:1;min-width:0;background:var(--panel3);border-radius:10px;padding:14px;font-size:16px;color:var(--txt)}
+#soir .sm2{all:unset;box-sizing:border-box;cursor:pointer;padding:14px 16px;border-radius:10px;background:var(--blue);color:#fff;font-weight:700;font-size:15px;text-align:center}
+#soir .sm2.ghost{background:var(--panel3);color:var(--txt2)}#soir .sm2.red{background:var(--red)}
+#soir .sres{display:flex;flex-direction:column;gap:6px}
+#soir .sres button{all:unset;box-sizing:border-box;cursor:pointer;padding:12px;border-radius:10px;background:var(--panel2);font-size:15px}
+#soir .sfoot{margin-top:auto;display:flex;gap:10px;justify-content:space-between;align-items:center}
+#soir .hint{font-size:12px;color:var(--muted)}
+body.soir-on{overflow:hidden}
+/* 1.10 · Navigation en 5 raccourcis + pastilles de sous-sections */
+.subnav{display:flex;gap:8px;padding:10px 2px 12px;margin:0 0 4px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.subnav::-webkit-scrollbar{display:none}
+.sn{all:unset;box-sizing:border-box;cursor:pointer;flex:none;position:relative;display:inline-flex;align-items:center;gap:6px;padding:9px 16px;min-height:38px;border-radius:999px;background:var(--panel2);color:var(--muted);font-size:14px;font-weight:600;white-space:nowrap;-webkit-tap-highlight-color:transparent;transition:background .15s,color .15s}
+.sn:hover{color:var(--txt)}
+.sn.on{background:var(--txt);color:var(--bg)}
+.sn:focus-visible,.nb:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.sn .bdg{margin:0}.sn .dotr{margin:0}
+select.f{color-scheme:dark;-webkit-appearance:none;appearance:none;padding-right:32px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23a0a0ab' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 11px center;background-size:12px 8px}
+@media (max-width:760px){
+  .nb{font-size:11px;font-weight:600}
+  .nb svg{width:24px;height:24px}
+  .nb.on svg{color:var(--blue)}
+  .subnav{padding-top:8px}
+}
 </style>
 </head>
 <body>
@@ -259,6 +300,7 @@ code{font:12px ui-monospace,Menlo,monospace;background:var(--panel3);padding:1px
     <div class="topbar">
       <button class="search" onclick="openPalette()"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><span>Chercher un son, une soirée, une action…</span><span class="kbd" id="kbdHint">Ctrl K</span></button>
       <div class="tsp"></div>
+      <button class="pill" id="soirBtn" onclick="soirStart()" aria-label="Mode soirée"><i></i>Soirée</button>
       <button class="pill" id="connPill" onclick="go('settings')"></button>
       <button class="ib" id="undoBtn" onclick="doUndo()" aria-label="Annuler" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 010 12h-3"/></svg></button>
       <button class="ib" id="bellBtn" onclick="toggleNotif()" aria-label="Notifications"></button>
@@ -280,7 +322,7 @@ code{font:12px ui-monospace,Menlo,monospace;background:var(--panel3);padding:1px
    SETMATE · assistant DJ pour Serato
    Tout reste dans ce navigateur (IndexedDB) et dans les dossiers que tu autorises.
    ===================================================================== */
-const VERSION="1.9.1";
+const VERSION="1.10.0";
 const $=s=>document.querySelector(s);
 const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const norm=s=>" "+String(s||"").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9]+/g," ").trim()+" ";
@@ -304,7 +346,8 @@ const S={
   trends:{date:0,items:[]},trendCache:{},genres:{rap:1,afro:1,rnb:1,amapiano:1,pop:1},
   flags:{},reco:{ttl:30},seratoVer:null,seratoDbAge:null,disc:{date:0,items:[],extra:[]},search:{q:"",items:[]},found:{},trTab:"moment",tips:{},showOpts:false,openWhy:null,
   styles:{amapiano:1,afrobeats:1,shatta:1,dancehall:1,kompa:1,"rap fr":1,rnb:1},
-  dGig:null,dTxt:"",dPts:null,dlLast:0,onboarded:false,undo:[]
+  dGig:null,dTxt:"",dPts:null,dlLast:0,onboarded:false,undo:[],
+  soir:{on:false,gig:null,t0:0,log:[]}
 };
 const H={serato:null,music:null,dl:null};      // dossiers autorisés
 const PERM={serato:"none",music:"none",dl:"none"};
@@ -313,15 +356,30 @@ function reindex(){byN=new Map();byPath=new Map();S.tracks.forEach(t=>{byN.set(t
 const T=n=>byN.get(n);
 let saveT=null,tracksDirty=false;
 function save(tracksToo=false){if(tracksToo)tracksDirty=true;clearTimeout(saveT);saveT=setTimeout(async()=>{
-  const st={};for(const k of ["name","demo","realSnap","nextN","userRoot","musicPrefix","set","cur","dir","crates","L","P","rules","genreFix","todo","notifs","gigs","created","trends","trendCache","genres","dlLast","onboarded","disc","found","styles","tips","trTab","flags","reco","seratoVer","seratoDbAge","pls","own","lsTab","seenV","am","recTab"])st[k]=S[k];
+  const st={};for(const k of ["name","demo","realSnap","nextN","userRoot","musicPrefix","set","cur","dir","crates","L","P","rules","genreFix","todo","notifs","gigs","created","trends","trendCache","genres","dlLast","onboarded","disc","found","styles","tips","trTab","flags","reco","seratoVer","seratoDbAge","pls","own","lsTab","seenV","am","recTab","soir","m3u"])st[k]=S[k];
   await DB.set("state",st);if(tracksDirty){await DB.set("tracks",S.tracks);tracksDirty=false;}},400);}
+/* 1.10 · Un état sauvegardé abîmé ou ancien ne doit jamais empêcher l'appli de démarrer (mesuré : gigs, notifs, trends mal formés ou pistes vides = écran vide).
+   Chaque champ lu doit avoir le même genre que sa valeur par défaut (liste, objet, texte, nombre) ; sinon on garde la valeur par défaut. */
+const sameKind=(d,v)=>{if(d===undefined||d===null)return true;const a=x=>Array.isArray(x)?"a":x===null?"n":typeof x;return a(d)===a(v);};
+const isObj=x=>x&&typeof x==="object"&&!Array.isArray(x);
+function sanitizeState(DEF){
+  ["gigs","notifs","created","todo"].forEach(k=>{S[k]=(Array.isArray(S[k])?S[k]:[]).filter(isObj);});
+  if(!isObj(S.trends))S.trends={date:0,items:[]};if(!Array.isArray(S.trends.items))S.trends.items=[];S.trends.items=S.trends.items.filter(isObj);
+  ["crates","L","P","genreFix","trendCache","genres","styles","flags","reco","tips","found"].forEach(k=>{if(!isObj(S[k]))S[k]=JSON.parse(JSON.stringify(DEF[k]===undefined?{}:DEF[k]));});
+  if(!isObj(S.set))S.set=JSON.parse(JSON.stringify(DEF.set));if(!Array.isArray(S.set.ids))S.set.ids=[];
+  if(!isObj(S.soir)||!Array.isArray(S.soir.log))S.soir=JSON.parse(JSON.stringify(DEF.soir));
+  if(S.m3u!==undefined&&!isObj(S.m3u))delete S.m3u;
+  if(typeof S.nextN!=="number"||!(S.nextN>=1))S.nextN=1;}
 async function load(){
   await DB.open();
-  const st=await DB.get("state");if(st)Object.assign(S,st);
+  const DEF=JSON.parse(JSON.stringify(S));
+  const st=await DB.get("state");if(isObj(st))for(const k of Object.keys(st)){if(sameKind(DEF[k],st[k]))S[k]=st[k];}
+  sanitizeState(DEF);
   // reprise des données de la version 1.0
   (S.trends.items||[]).forEach((x,i)=>{if(x.pos==null)x.pos=x.rank||i+1;});
   S.disc=Object.assign({items:[],extra:[],seen:[],usedPl:[],qi:{}},S.disc||{});S.search={q:"",items:[]};
-  S.tracks=(await DB.get("tracks"))||[];reindex();
+  const rawT=await DB.get("tracks");S.tracks=(Array.isArray(rawT)?rawT:[]).filter(t=>isObj(t)&&typeof t.n==="number"&&typeof t.path==="string");reindex();
+  S.nextN=Math.max(S.nextN,...S.tracks.map(t=>t.n+1),1);S.set.ids=S.set.ids.filter(n=>T(n));if(S.cur!=null&&!T(S.cur))S.cur=null;
   // reprise de la version 1.1 : l’ancienne liste à part devient des sons de sa musique « à récupérer »
   if((S.todo||[]).length){for(const t of S.todo){if(t.src==="auto")continue;
       if(t.src==="qualite"){const x=S.tracks.find(y=>baseTitle(y.t)===baseTitle(t.t));if(x)x.upgrade=true;continue;}
@@ -514,19 +572,35 @@ function valQueue(){return visible().filter(x=>!x.wish&&(x.conf<75||x.dupOf||(x.
 function pastGigs(){return S.gigs.filter(g=>daysUntil(g.date)<0).sort((a,b)=>b.date.localeCompare(a.date));}
 function upGigs(){return S.gigs.filter(g=>daysUntil(g.date)>=0).sort((a,b)=>a.date.localeCompare(b.date));}
 function pendingDeb(){return pastGigs().filter(g=>!g.deb&&g.type!=="Live / contenu");}
+/* 1.10 · Navigation en 5 raccourcis (comme les applis sociales) ; les écrans d'origine ne changent pas, seule leur porte d'entrée.
+   Les sous-sections d'un raccourci sont de petites pastilles en haut de l'écran. */
+const GROUPS=[
+  {k:"home",l:"Accueil",ico:"home",subs:[["home","Accueil"]]},
+  {k:"musique",l:"Musique",ico:"lib",subs:[["lib","Ma bibliothèque"],["listen","Écouter"]]},
+  {k:"soiree",l:"Soirée",ico:"gigs",subs:[["next","Préparer un set"],["gigs","Mes soirées"],["debrief","Débrief vocal"]]},
+  {k:"decouvrir",l:"Découvrir",ico:"trend",subs:[["trend","Tendances"]]},
+  {k:"reglages",l:"Réglages",ico:"settings",subs:[["settings","Réglages"]]}];
+const groupOf=sc=>GROUPS.find(g=>g.subs.some(x=>x[0]===sc))||GROUPS[0];
+const grpLast={};
+function goGroup(k){const g=GROUPS.find(x=>x.k===k)||GROUPS[0],l=grpLast[k];go(g.subs.some(x=>x[0]===l)?l:g.subs[0][0]);}
+function subBadge(sc){const v=valQueue().length,miss=wishes().length+upgrades().length,pd=pendingDeb().length;
+  if(sc==="lib"&&v)return `<span class="bdg" data-tip="${v} à vérifier">${v}</span>`;
+  if(sc==="trend"&&miss)return `<span class="bdg blue" data-tip="${miss} à récupérer">${miss}</span>`;
+  if(sc==="debrief"&&pd)return '<span class="dotr" data-tip="Débrief en attente"></span>';return "";}
 function renderNav(){
-  const v=valQueue().length,miss=wishes().length+upgrades().length,pd=pendingDeb().length;
-  const it=[["home","Accueil",""],["lib","Ma musique",v?`<span class="bdg" data-tip="${v} à vérifier">${v}</span>`:""],["next","Préparer un set",""],["gigs","Soirées",""],
-    ["trend","Tendances",miss?`<span class="bdg blue" data-tip="${miss} à récupérer">${miss}</span>`:""],["listen","Écouter",""],["debrief","Débrief vocal",pd?'<span class="dotr" data-tip="Débrief en attente"></span>':""]];
   const dot=k=>`<i style="background:${H[k]&&PERM[k]==="granted"?"var(--green)":H[k]?"var(--orange)":"#3a3a44"}"></i>`;
-  const SH={home:"Accueil",lib:"Musique",next:"Préparer",gigs:"Soirées",trend:"Tendances",listen:"Écouter",debrief:"Débrief"};
-  $("#nav").innerHTML=`<div class="logo"><div class="disc"></div><b>Set<em>Mate</em></b></div>`+it.map(([k,l,b])=>`<button class="nb ${S.screen===k?"on":""}" onclick="go('${k}')">${svg(k)}<span class="ll">${l}</span><span class="ls">${SH[k]}</span>${b}</button>`).join("")+
-   `<div class="navsp"></div><button class="nb ${S.screen==="settings"?"on":""}" onclick="go('settings')">${svg("settings")}<span class="ll">Réglages</span><span class="ls">Réglages</span></button>
+  const cur=groupOf(S.screen);
+  $("#nav").innerHTML=`<div class="logo"><div class="disc"></div><b>Set<em>Mate</em></b></div>`+GROUPS.filter(g=>g.k!=="reglages").map(g=>{
+    const b=g.subs.map(x=>subBadge(x[0])).find(Boolean)||"";
+    return `<button class="nb ${cur.k===g.k?"on":""}" onclick="goGroup('${g.k}')" aria-label="${g.l}" ${cur.k===g.k?'aria-current="page"':""}>${svg(g.ico)}<span class="ll">${g.l}</span><span class="ls">${g.l}</span>${b}</button>`;}).join("")+
+   `<div class="navsp"></div><button class="nb ${cur.k==="reglages"?"on":""}" onclick="goGroup('reglages')" aria-label="Réglages" ${cur.k==="reglages"?'aria-current="page"':""}>${svg("settings")}<span class="ll">Réglages</span><span class="ls">Réglages</span></button>
    <div class="navfoot">${S.demo?"<b style='color:var(--orange)'>Mode démo</b><br>":""}${dot("serato")}Serato<br>${dot("music")}Musique<br>${dot("dl")}Téléchargements<br>${visible().length} sons</div>`;
 }
-function go(s){S.screen=s;closeNotif();render();$("#main").scrollTop=0;}
+function subNav(){const g=groupOf(S.screen);if(g.subs.length<2)return "";
+  return `<div class="subnav" role="tablist" aria-label="${g.l}">${g.subs.map(x=>`<button class="sn ${S.screen===x[0]?"on":""}" role="tab" aria-selected="${S.screen===x[0]}" onclick="go('${x[0]}')">${x[1]}${subBadge(x[0])}</button>`).join("")}</div>`;}
+function go(s){S.screen=s;grpLast[groupOf(s).k]=s;closeNotif();render();$("#main").scrollTop=0;}
 const VIEWS={};
-function render(){renderNav();renderTop();renderBanner();$("#main").innerHTML=`<div class="screen">${VIEWS[S.screen]()}</div>`;if(S.screen==="lib")libTable();if(S.screen==="listen")listenAfter();renderPlayer();}
+function render(){renderNav();renderTop();renderBanner();$("#main").innerHTML=`${subNav()}<div class="screen">${VIEWS[S.screen]()}</div>`;if(S.screen==="lib")libTable();if(S.screen==="listen")listenAfter();renderPlayer();}
 function softRender(){const m=$("#main"),st=m.scrollTop,ws=window.scrollY;render();m.scrollTop=st;window.scrollTo(0,ws);}
 /** Astuce d’une ligne, affichée une seule fois par écran. */
 function tip(id,html){return S.tips[id]?"":`<div class="tipbox"><span><b>Astuce</b> · ${html}</span><button class="btn sm ghost" onclick="S.tips['${id}']=1;save();softRender()">Compris</button></div>`;}
@@ -890,7 +964,7 @@ function setPanel(){const items=S.set.ids.map(T).filter(Boolean);const W=280,H2=
   const gig=S.gigs.find(g=>g.id===S.set.gig);
   return `<div class="card mt"><div class="row between"><div class="row" style="gap:8px"><h3>Set en cours</h3><input class="f" value="${esc(S.set.name)}" onchange="S.set.name=this.value;save()" style="padding:4px 8px;font-size:12px;width:200px">
       <select class="f" style="padding:4px 8px;font-size:12px" onchange="S.set.gig=+this.value||null;save();render()"><option value="">Lier à une soirée…</option>${S.gigs.map(g=>`<option value="${g.id}" ${g.id===S.set.gig?"selected":""}>${fmtDate(g.date)} · ${esc(g.lieu)}</option>`).join("")}</select></div>
-    <div class="row" style="gap:8px"><button class="btn ghost sm" onclick="clearSet()">Vider</button><button class="btn ghost sm" onclick="importSet()">${svg("imp",13)}Importer un set</button><button class="btn ghost sm" onclick="playSet()">${svg("play",13)}Écouter le set</button><button class="btn ghost sm" onclick="saveList('set')">${svg("plplus",13)}Playlist</button><button class="btn ghost sm" onclick="shareSet()">${svg("share",13)}Partager</button><button class="btn ghost sm" onclick="exportM3U()">${svg("dl",13)}Playlist M3U</button><button class="btn sm" onclick="exportSetCrate()">Crate Serato</button><button class="btn orange sm" onclick="exportUsb()">${svg("usb",14)}Copier sur clé USB</button></div></div>
+    <div class="row" style="gap:8px"><button class="btn ghost sm" onclick="clearSet()">Vider</button><button class="btn ghost sm" onclick="importSet()">${svg("imp",13)}Importer un set</button><button class="btn ghost sm" onclick="playSet()">${svg("play",13)}Écouter le set</button><button class="btn ghost sm" onclick="saveList('set')">${svg("plplus",13)}Playlist</button><button class="btn ghost sm" onclick="shareSet()">${svg("share",13)}Partager</button><button class="btn ghost sm" onclick="exportM3Uchoose()">${svg("dl",13)}Playlist M3U</button><button class="btn sm" onclick="exportSetCrate()">Crate Serato</button><button class="btn orange sm" onclick="exportUsb()">${svg("usb",14)}Copier sur clé USB</button></div></div>
     <div class="row mt2" style="gap:18px"><span class="hint"><b style="color:var(--txt)">${items.length}</b> sons · ≈ <b style="color:var(--txt)">${Math.round(items.length*3.4)} min</b>${items.some(x=>x.bpm)?` · BPM ${Math.round(Math.min(...items.filter(x=>x.bpm).map(x=>x.bpm)))} à ${Math.round(Math.max(...items.filter(x=>x.bpm).map(x=>x.bpm)))}`:""}${gig?` · pour ${esc(gig.lieu)} (${fmtDate(gig.date)})`:""}</span></div>
     ${items.some(x=>x.wish)?`<p class="mt2 clk" style="color:var(--orange);font-size:13px" onclick="S.trTab='liste';go('trend')">${pl(items.filter(x=>x.wish).length,"son")} du set à récupérer avant la soirée →</p>`:""}
     ${items.length>1&&items.some(x=>x.e)?`<svg viewBox="0 0 ${W} ${H2}" style="width:100%;max-width:340px;height:${H2}px"><polyline points="${pts.map(p=>p.join(",")).join(" ")}" fill="none" stroke="var(--orange)" stroke-width="2"/>${pts.map((p,i)=>`<circle cx="${p[0]}" cy="${p[1]}" r="5" fill="var(--orange)" stroke="var(--panel)" stroke-width="2" data-tip="${i+1}. ${esc(items[i].t)} · énergie ${items[i].e||"?"}"/>`).join("")}</svg>`:""}
@@ -913,8 +987,21 @@ function clearSet(){const o=snapSet();S.set.ids=[S.cur];pushUndo("vidage du set"
 /** Sons du set qui ont un fichier (les « à récupérer » sont mis de côté, avec un message). */
 function setFiles(){const all=S.set.ids.map(T).filter(Boolean),ok=all.filter(t=>!t.wish),miss=all.length-ok.length;
   if(miss)toast(`${pl(miss,"son")} du set ${miss>1?"sont":"est"} encore à récupérer : je ${miss>1?"les":"le"} laisse de côté.`,false,true);return ok;}
-function exportM3U(){const items=setFiles();if(!items.length)return;const txt="#EXTM3U\n"+items.map(x=>`#EXTINF:-1,${x.a} - ${x.t}\n/${x.path}`).join("\n")+"\n";
-  download(new Blob([txt],{type:"audio/x-mpegurl"}),safeName(S.set.name)+".m3u8");exportM3Uwarn();}
+/* 1.10 · Chemins M3U selon l'ordinateur de destination. Mesuré le 07/11/2026 sur Serato DJ Pro 5.0 (Windows) :
+   « /Users/... » sans lettre de disque = import refusé ; « C:/Users/... » et « C:\\Users\\... » = import réussi. */
+const m3uCfg=()=>(S.m3u&&typeof S.m3u==="object"&&!Array.isArray(S.m3u)&&(S.m3u.os==="win"||S.m3u.os==="mac"))?S.m3u:(S.m3u={os:/Windows/i.test(navigator.userAgent)?"win":"mac",drive:"C"});
+function m3uLine(p,cfg){const c=cfg||m3uCfg(),q=String(p).replace(/^\/+/,"").replace(/^[A-Za-z]:\/?/,"");return c.os==="win"?(c.drive||"C").toUpperCase()+":\\"+q.replace(/\//g,"\\"):"/"+q;}
+function m3uText(items,cfg){return "#EXTM3U\n"+items.map(x=>`#EXTINF:-1,${x.a} - ${x.t}\n${m3uLine(x.path,cfg)}`).join("\n")+"\n";}
+/** Demande pour quel ordinateur est la playlist (un appui), puis lance l'export. */
+function m3uAsk(then){const c=m3uCfg();
+  modal(`<h2>Pour quel ordinateur est cette playlist ?</h2><p class="hint mt2">Le fichier doit contenir le chemin des morceaux tel que <b>l’ordinateur qui l’ouvre</b> le comprend. Sur Windows il faut la lettre du disque : sans elle, Serato 5.0 refuse toute la playlist (mesuré). Les morceaux doivent être au même endroit sur cet ordinateur.</p>
+   <div class="grid g2 mt" style="gap:8px"><button class="btn ${c.os==="win"?"":"ghost"}" id="m3w">Windows</button><button class="btn ${c.os==="mac"?"":"ghost"}" id="m3m">Mac</button></div>
+   <label class="hint mt" style="display:block">Lettre du disque pour Windows : <input id="m3d" maxlength="1" value="${esc(c.drive||"C")}" style="width:2.2em;text-transform:uppercase;text-align:center;font-size:16px"></label>`);
+  const go=os=>{const d=(($("#m3d").value||"C").trim().toUpperCase().match(/[A-Z]/)||["C"])[0];S.m3u={os,drive:d};save();closeModal();then();};
+  $("#m3w").onclick=()=>go("win");$("#m3m").onclick=()=>go("mac");}
+function exportM3U(){const items=setFiles();if(!items.length)return;
+  download(new Blob([m3uText(items)],{type:"audio/x-mpegurl"}),safeName(S.set.name)+".m3u8");exportM3Uwarn();}
+function exportM3Uchoose(){if(!S.set.ids.length)return;m3uAsk(exportM3U);}
 function download(blob,name){const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1000);}
 const safeName=s=>String(s||"Sans nom").replace(/[\/\\:*?"<>|%]/g,"-").replace(/\s+/g," ").trim().slice(0,80)||"Sans nom";
 
@@ -956,17 +1043,18 @@ function askSeratoVersion(){return new Promise(res=>{
    ${S.seratoDbAge>30?`<p class="mt2" style="color:var(--orange);font-size:13px">Indice : ta base Serato 3 n’a pas changé depuis ${S.seratoDbAge} jours. Tu es peut-être passé à Serato 4.</p>`:""}
    <div class="grid g2 mt" style="gap:8px">${["3","4","5","?"].map(v=>`<button class="btn ${v==="3"?"":"ghost"}" data-v="${v}">${v==="?"?"Je ne sais pas":SV_LABEL[v]}</button>`).join("")}</div>`);
   document.querySelectorAll(".modal [data-v]").forEach(b=>b.onclick=()=>{S.seratoVer=b.dataset.v;save();closeModal();if(S.screen==="settings"||S.screen==="lib")render();res(S.seratoVer);});});}
-async function seratoGate(){if(!flag("seratover"))return true;if(!S.seratoVer)await askSeratoVersion();return S.seratoVer==="3";}
+async function seratoGate(){if(!flag("seratover"))return true;if(!S.seratoVer)await askSeratoVersion();return S.seratoVer==="3"||S.seratoVer==="5";}
 function seratoAlternatives(kind){const v=S.seratoVer||"?";
   modal(`<h2>${SV_LABEL[v]} : pas de crate automatique</h2>
    <p class="hint mt2">${v==="?"?"Sans connaître ta version, je n’écris rien dans Serato : en Serato 4 et plus, les crates écrites par d’autres logiciels n’apparaissent pas.":"Serato 4 et plus rangent les crates dans une nouvelle bibliothèque qu’aucun autre logiciel ne peut remplir de façon officielle. Je n’écris donc rien dans Serato."}</p>
    <h3 class="mt">Ce qui marche</h3>
    ${kind==="set"?`<div class="conn"><div style="flex:1;min-width:0"><b>Un dossier à glisser dans Serato</b><div class="hint">Je copie les sons du set dans un dossier. Dans Serato, ouvre l’onglet <b>Files</b> (pas besoin du Finder), va dans ce dossier et glisse-le sur la zone <b>Crates</b> : il devient une crate. Les fichiers sont numérotés dans l’ordre du set (01, 02…) ; l’ordre obtenu dans Serato est à vérifier chez toi. Les fichiers sont copiés, pas déplacés.</div></div><button class="btn sm" onclick="closeModal();exportFolder()">Choisir</button></div>`:""}
-   <div class="conn"><div style="flex:1;min-width:0"><b>Playlist M3U8</b><div class="hint">${v==="5"?"Serato DJ Pro 5.0 sait importer des fichiers .M3U (notes de version officielles). La méthode exacte reste à vérifier chez toi. Le fichier contient les chemins de CET ordinateur : utilise-le sur celui qui a les fichiers.":"Pour VirtualDJ et Traktor. En Serato 4, l’import M3U est signalé absent (non officiel)."}</div></div><button class="btn sm ghost" onclick="closeModal();${kind==="set"?"exportM3U()":"exportRuleM3U()"}">Télécharger</button></div>
+   <div class="conn"><div style="flex:1;min-width:0"><b>Playlist M3U8</b><div class="hint">${v==="5"?"Testé sur Serato DJ Pro 5.0 (Windows). <b>3 étapes</b> : 1) onglet <b>Files</b> en haut à droite ; 2) trouve le fichier .m3u8 dans l’arbre de gauche ; 3) glisse-le sur la zone <b>Crates</b>. Une crate apparaît avec les sons dans l’ordre. Si elle est vide et que Serato affiche « Some files could not be imported » : les chemins ne correspondent pas à cet ordinateur, refais le fichier en choisissant le bon ordinateur.":"Pour VirtualDJ et Traktor. En Serato 4, l’import M3U est signalé absent (non officiel)."}</div></div><button class="btn sm ghost" onclick="closeModal();${kind==="set"?"exportM3Uchoose()":"exportRuleM3Uchoose()"}">Télécharger</button></div>
    <div class="row mt" style="justify-content:space-between"><button class="btn ghost sm" onclick="closeModal();askSeratoVersion()">Changer de version</button><button class="btn" onclick="closeModal()">Fermer</button></div>`);}
 function exportRuleM3U(){const list=RULES.map((r,i)=>S.crates[i]?{name:r[0],items:visible().filter(x=>!x.wish).filter(r[1])}:null).filter(Boolean);
-  list.forEach(c=>download(new Blob(["#EXTM3U\n"+c.items.map(x=>`#EXTINF:-1,${x.a} - ${x.t}\n/${x.path}`).join("\n")+"\n"],{type:"audio/x-mpegurl"}),`SetMate - ${safeName(c.name)}.m3u8`));
+  list.forEach(c=>download(new Blob([m3uText(c.items)],{type:"audio/x-mpegurl"}),`SetMate - ${safeName(c.name)}.m3u8`));
   toast(`${pl(list.length,"playlist")} téléchargée${list.length>1?"s":""}`);}
+function exportRuleM3Uchoose(){m3uAsk(exportRuleM3U);}
 /** Copie des fichiers du set dans un dossier (un fichier manquant ne bloque pas le reste). */
 async function copyFiles(dest,items,onStep,numbered){const copied=[],lost=[];let skipped=0;
   for(let i=0;i<items.length;i++){const x=items[i];const f=await fileOf(x);if(!f){lost.push(x.t);continue;}
@@ -996,7 +1084,7 @@ async function writeRuleCrates(){
     ui.run(list.length+1);ui.ok(list.length+1,"Relu et vérifié");
     const files=out.filter(r=>!r.backup).map(r=>r.file);const sub=await root.getDirectoryHandle("Subcrates");
     pushUndo("création des crates",()=>removeCreated(sub,files,"main"));
-    ui.end(`<p class="hint mt">Ouvre Serato 3 : les crates sont dans <b>SetMate</b>.</p><div class="row mt" style="justify-content:flex-end"><button class="btn" onclick="closeModal()">Super</button></div>`);
+    ui.end(`<p class="hint mt">Ferme puis relance Serato : les crates sont dans le dossier <b>SetMate</b>.</p><div class="row mt" style="justify-content:flex-end"><button class="btn" onclick="closeModal()">Super</button></div>`);
     notify(`${pl(list.length,"crate")} créées dans Serato`,"lib");}
   catch(e){ui.end(`<p class="mt" style="color:var(--red)">Erreur : ${esc(e.message)}. Rien d’autre n’a été modifié.</p><div class="row mt" style="justify-content:flex-end"><button class="btn ghost" onclick="closeModal()">Fermer</button></div>`);}
 }
@@ -1007,14 +1095,14 @@ async function exportSetCrate(){const items=setFiles();const name=S.set.name;if(
   const ui=stepsUI("Export vers Serato",[`Crate « ${name} »`,"Vérification"]);
   try{ui.run(0);const r=await writeCrates(root,[{name,paths:items.map(x=>x.path)}],"main");ui.ok(0);ui.run(1);ui.ok(1,"Relu et vérifié"+(r.res[0].backup?" · ancienne version sauvegardée":""));
     if(!r.res[0].backup)pushUndo("export du set",()=>removeCreated(r.sub,[r.res[0].file],"main"));
-    ui.end(`<p class="hint mt">Dans Serato 3 : <b>SetMate › ${esc(r.res[0].file.replace(/^SetMate%%|\.crate$/g,""))}</b>.</p><div class="row mt" style="justify-content:flex-end"><button class="btn" onclick="closeModal()">Parfait</button></div>`);}
+    ui.end(`<p class="hint mt">Ferme puis relance Serato : <b>SetMate › ${esc(r.res[0].file.replace(/^SetMate%%|\.crate$/g,""))}</b>.</p><div class="row mt" style="justify-content:flex-end"><button class="btn" onclick="closeModal()">Parfait</button></div>`);}
   catch(e){ui.end(`<p class="mt" style="color:var(--red)">Erreur : ${esc(e.message)}</p><div class="row mt" style="justify-content:flex-end"><button class="btn ghost" onclick="closeModal()">Fermer</button></div>`);}}
 async function exportUsb(){
   const items=setFiles();if(!items.length)return;
   if(S.demo){toast("Mode démo : la copie sur clé demande ta vraie bibliothèque.",false,true);return;}
   if(!FSA){toast("La copie sur clé demande Chrome ou Edge.",false,true);return;}
   if(!H.music||!(await ensurePerm("music","read"))||!S.musicPrefix){toast("Connecte d’abord ton dossier Musique (Réglages) pour que je puisse copier les fichiers.",false,true);go("settings");return;}
-  const s3=await seratoGate();
+  const s3=(await seratoGate())&&S.seratoVer!=="5";
   modal(`<h2>Copier le set sur une clé USB</h2><p class="hint mt2">Dans la fenêtre qui s’ouvre, choisis <b>la clé elle-même</b> (dans la barre latérale du Finder), pas un dossier à l’intérieur.</p>
    <div class="card mt" style="background:var(--panel2);padding:12px;font-size:13px">${s3?`Je copie ${pl(items.length,"fichier")} dans <code>SetMate/</code> sur la clé, j’ajoute le crate « ${esc(S.set.name)} » dans le Serato 3 de la clé, et je sauvegarde l’ancienne base de la clé avant de la modifier.`
      :`Je copie ${pl(items.length,"fichier")} dans le dossier <code>SetMate/${esc(safeName(S.set.name))}/</code> sur la clé. Je ne touche pas à Serato : en ${esc(SV_LABEL[S.seratoVer||"?"])}, glisse ce dossier dans la zone des crates.`}</div>
@@ -1389,7 +1477,7 @@ VIEWS.settings=()=>{const st=k=>H[k]?(PERM[k]==="granted"?'<span class="tag ok">
     ${H.serato&&PERM.serato==="granted"?`<button class="btn ghost sm mt" onclick="loadSerato(true).then(render)">${svg("refresh",13)}Relire ma base Serato</button>`:""}
     ${S.musicPrefix?`<p class="hint mt2">Sons retrouvés sous <code>/${esc(S.musicPrefix)}</code></p>`:""}
     ${H.serato?`<div class="row mt2"><span class="hint">Ta version de Serato</span><select class="f" onchange="S.seratoVer=this.value||null;save();render()"><option value="">À préciser</option>${["3","4","5","?"].map(v=>`<option value="${v}" ${S.seratoVer===v?"selected":""}>${v==="?"?"Je ne sais pas":SV_LABEL[v]}</option>`).join("")}</select></div>
-    <p class="hint mt2">${S.seratoVer==="3"?"Crates SetMate et clé USB au format Serato 3.":S.seratoVer?"Serato 4 et plus : je n’écris aucune crate. Je te propose un dossier à glisser dans Serato, ou une playlist M3U8.":"Indique ta version avant d’envoyer des crates."}${S.seratoDbAge>30?` <span style="color:var(--orange)">Ta base Serato 3 n’a pas changé depuis ${S.seratoDbAge} jours.</span>`:""}</p>`:""}
+    <p class="hint mt2">${S.seratoVer==="3"?"Crates SetMate et clé USB au format Serato 3.":S.seratoVer==="5"?"Serato 5.0 : j’écris les crates dans SetMate (Serato fermé), elles apparaissent quand tu relances Serato (testé sur Windows). Clé USB : non testé, je copie seulement les fichiers.":S.seratoVer?"Serato 4 : je n’écris aucune crate (non testé). Je te propose un dossier à glisser dans Serato, ou une playlist M3U8.":"Indique ta version avant d’envoyer des crates."}${S.seratoDbAge>30?` <span style="color:var(--orange)">Ta base Serato 3 n’a pas changé depuis ${S.seratoDbAge} jours.</span>`:""}</p>`:""}
     ${!FSA?`<p class="hint mt">Pour connecter des dossiers, ouvre SetMate dans Chrome ou Edge. <button class="btn sm ghost" onclick="importDbFile()">Importer « database V2 »</button></p>`:""}</div>
   <div class="card"><h3>Veille des tendances</h3><p class="hint mt2">Récap automatique chaque jeudi (à l’ouverture de SetMate).</p>
     <div class="row mt2">${[["rap","Rap / Hip-hop"],["afro","Afro"],["amapiano","Amapiano"],["rnb","R&B"],["pop","Pop"]].map(([k,l])=>`<button class="chip ${S.genres[k]?"on":""}" onclick="S.genres.${k}=S.genres.${k}?0:1;save();render()">${l}</button>`).join("")}</div>
@@ -2200,14 +2288,14 @@ function crateImpossible(){const raisons=whyNoWrite();
    ${S.demo?"":`<details class="mt"><summary class="hint clk">Avancé : le fichier .crate quand même</summary><p class="hint mt2">Il ne marche que si les fichiers sont aux mêmes endroits. À copier, Serato fermé, dans <code>Musique/_Serato_/Subcrates</code>, puis relance Serato (Serato 3 seulement).</p><button class="btn ghost sm" onclick="closeModal();downloadCrateAdvanced()">Télécharger le .crate</button></details>`}
    <div class="row mt" style="justify-content:flex-end"><button class="btn" onclick="closeModal()">Fermer</button></div>`);}
 function downloadCrateAdvanced(){const items=setFiles();if(!items.length)return;download(new Blob([buildCrate(items.map(x=>x.path))]),`SetMate%%${safeName(S.set.name)}.crate`);toast("Fichier téléchargé : chemins de cet ordinateur uniquement.",false,true);}
-function exportM3Uwarn(){toast(S.seratoVer==="5"?"Playlist téléchargée. Serato DJ 5.0 peut importer les .M3U (notes officielles). Elle contient les chemins de cet ordinateur : à utiliser là où sont les fichiers.":"Playlist téléchargée : elle contient les chemins de cet ordinateur. Serato 4 n’importe plus les M3U (signalé par des utilisateurs) : non testé ici.",false,false);}
+function exportM3Uwarn(){toast(S.seratoVer==="5"?"Playlist téléchargée. Dans Serato 5.0 : onglet Files, trouve le fichier, glisse-le sur la zone Crates (testé sur Windows). Les morceaux doivent être au même endroit que sur l’ordinateur choisi.":"Playlist téléchargée. Elle contient les chemins des morceaux pour l’ordinateur choisi : ils doivent être au même endroit. Import testé seulement dans Serato 5.0 (Windows) ; Serato 3 et 4 : non testé.",false,false);}
 
 /* ---------- Contrôle de compatibilité (Diagnostic) ---------- */
 function compatRows(add){const ua=navigator.userAgent,safari=/Safari/.test(ua)&&!/Chrome|Chromium|Edg|OPR/.test(ua);
   add(isIOS?"ok":FSA?"ok":"warn","Écrire dans Serato et sur clé USB",isIOS?"Normal sur iPhone : l’envoi vers Serato se fait depuis l’ordinateur (Chrome ou Edge).":FSA?"Possible dans ce navigateur.":"Impossible dans ce navigateur"+(safari?" (Safari) : ouvre SetMate dans Chrome ou Edge.":" : utilise Chrome ou Edge."));
   if(!isIOS){add(H.serato?(PERM.serato==="granted"?"ok":"warn"):"warn","Dossier Serato connecté",H.serato?(PERM.serato==="granted"?"Oui.":"Connecté mais à ré-autoriser (Réglages).") :"Non : sans lui, aucune crate ne peut être écrite.");
     add(H.music&&PERM.music==="granted"?"ok":"warn","Dossier Musique connecté",H.music&&PERM.music==="granted"?"Oui.":"Non : nécessaire pour copier les fichiers du set.");}
-  add(S.seratoVer?(S.seratoVer==="3"?"ok":"warn"):"warn","Version de Serato",S.seratoVer?(SV_LABEL[S.seratoVer]+(S.seratoVer==="3"?" : crates possibles.":" : pas de crate automatique, voir les alternatives.")):"Pas encore choisie : SetMate te la demande avant d’écrire.");}
+  add(S.seratoVer?(S.seratoVer==="3"||S.seratoVer==="5"?"ok":"warn"):"warn","Version de Serato",S.seratoVer?(SV_LABEL[S.seratoVer]+(S.seratoVer==="3"||S.seratoVer==="5"?" : crates possibles.":" : pas de crate automatique, voir les alternatives.")):"Pas encore choisie : SetMate te la demande avant d’écrire.");}
 
 /* ---------- Signaler un problème (alimente le registre d'erreurs) ---------- */
 function reportProblem(){modal(`<h2>Signaler un problème</h2><p class="hint mt2">Dis-moi ce qui s’est passé. SetMate joint les infos techniques (version, appareil, navigateur, dossiers connectés, dernières erreurs). Rien ne part sans que tu l’envoies.</p>
@@ -2249,10 +2337,92 @@ document.addEventListener("keydown",e=>{const typing=/INPUT|TEXTAREA|SELECT/.tes
   if(e.code==="Space"&&!$(".ov")){e.preventDefault();if(PL)stopPlay();else if(S.screen==="next"&&S.cur)playTrack(S.cur);}});
 window.addEventListener("focus",()=>{if(H.dl&&PERM.dl==="granted")scanDl();});
 
+/* ===================== 1.10 · Lot 1 · A-IP-01 Mode soirée =====================
+   Écran toujours allumé (si l’appareil le permet), gros bouton « son suivant », « a marché / flop » en un geste,
+   demande du public (texte ou dictée du clavier) qui va dans « File d’attente ». Cahier final §3.1. */
+let WL=null,WLst="",soirClock=0,soirMemo=null,soirAsk=false;const soirSkip=new Set(),soirDraft={q:"",req:""};
+const soirDay=()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");};
+const soirGig=()=>S.gigs.find(x=>x.id===S.soir.gig)||null;
+async function soirWake(){
+  if(!S.soir.on)return;
+  if(!("wakeLock" in navigator)){WLst="absent";return soirDraw();}
+  if(WL&&!WL.released)return;
+  try{WL=await navigator.wakeLock.request("screen");WLst="ok";
+    WL.addEventListener("release",()=>{if(S.soir.on&&document.visibilityState==="visible"){WLst="perdu";soirDraw();}});}
+  catch(e){WLst="refus";}
+  soirDraw();}
+function soirUnwake(){const w=WL;WL=null;WLst="";try{w&&w.release();}catch(e){}}
+document.addEventListener("visibilitychange",()=>{if(S.soir.on&&document.visibilityState==="visible")soirWake();});
+function soirStart(){
+  if(!S.soir.on){const d=soirDay();let g=S.gigs.find(x=>x.date===d&&x.type!=="Live / contenu");
+    if(!g){g={id:Date.now(),lieu:"Soirée en direct",date:d,type:"Club",theme:"",time:"",played:[],deb:null,check:{}};S.gigs.push(g);}
+    S.soir={on:true,gig:g.id,t0:Date.now(),log:[]};soirSkip.clear();soirMemo=null;soirAsk=false;save();}
+  soirOpen();}
+function soirOpen(){soirDraw();soirWake();clearInterval(soirClock);soirClock=setInterval(soirTick,1000);}
+function soirTick(){const e=$("#soirT");if(!e)return;const s=Math.max(0,Math.floor((Date.now()-S.soir.t0)/1000));
+  e.textContent=`${Math.floor(s/3600)}:${String(Math.floor(s/60)%60).padStart(2,"0")}:${String(s%60).padStart(2,"0")}`;}
+function soirPick(){const key=S.cur+"|"+S.set.ids.length;
+  if(!soirMemo||soirMemo.key!==key)soirMemo={key,list:S.cur?suggestions().filter(o=>!o.c.wish).map(o=>({n:o.c.n,s:o.s})):[]};
+  const p=soirMemo.list.find(o=>!soirSkip.has(o.n));return p?{...p,c:T(p.n)}:null;}
+function soirPlay(n){const x=T(n);if(!x)return;const g=soirGig(),o=snapSet(),had=g?g.played.slice():null,at=Date.now();
+  if(!S.set.ids.includes(n))S.set.ids.push(n);S.cur=n;S.keyF=null;
+  if(g&&!g.played.includes(n))g.played.push(n);
+  S.soir.log.push({k:"play",n,t:at});soirMemo=null;soirSkip.clear();soirDraft.q="";
+  pushUndo("son suivant (soirée)",()=>{restoreSet(o);if(g&&had)g.played=had;S.soir.log=S.soir.log.filter(l=>!(l.k==="play"&&l.t===at));soirMemo=null;soirDraw();});
+  save();soirDraw();}
+function soirNext(){const p=soirPick();if(!p)return toast("Aucun son compatible à proposer : choisis-en un à la main.",false,true);soirPlay(p.n);}
+function soirOther(){const p=soirPick();if(p)soirSkip.add(p.n);soirDraw();}
+function soirMark(up){const c=T(S.cur);if(!c)return;const old=S.L[c.n];
+  const same=old&&old.why&&old.why.indexOf(up?"▲ A marché (soirée)":"▼ Flop en soirée")===0;
+  const oldLog=S.soir.log.slice();
+  S.soir.log=S.soir.log.filter(l=>!((l.k==="up"||l.k==="down")&&l.n===c.n));
+  if(same)delete S.L[c.n];
+  else{S.L[c.n]=up?{v:.12,why:"▲ A marché (soirée)"}:{v:-.3,why:"▼ Flop en soirée"};S.soir.log.push({k:up?"up":"down",n:c.n,t:Date.now()});}
+  pushUndo("note du son",()=>{if(old)S.L[c.n]=old;else delete S.L[c.n];S.soir.log=oldLog;save();soirDraw();});
+  save();soirDraw();}
+function soirReq(){const v=(soirDraft.req||"").replace(/\s+/g," ").trim();if(v.length<2)return toast("Écris ou dicte le son demandé.",false,true);
+  const parts=v.split(/\s+[-–—]\s+/);const a=parts.length>1?parts[0]:"",title=parts.length>1?parts.slice(1).join(" - "):v;
+  const m=libMatch({t:title,a});let t,msg;
+  if(m&&!m.wish){S.L[m.n]={v:.08,why:"▲ Demandé par le public (soirée)"};t=m;msg=`Tu l’as déjà : « ${esc(m.t)} ». Je le note comme demandé.`;}
+  else if(m){t=m;msg=`Déjà dans ta file : « ${esc(m.t)} ».`;}
+  else{t={n:S.nextN++,path:"wish/req-"+Date.now(),wish:true,req:true,dz:null,cover:null,t:title,a,src:"soiree",why:WHY.soiree,stage:"queue",bpm:null,bpmSrc:"est",k:null,kSrc:"est",e:null,
+      g:"?",sg:"",conf:0,gSrc:"demande",genreTag:"",year:null,era:"Actuel",kbps:null,inSerato:false,added:Math.floor(Date.now()/1000),pop:0};
+    S.tracks.push(t);reindex();msg=`Demande notée dans « File d’attente » : « ${esc(title)} ».`;
+    pushUndo("demande du public",()=>{removeFromLib(t);S.soir.log=S.soir.log.filter(l=>l.n!==t.n);save(true);soirDraw();});}
+  S.soir.log.push({k:"req",n:t.n,t:Date.now()});soirDraft.req="";save(true);soirDraw();toast(msg,true);}
+function soirEnd(){const L=S.soir.log,np=L.filter(l=>l.k==="play").length,nu=L.filter(l=>l.k==="up").length,nd=L.filter(l=>l.k==="down").length,nr=L.filter(l=>l.k==="req").length;
+  S.soir={on:false,gig:S.soir.gig,t0:0,log:[]};soirAsk=false;clearInterval(soirClock);soirUnwake();soirDraw();save();
+  notify(`Soirée terminée : ${pl(np,"son")}, ${nu} ▲, ${nd} ▼, ${pl(nr,"demande")}. Fais ton débrief demain.`,"debrief");softRender();
+  toast(`Soirée terminée : ${pl(np,"son")} joué${np>1?"s":""}, ${pl(nr,"demande")} du public.`);}
+function soirDraw(){let el=$("#soir");
+  if(!S.soir.on){if(el)el.remove();document.body.classList.remove("soir-on");return;}
+  if(!el){el=document.createElement("div");el.id="soir";el.setAttribute("role","dialog");el.setAttribute("aria-label","Mode soirée");document.body.appendChild(el);}
+  document.body.classList.add("soir-on");
+  const c=T(S.cur),g=soirGig(),L=S.soir.log,np=g?g.played.length:0,lm=c&&S.L[c.n]&&S.L[c.n].why||"";
+  const up=lm.indexOf("▲ A marché (soirée)")===0,dn=lm.indexOf("▼ Flop en soirée")===0;
+  const reqs=L.filter(l=>l.k==="req").slice(-3).reverse().map(l=>T(l.n)).filter(Boolean);
+  const wl=WLst==="ok"?`<div class="sw ok" id="soirWL">● Écran gardé allumé</div>`:WLst===""?`<div class="sw" id="soirWL">Écran : vérification…</div>`:
+    `<div class="sw warn" id="soirWL">L’écran peut s’éteindre tout seul (${WLst==="absent"?"ton appareil ne le permet pas":WLst==="perdu"?"le verrou a été perdu":"le téléphone a refusé"}). Réglages › Luminosité › Verrouillage auto › Jamais, pendant la soirée.</div>`;
+  let mid;
+  if(!c){const q=soirDraft.q.trim().toLowerCase();const res=q.length<2?[]:visible().filter(x=>!x.wish&&!x.missing&&((x.t||"")+" "+(x.a||"")).toLowerCase().includes(q)).slice(0,6);
+    mid=`<div class="sreq"><b>Quel est le premier son ?</b><div class="row2"><input id="soirQ" type="search" placeholder="Tape le début du titre ou de l’artiste" value="${esc(soirDraft.q)}" oninput="soirDraft.q=this.value" onkeydown="if(event.key==='Enter'){soirDraw()}" aria-label="Chercher le premier son"><button class="sm2" onclick="soirDraw()">Chercher</button></div>
+      <div class="sres">${res.map(x=>`<button onclick="soirPlay(${x.n})"><b>${esc(x.t)}</b> <span class="hint">${esc(x.a)}</span></button>`).join("")||(q.length>=2?'<span class="hint">Aucun résultat.</span>':'<span class="hint">Tape au moins 2 lettres.</span>')}</div></div>`;}
+  else{const p=soirPick();
+    mid=`<div class="scur">${cover(c)}<div class="t"><span class="hint">En cours</span><b>${esc(c.t)}</b><span class="hint">${esc(c.a)}${c.bpm?" · "+Math.round(c.bpm)+" BPM":""}${c.k?" · "+esc(c.k):""}</span></div></div>
+      <button class="sbtn sbig" id="soirNextB" onclick="soirNext()" aria-label="Son suivant">${p?`SON SUIVANT<small>${esc(p.c.t)} · ${esc(p.c.a)}</small>`:`PAS DE PROPOSITION<small>Choisis le son à la main dans l’appli</small>`}</button>
+      ${p?`<button class="sm2 ghost" onclick="soirOther()">Autre proposition</button>`:""}
+      <div class="s2"><button class="sbtn sok ${up?"on":""}" id="soirOk" onclick="soirMark(true)" aria-pressed="${up}">▲ A marché</button><button class="sbtn sko ${dn?"on":""}" id="soirKo" onclick="soirMark(false)" aria-pressed="${dn}">▼ Flop</button></div>`;}
+  el.innerHTML=`<div class="sh"><span><b>Mode soirée</b> · <span id="soirT">0:00:00</span></span><span id="soirN">${pl(np,"son")} joué${np>1?"s":""}</span></div>${wl}${mid}
+    <div class="sreq"><b>Demande du public</b><div class="row2"><input id="soirR" type="text" enterkeyhint="done" placeholder="Artiste - Titre" value="${esc(soirDraft.req)}" oninput="soirDraft.req=this.value" onkeydown="if(event.key==='Enter'){soirReq()}" aria-label="Son demandé par le public"><button class="sm2" id="soirReqB" onclick="soirReq()">Noter</button></div>
+      ${reqs.map(t=>`<span class="hint">✓ ${esc(t.a?t.a+" - ":"")}${esc(t.t)}</span>`).join("")}<span class="hint">Pour dicter : touche le micro du clavier de ton iPhone.</span></div>
+    <div class="sfoot">${soirAsk?`<span>Terminer la soirée ?</span><span style="display:flex;gap:8px"><button class="sm2 ghost" onclick="soirAsk=false;soirDraw()">Non</button><button class="sm2 red" id="soirEndB" onclick="soirEnd()">Oui, terminer</button></span>`:`<span class="hint">Tout est enregistré tout seul.</span><button class="sm2 ghost" id="soirAskB" onclick="soirAsk=true;soirDraw()">Terminer</button>`}</div>`;
+  soirTick();}
+
 /* ===================== DÉMARRAGE ===================== */
 (async()=>{await load();await loadLog();migrateStages();
   if(H.serato&&PERM.serato==="granted"&&!S.demo)await loadSerato(false);
   render();startWatch();checkNews();
+  if(S.soir&&S.soir.on)soirOpen();   // soirée en cours avant un rechargement : on la reprend
   if(S.trends.date<lastThursday())await refreshTrends(true);else analyzeQueue(S.trends.items);
   if(S.tracks.length&&(!S.disc.date||Date.now()-S.disc.date>7*864e5))loadDiscovery(true);else analyzeQueue(S.disc.items||[]);
   if("serviceWorker" in navigator&&/^https?:/.test(location.protocol))navigator.serviceWorker.register("sw.js").catch(()=>{});
