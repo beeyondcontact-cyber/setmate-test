@@ -291,6 +291,28 @@ select.f{color-scheme:dark;-webkit-appearance:none;appearance:none;padding-right
   .nb.on svg{color:var(--blue)}
   .subnav{padding-top:8px}
 }
+/* 1.11 · refonte iPhone : moins d'éléments éparpillés, une action principale bien visible par écran */
+.bds,.addl{display:none}
+@media (max-width:760px){
+  .topbar{padding:8px 12px;gap:8px}
+  .topbar .search{flex:none;padding:8px 14px}.topbar .search::after{content:"Chercher";font-size:13px}
+  .row.between>div[style*="position:relative"]{flex:1 1 100%!important;max-width:none!important}
+  .pill.demodup{display:none}                 /* le bandeau dit déjà « Mode démo » */
+  #undoBtn:disabled{display:none}             /* un bouton grisé sans explication ne sert à rien */
+  .banner{padding:6px 12px;font-size:12px;gap:8px}
+  .banner .bdm{display:none}.banner .bds{display:inline}
+  .subnav{gap:6px;padding:10px 0 10px}
+  .sn{padding:8px 12px;font-size:13px;min-height:36px}
+  #main h1{font-size:26px}
+  .sg{flex-wrap:wrap;row-gap:10px;padding:12px}
+  .sg .sgm{flex:1 1 100%;order:1}
+  .sg .sc{order:0}
+  .sg>.cover,.sg>.cv{order:0}
+  .sg .play{order:2}.sg .mi{order:3}
+  .sg .btn.add{order:4;margin-left:auto;width:auto;height:44px;padding:0 20px;border-radius:22px;gap:8px;font-size:15px;font-weight:700}
+  .sg .btn.add .addl{display:inline}
+  .sg .btn.add svg{width:18px;height:18px}
+}
 </style>
 </head>
 <body>
@@ -300,7 +322,7 @@ select.f{color-scheme:dark;-webkit-appearance:none;appearance:none;padding-right
     <div class="topbar">
       <button class="search" onclick="openPalette()"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><span>Chercher un son, une soirée, une action…</span><span class="kbd" id="kbdHint">Ctrl K</span></button>
       <div class="tsp"></div>
-      <button class="pill" id="soirBtn" onclick="soirStart()" aria-label="Mode soirée"><i></i>Soirée</button>
+      <button class="pill" id="soirBtn" onclick="soirStart()" aria-label="Mode soirée"><i></i>Mode soirée</button>
       <button class="pill" id="connPill" onclick="go('settings')"></button>
       <button class="ib" id="undoBtn" onclick="doUndo()" aria-label="Annuler" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 010 12h-3"/></svg></button>
       <button class="ib" id="bellBtn" onclick="toggleNotif()" aria-label="Notifications"></button>
@@ -322,7 +344,7 @@ select.f{color-scheme:dark;-webkit-appearance:none;appearance:none;padding-right
    SETMATE · assistant DJ pour Serato
    Tout reste dans ce navigateur (IndexedDB) et dans les dossiers que tu autorises.
    ===================================================================== */
-const VERSION="1.10.6";
+const VERSION="1.11.0";
 const $=s=>document.querySelector(s);
 const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const norm=s=>" "+String(s||"").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9]+/g," ").trim()+" ";
@@ -617,13 +639,13 @@ function softRender(){const m=$("#main"),st=m.scrollTop,ws=window.scrollY,a=docu
 function tip(id,html){return S.tips[id]?"":`<div class="tipbox"><span><b>Astuce</b> · ${html}</span><button class="btn sm ghost" onclick="S.tips['${id}']=1;save();softRender()">Compris</button></div>`;}
 function renderTop(){
   const p=$("#connPill");const ok=H.serato&&PERM.serato==="granted";
-  p.className="pill "+(S.demo?"warn":ok?"ok":"warn");p.innerHTML=`<i></i>${S.demo?"Mode démo":ok?"Serato connecté":H.serato?"Serato à reconnecter":"Serato non connecté"}`;
+  p.className="pill "+(S.demo?"warn demodup":ok?"ok":"warn");p.innerHTML=`<i></i>${S.demo?"Mode démo":ok?"Serato connecté":H.serato?"Serato à reconnecter":"Serato non connecté"}`;
   const n=S.notifs.filter(x=>!x.seen).length;
   $("#bellBtn").innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0112 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10 21a2 2 0 004 0"/></svg>${n?`<span class="n">${n}</span>`:""}`;updUndo();
 }
 function renderBanner(){
   const b=$("#banner");const need=["serato","music","dl"].filter(k=>H[k]&&PERM[k]!=="granted");
-  if(S.demo)b.innerHTML=`<div class="banner">Mode démo : sons d’exemple. Rien n’est écrit dans Serato. <span class="tsp"></span><button class="btn sm orange" onclick="leaveDemo()">${MOBILE&&!FSA?"Quitter la démo":"Connecter ma vraie bibliothèque"}</button></div>`;
+  if(S.demo)b.innerHTML=`<div class="banner"><span class="bdm">Mode démo : sons d’exemple. Rien n’est écrit dans Serato.</span><span class="bds">Mode démo · sons d’exemple</span> <span class="tsp"></span><button class="btn sm orange" onclick="leaveDemo()">${MOBILE&&!FSA?"Quitter la démo":"Connecter ma vraie bibliothèque"}</button></div>`;
   else if(need.length)b.innerHTML=`<div class="banner blue">Ton navigateur demande de reconfirmer l’accès à : ${need.map(k=>({serato:"Serato",music:"Musique",dl:"Téléchargements"})[k]).join(", ")}. <span class="tsp"></span><button class="btn sm" onclick="reconnect()">Reconnecter</button></div>`;
   else if(!FSA&&MOBILE)b.innerHTML=`<div class="banner blue">Sur téléphone : tendances, écoute, débrief vocal et soirées. Le rangement et Serato se font sur le Mac, avec Chrome.</div>`;
   else if(!FSA)b.innerHTML=`<div class="banner">Ce navigateur ne permet pas d’écrire dans tes dossiers. Ouvre SetMate dans <b>Chrome</b> ou <b>Edge</b> pour créer les crates et copier sur clé. Ici : lecture et téléchargement des crates.</div>`;
@@ -737,8 +759,8 @@ VIEWS.home=()=>{
   return `<div class="hero"><div><h1>${h>=18||h<5?"Bonsoir":"Salut"}${S.name?", "+esc(S.name):""}</h1><p class="sub" style="margin:4px 0 0">On fait quoi aujourd’hui ?</p></div></div>
   <div class="tiles">
     ${tile("next","#2fa4ff","Préparer un set","Je te souffle le son suivant","go('next')")}
-    ${tile("trend","#ff8a1f","Nouveautés",news?`${news} sons à découvrir`:"Les sons du moment","go('trend')")}
-    ${tile("debrief","#ff4d5e","Raconter ma soirée",pd.length?`Soirée du ${fmtDate(pd[0].date)} en attente`:"Débrief vocal en 2 minutes",pd.length?`S.dGig=${pd[0].id};go('debrief')`:"go('debrief')")}
+    ${tile("trend","#ff8a1f","Découvrir",news?`${news} sons à découvrir`:"Les sons du moment","go('trend')")}
+    ${tile("debrief","#ff4d5e","Débrief vocal",pd.length?`Soirée du ${fmtDate(pd[0].date)} en attente`:"Raconte ta soirée en 2 minutes",pd.length?`S.dGig=${pd[0].id};go('debrief')`:"go('debrief')")}
   </div>
   ${gig}
   ${wl?`<div class="card mt clk" onclick="S.trTab='liste';go('trend')"><div class="row between" style="flex-wrap:nowrap"><div><h3>${wl} son${wl>1?"s":""} à récupérer</h3><p class="hint">Déjà dans ta musique pour préparer tes sets. Il manque juste les fichiers.</p></div><span class="go">→</span></div></div>`:""}
@@ -790,7 +812,7 @@ function libRows(){const words=normSearch(S.libQ).trim().split(" ").filter(Boole
   const [k,d]=S.sort;r.sort((a,b)=>{let A=a[k],B=b[k];if(k==="k"){A=a.k?kn(a.k)*2+(kl(a.k)==="B"):99;B=b.k?kn(b.k)*2+(kl(b.k)==="B"):99;}if(A==null)A=d>0?"￿":"";if(B==null)B=d>0?"￿":"";if(typeof A==="string")return FRC.compare(A,B)*d;return (A-B)*d;});
   return r;}
 VIEWS.lib=()=>{if(!S.tracks.length)return welcome();const vq=valQueue().length,wq=wishes().length;const gs=["Tous",...new Set(visible().map(x=>x.g))];
-  return `<div class="row between"><div><h1>Ma musique</h1><p class="sub">${pl(visible().length-wq,"son")}${wq?` + ${wq} à récupérer`:""} · touche un son pour le voir en détail.</p>${S.seratoVer==="4"||S.seratoVer==="5"?`<p class="hint" style="color:var(--orange);margin-top:-12px;margin-bottom:14px">Tu es en ${esc(SV_LABEL[S.seratoVer])} : cette liste vient de ton ancienne base Serato 3. Les sons ajoutés depuis peuvent manquer.</p>`:""}</div>
+  return `<div class="row between"><div><h1>Ma bibliothèque</h1><p class="sub">${pl(visible().length-wq,"son")}${wq?` + ${wq} à récupérer`:""} · touche un son pour le voir en détail.</p>${S.seratoVer==="4"||S.seratoVer==="5"?`<p class="hint" style="color:var(--orange);margin-top:-12px;margin-bottom:14px">Tu es en ${esc(SV_LABEL[S.seratoVer])} : cette liste vient de ton ancienne base Serato 3. Les sons ajoutés depuis peuvent manquer.</p>`:""}</div>
     <div class="row">${H.music&&PERM.music==="granted"?`<button class="btn ghost sm" onclick="analyzeMissing()">${svg("refresh",14)}Analyser l’énergie</button>`:""}
     <div class="seg"><button class="${S.libView==="all"?"on":""}" onclick="S.libView='all';S.sel=null;render()">Tous</button><button class="${S.libView==="check"?"on":""}" onclick="S.libView='check';S.sel=null;render()">À vérifier (${vq})</button><button class="${S.libView==="wish"?"on":""}" onclick="S.libView='wish';S.sel=null;render()">À récupérer (${wq})</button></div></div></div>
   <div class="row" style="margin-bottom:12px"><input class="f" id="libQ" placeholder="Titre, artiste, style…" value="${esc(S.libQ)}" oninput="S.libQ=this.value;S.libLimit=200;libTable()" style="flex:1;min-width:180px;max-width:300px">
@@ -930,7 +952,7 @@ const jsq=s=>esc(String(s).replace(/\\/g,"\\\\").replace(/'/g,"\\'"));
 function sugRow({c,s,why}){const [w,cl]=verdict(s);const main=[why[0][1],why[1][1],...why.filter(x=>x[0]==="learn").map(x=>x[1])].slice(0,3).join(" · ");const open=S.openWhy===c.n;
   return `<div class="sg"><div class="sc"><span class="tag ${cl}">${w}</span></div>${cover(c)}
     <div class="sgm" onclick="S.openWhy=${open?"null":c.n};softRender()"><div class="sgt"><b>${esc(c.t)}</b> <span class="hint">· ${esc(c.a)}</span></div>${c.wish?'<span class="tag info">à récupérer</span> ':""}<div class="hint sgw">${esc(main)} · <u>${open?"moins":"pourquoi ?"}</u></div>${open?`<div class="why">${why.map(([t,l])=>`<span class="tag ${t}">${esc(l)}</span>`).join("")}</div>`:""}</div>
-    <button class="play" onclick="playTrack(${c.n})" aria-label="Écouter">${svg(isPlaying(c)?"pause":"play",12)}</button>${flag("reco2")?`<button class="mi" onclick="dismissSugg('t${c.n}','${jsq(c.t)}')" aria-label="Pas pour ce set" title="Pas pour ce set">${svg("x",14)}</button>`:""}<button class="btn sm add" onclick="addSet(${c.n})" aria-label="Ajouter au set">${svg("plus",15)}</button></div>`;}
+    <button class="play" onclick="playTrack(${c.n})" aria-label="Écouter">${svg(isPlaying(c)?"pause":"play",12)}</button>${flag("reco2")?`<button class="mi" onclick="dismissSugg('t${c.n}','${jsq(c.t)}')" aria-label="Pas pour ce set" title="Pas pour ce set">${svg("x",14)}</button>`:""}<button class="btn sm add" onclick="addSet(${c.n})" aria-label="Ajouter au set">${svg("plus",15)}<span class="addl">Ajouter</span></button></div>`;}
 function discRow({c,s}){const [w,cl]=verdict(s);const inL=inWish(c);const on=PL&&PL.u==="dz"+c.dz;
   return `<div class="sg sgd"><div class="sc"><span class="tag ${cl}">${w}</span></div>${cover(c)}<div class="sgm"><div class="sgt"><b>${esc(c.t)}</b> <span class="hint">· ${esc(c.a)}</span></div><div class="hint sgw">${Math.round(c.bpm)} BPM · ${c.k} · ${c.peu?"pépite peu connue":c.from==="found"?"trouvé en ligne":"en tendance"}</div></div>
     <button class="play ${on?"on":""}" onclick="playDz(${c.dz})" aria-label="Écouter">${svg(on?"pause":"play",12)}</button>${flag("reco2")&&!inL?`<button class="mi" onclick="dismissSugg('dz${c.dz}','${jsq(c.t)}')" aria-label="Pas pour ce set" title="Pas pour ce set">${svg("x",14)}</button>`:""}<button class="btn sm ${inL?"ghost":"violet"}" onclick="addIdea(${c.dz})" ${inL?"disabled":""}>${inL?"✓ Ajouté":"+ Musique"}</button></div>`;}
@@ -1370,7 +1392,7 @@ function addAllBtn(kind,list){const n=list.filter(x=>!libMatch(x)).length;return
 VIEWS.trend=()=>{
   const it=S.trends.items,on=new Set(STYLES.filter(([k])=>S.styles[k]).map(x=>x[1])),dsc=(S.disc.items||[]).filter(x=>on.has(x.style)),tab=S.trTab||"moment";
   const wl=wishes(),ug=upgrades(),listN=wl.length+ug.length;
-  const head=`<h1>Tendances</h1><p class="sub">Appuie sur <b style="color:var(--txt)">+</b> : le son entre dans ta musique et sert tout de suite pour préparer tes sets.</p>
+  const head=`<h1>Découvrir</h1><p class="sub">Appuie sur <b style="color:var(--txt)">+</b> : le son entre dans ta musique et sert tout de suite pour préparer tes sets.</p>
    <form class="sbar" onsubmit="event.preventDefault();doSearch($('#trQ').value)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
      <input id="trQ" placeholder="Cherche n’importe quel son ou artiste…" value="${esc(S.search.q||"")}" autocomplete="off" enterkeyhint="search">${S.search.q?`<button type="button" class="mi" onclick="doSearch('')" aria-label="Effacer">${svg("x",14)}</button>`:""}<button class="btn sm" type="submit">Chercher</button></form>`;
   if(S.search.q){const r=S.search.items;
