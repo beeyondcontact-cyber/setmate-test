@@ -1,7 +1,7 @@
 /* SetMate : fonctionnement hors connexion.
    Réseau d'abord (toujours la dernière version quand il y a du réseau), copie locale sinon.
    Seuls les fichiers du site sont gardés ; les extraits et recherches Deezer ne le sont pas. */
-const C = "setmate-1.11.0";
+const C = "setmate-1.12.3";
 const BASE = ["./", "./index.html", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(C).then(c => c.addAll(BASE))); self.skipWaiting(); });
 self.addEventListener("activate", e => {

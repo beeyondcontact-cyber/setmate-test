@@ -292,17 +292,59 @@ select.f{color-scheme:dark;-webkit-appearance:none;appearance:none;padding-right
   .subnav{padding-top:8px}
 }
 /* 1.11 · refonte iPhone : moins d'éléments éparpillés, une action principale bien visible par écran */
-.bds,.addl{display:none}
+.addl,.sbs,.ttl,.gearb{display:none}
+.backb{all:unset;cursor:pointer;display:inline-flex;align-items:center;min-height:44px;padding:0 6px;color:var(--blue);font-weight:700;font-size:15px}
+.card2{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line2);border-radius:18px;padding:18px;margin-top:14px}
+.c2t{font-size:24px;font-weight:800;margin:8px 0 2px;letter-spacing:-.01em}
+.prog{height:8px;border-radius:5px;background:var(--panel3);overflow:hidden;margin:14px 0 6px}.prog i{display:block;height:100%;background:var(--blue);border-radius:5px}
+.cta{all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:56px;border-radius:16px;background:var(--blue);color:#00203a;font-weight:800;font-size:17px;text-align:center;-webkit-tap-highlight-color:transparent}
+.cta.sec{background:var(--panel3);color:var(--txt);min-height:48px;font-size:15px;font-weight:700}
+.cta[disabled],.cta.off{background:var(--panel3);color:var(--muted);cursor:default}
+.tiles2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.tile2{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;gap:4px;padding:16px;border-radius:16px;background:var(--panel2);border:1px solid var(--line);min-height:112px}
+.tile2 b{font-size:16px}.tile2 span:last-child{font-size:13px;color:var(--muted)}.ti2{color:var(--txt);margin-bottom:6px}
+.lrow{all:unset;box-sizing:border-box;cursor:pointer;display:flex;justify-content:space-between;align-items:center;width:100%;min-height:52px;padding:0 6px;margin-top:6px;font-size:15px;color:var(--muted);border-bottom:1px solid var(--line)}
+.lrow.or{color:var(--orange);font-weight:700}
+.sect{margin:26px 0 8px;font-size:15px;color:var(--muted);font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+.gcard{display:block;background:var(--panel2);border:1px solid var(--line);border-radius:16px;padding:14px 16px;margin-top:10px;cursor:pointer}
+.gct{display:block;font-size:19px;margin:8px 0 2px}.gst{margin-top:10px;color:var(--blue);font-weight:700;font-size:14px}
+.gcard.slim{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:72px}
+.pillo{all:unset;cursor:pointer;background:rgba(255,138,31,.16);color:var(--orange);border:1px solid #5a3a14;border-radius:20px;padding:10px 14px;font-weight:700;font-size:13px;min-height:20px;white-space:nowrap}
+.lnk2{all:unset;cursor:pointer;display:block;margin:22px auto 6px;color:var(--blue);font-weight:700;font-size:14px;padding:12px;text-align:center}
+.lnk2.sm{display:inline-block;margin:0;padding:8px 4px}
+.nol{display:none}
+.steps{margin:14px 0 8px 22px;line-height:1.55}.steps li{margin:8px 0}#pickQ{margin-bottom:12px}.filtb{display:none}.filtbox{display:contents}
+.banner.slim{padding:6px 14px;font-size:13px;gap:10px;background:#1d1d24;border-color:var(--line);color:#ffb36b;min-height:36px}
+.banner.slim.blue{color:#cfe6ff}
+.banner .lnk{all:unset;cursor:pointer;color:var(--blue);font-weight:700;font-size:13px;padding:8px 6px;white-space:nowrap}
+.banner .x{all:unset;cursor:pointer;width:32px;height:32px;display:grid;place-items:center;font-size:20px;color:var(--muted)}
+.banner.warnl{border-left:4px solid var(--orange)}
+.aide{position:fixed;left:12px;right:12px;bottom:calc(76px + env(safe-area-inset-bottom));z-index:60;background:#1b2a3a;border:1px solid #2c4a68;color:#dcecff;border-radius:14px;padding:12px 14px;font-size:14px;box-shadow:0 8px 28px rgba(0,0,0,.5);max-width:520px;margin:0 auto;animation:fade .25s var(--ease)}
+.essai{font-style:normal;font-size:10px;font-weight:800;letter-spacing:.1em;color:#111;background:var(--orange);border-radius:6px;padding:2px 6px;margin-left:6px;vertical-align:middle}
+@media (min-width:761px){.aide{bottom:24px}}
 @media (max-width:760px){
-  .topbar{padding:8px 12px;gap:8px}
-  .topbar .search{flex:none;padding:8px 14px}.topbar .search::after{content:"Chercher";font-size:13px}
-  .row.between>div[style*="position:relative"]{flex:1 1 100%!important;max-width:none!important}
-  .pill.demodup{display:none}                 /* le bandeau dit déjà « Mode démo » */
+  .topbar{padding:8px 12px;gap:8px;padding-top:calc(8px + env(safe-area-inset-top))}
+  .topbar .ttl{display:block;min-width:0;overflow:hidden;text-overflow:ellipsis;font-size:19px;font-weight:800;letter-spacing:-.01em;white-space:nowrap}
+  .topbar .search{display:none}
+  .gearb{display:grid}.ib{width:42px;height:42px;border-radius:12px}
+  .pill.demodup,#connPill{display:none}
+  #soirBtn{flex:none;padding:0 14px;height:42px;border-radius:22px;font-size:14px;font-weight:700;background:rgba(255,59,78,.12);border-color:#5a2630}
+  #soirBtn .sbl{display:none}#soirBtn .sbs{display:inline}
   #undoBtn:disabled{display:none}             /* un bouton grisé sans explication ne sert à rien */
   .banner{padding:6px 12px;font-size:12px;gap:8px}
-  .banner .bdm{display:none}.banner .bds{display:inline}
+  .nb[aria-label="Réglages"]{display:none}
+  .nb{font-size:12px}.nb .ls{font-weight:700}
+  .backb{all:unset;cursor:pointer;display:inline-flex;align-items:center;min-height:44px;padding:0 6px;color:var(--blue);font-weight:700;font-size:16px}
+  .scrT{display:none}
+  .libbar{flex-wrap:wrap}.libbar #libQ{max-width:none!important;flex:1 1 60%;height:48px}
+  .filtb{display:inline-flex;align-items:center;min-height:48px}
+  .filtbox{display:none;flex:1 1 100%;flex-wrap:wrap;gap:8px}.filtbox.open{display:flex}
+  .tbl th{font-size:11px}
+  .sg .mi .nol{display:inline;font-size:13px;margin-left:6px}.sg .mi{width:auto;padding:0 10px;min-height:44px;display:inline-flex;align-items:center}
+  .sg .play{min-width:44px;min-height:44px}
+  .row.between>div[style*="position:relative"]{flex:1 1 100%!important;max-width:none!important}
   .subnav{gap:6px;padding:10px 0 10px}
-  .sn{padding:8px 12px;font-size:13px;min-height:36px}
+  .sn{padding:8px 12px;font-size:13px;min-height:44px}
   #main h1{font-size:26px}
   .sg{flex-wrap:wrap;row-gap:10px;padding:12px}
   .sg .sgm{flex:1 1 100%;order:1}
@@ -320,12 +362,14 @@ select.f{color-scheme:dark;-webkit-appearance:none;appearance:none;padding-right
   <nav id="nav"></nav>
   <div class="col">
     <div class="topbar">
+      <div class="ttl" id="topTtl"></div>
       <button class="search" onclick="openPalette()"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><span>Chercher un son, une soirée, une action…</span><span class="kbd" id="kbdHint">Ctrl K</span></button>
       <div class="tsp"></div>
-      <button class="pill" id="soirBtn" onclick="soirStart()" aria-label="Mode soirée"><i></i>Mode soirée</button>
+      <button class="pill" id="soirBtn" onclick="soirStart()" aria-label="Mode soirée"><i></i><span class="sbl">Mode soirée</span><span class="sbs">▶ Soirée</span></button>
       <button class="pill" id="connPill" onclick="go('settings')"></button>
       <button class="ib" id="undoBtn" onclick="doUndo()" aria-label="Annuler" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 010 12h-3"/></svg></button>
       <button class="ib" id="bellBtn" onclick="toggleNotif()" aria-label="Notifications"></button>
+      <button class="ib gearb" id="gearBtn" onclick="go('settings')" aria-label="Réglages"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.8-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1.1-1.5 1.7 1.7 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.8 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.1a1.7 1.7 0 001.5-1.1 1.7 1.7 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.8.3H9a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.8V9a1.7 1.7 0 001.5 1H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z"/></svg></button>
     </div>
     <div id="banner"></div>
     <main id="main"></main>
@@ -344,7 +388,7 @@ select.f{color-scheme:dark;-webkit-appearance:none;appearance:none;padding-right
    SETMATE · assistant DJ pour Serato
    Tout reste dans ce navigateur (IndexedDB) et dans les dossiers que tu autorises.
    ===================================================================== */
-const VERSION="1.11.0";
+const VERSION="1.12.3";
 const $=s=>document.querySelector(s);
 const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const norm=s=>" "+String(s||"").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9]+/g," ").trim()+" ";
@@ -359,10 +403,12 @@ const MOBILE=/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)||(navigator.m
 
 /* ===================== STOCKAGE LOCAL (IndexedDB) ===================== */
 const DB={db:null,ok:true,
-  open(){return new Promise(res=>{try{const r=indexedDB.open("setmate",1);r.onupgradeneeded=()=>r.result.createObjectStore("kv");r.onsuccess=()=>{DB.db=r.result;res()};r.onerror=()=>{DB.ok=false;res()};}catch(e){DB.ok=false;res()}});},
-  get(k){if(!DB.db)return Promise.resolve(undefined);return new Promise(res=>{const t=DB.db.transaction("kv").objectStore("kv").get(k);t.onsuccess=()=>res(t.result);t.onerror=()=>res(undefined);});},
-  set(k,v){if(!DB.db)return Promise.resolve();return new Promise(res=>{try{const t=DB.db.transaction("kv","readwrite");t.objectStore("kv").put(v,k);t.oncomplete=()=>res();t.onerror=()=>res();}catch(e){res()}});},
-  del(k){if(!DB.db)return Promise.resolve();return new Promise(res=>{const t=DB.db.transaction("kv","readwrite");t.objectStore("kv").delete(k);t.oncomplete=()=>res();});}};
+  open(){return new Promise(res=>{let fini=false;const fin=ok=>{if(fini)return;fini=true;clearTimeout(to);if(!ok)DB.ok=false;res()};const to=setTimeout(()=>fin(false),8000);try{const r=indexedDB.open("setmate",1);r.onupgradeneeded=()=>r.result.createObjectStore("kv");r.onsuccess=()=>{if(fini){try{r.result.close()}catch(e){}return}DB.db=r.result;fin(true)};r.onerror=()=>fin(false);r.onblocked=()=>fin(false);}catch(e){fin(false)}});},
+  get(k){if(!DB.db)return Promise.resolve(undefined);return new Promise(res=>{try{const t=DB.db.transaction("kv").objectStore("kv").get(k);t.onsuccess=()=>res(t.result);t.onerror=()=>res(undefined);}catch(e){res(undefined)}});},
+  set(k,v){return DB.setMany({[k]:v});},
+  /* 1.12.1 : plusieurs clés dans UNE transaction ; la promesse se termine toujours (true = écrit, false = échec : quota plein, transaction avortée, copie impossible) */
+  setMany(o){if(!DB.db||RESETTING)return Promise.resolve(false);return new Promise(res=>{try{const t=DB.db.transaction("kv","readwrite");const s=t.objectStore("kv");for(const k in o)s.put(o[k],k);t.oncomplete=()=>res(true);t.onerror=t.onabort=()=>{DB.lastErr=t.error;res(false)};}catch(e){DB.lastErr=e;res(false)}});},
+  del(k){if(!DB.db)return Promise.resolve(false);return new Promise(res=>{try{const t=DB.db.transaction("kv","readwrite");t.objectStore("kv").delete(k);t.oncomplete=()=>res(true);t.onerror=t.onabort=()=>res(false);}catch(e){res(false)}});}};
 
 const S={
   screen:"home",name:"",demo:false,tracks:[],nextN:1,userRoot:"",musicPrefix:"",
@@ -375,6 +421,7 @@ const S={
   dGig:null,dTxt:"",dPts:null,dlLast:0,onboarded:false,undo:[],
   soir:{on:false,gig:null,t0:0,log:[]}
 };
+const DEFAULTS=JSON.parse(JSON.stringify(S));   // copie des valeurs par défaut, prise AVANT tout chargement ou restauration
 const H={serato:null,music:null,dl:null};      // dossiers autorisés
 const PERM={serato:"none",music:"none",dl:"none"};
 let byN=new Map(),byPath=new Map();
@@ -382,18 +429,27 @@ function reindex(){byN=new Map();byPath=new Map();S.tracks.forEach(t=>{byN.set(t
 const T=n=>byN.get(n);
 let saveT=null,tracksDirty=false,saving=null,saveAgain=false;
 /* 1.10.6 : une seule écriture à la fois ; si une demande arrive pendant l'écriture, on repasse derrière (sinon une modification de piste faite pendant l'écriture n'était jamais enregistrée) */
-function save(tracksToo=false){if(tracksToo)tracksDirty=true;clearTimeout(saveT);saveT=setTimeout(saveNow,400);}
-async function saveNow(){if(saving){saveAgain=true;return saving;}
+let RESETTING=false,saveWarned=false;
+function save(tracksToo=false){if(tracksToo)tracksDirty=true;clearTimeout(saveT);saveT=setTimeout(()=>{saveT=null;saveNow()},400);}
+/* 1.12.1 : écriture immédiate quand l'appli passe en arrière-plan ou se ferme (iPhone : le minuteur de 400 ms peut ne jamais partir) */
+function flushSave(){if(saveT){clearTimeout(saveT);saveT=null;saveNow();}}
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden")flushSave();});
+addEventListener("pagehide",flushSave);
+async function saveNow(){if(RESETTING)return;if(saving){saveAgain=true;return saving;}
   saving=(async()=>{try{do{saveAgain=false;
-  const st={};for(const k of ["name","demo","realSnap","nextN","userRoot","musicPrefix","set","cur","dir","crates","L","P","rules","genreFix","todo","notifs","gigs","created","trends","trendCache","genres","dlLast","onboarded","disc","found","styles","tips","trTab","flags","reco","seratoVer","seratoDbAge","pls","own","lsTab","seenV","am","recTab","soir","m3u"])st[k]=S[k];
-  await DB.set("state",st);if(tracksDirty){tracksDirty=false;await DB.set("tracks",S.tracks);}
-  }while(saveAgain);}finally{saving=null;}})();return saving;}
+  const st={};for(const k of ["name","demo","realSnap","nextN","userRoot","musicPrefix","set","cur","dir","crates","L","P","rules","genreFix","todo","notifs","gigs","created","trends","trendCache","genres","dlLast","onboarded","disc","found","styles","tips","trTab","flags","reco","seratoVer","seratoDbAge","pls","own","lsTab","seenV","am","recTab","soir","m3u","dTxt","dGig"])st[k]=S[k];
+  const obj={state:st},avecPistes=tracksDirty;if(avecPistes){obj.tracks=S.tracks;tracksDirty=false;}
+  const ok=await DB.setMany(obj);
+  if(!ok){if(avecPistes)tracksDirty=true;if(DB.db&&!saveWarned){saveWarned=true;try{toast("Enregistrement impossible (place pleine ?). Fais une sauvegarde.",false,true)}catch(e){}}}
+  else saveWarned=false;
+  }while(saveAgain&&!RESETTING);}finally{saving=null;}})();return saving;}
 /* 1.10 · Un état sauvegardé abîmé ou ancien ne doit jamais empêcher l'appli de démarrer (mesuré : gigs, notifs, trends mal formés ou pistes vides = écran vide).
    Chaque champ lu doit avoir le même genre que sa valeur par défaut (liste, objet, texte, nombre) ; sinon on garde la valeur par défaut. */
 const sameKind=(d,v)=>{if(d===undefined||d===null)return true;const a=x=>Array.isArray(x)?"a":x===null?"n":typeof x;return a(d)===a(v);};
 const isObj=x=>x&&typeof x==="object"&&!Array.isArray(x);
 function sanitizeState(DEF){
   ["gigs","notifs","created","todo"].forEach(k=>{S[k]=(Array.isArray(S[k])?S[k]:[]).filter(isObj);});
+  S.gigs.forEach(g=>{if(!Array.isArray(g.played))g.played=[];if(typeof g.type!=="string")g.type="Club";if(typeof g.date!=="string")g.date=soirDay();if(!isObj(g.check))g.check={};});   // soirée importée ou abîmée : jamais de plantage en soirée ni au débrief
   if(!isObj(S.trends))S.trends={date:0,items:[]};if(!Array.isArray(S.trends.items))S.trends.items=[];S.trends.items=S.trends.items.filter(isObj);
   ["crates","L","P","genreFix","trendCache","genres","styles","flags","reco","tips","found"].forEach(k=>{if(!isObj(S[k]))S[k]=JSON.parse(JSON.stringify(DEF[k]===undefined?{}:DEF[k]));});
   if(!isObj(S.set))S.set=JSON.parse(JSON.stringify(DEF.set));if(!Array.isArray(S.set.ids))S.set.ids=[];
@@ -470,15 +526,17 @@ const keyTag=(k,est)=>k?`<span class="key ${est?"est":""}" style="background:${k
 /* ===================== GENRES ===================== */
 const GENRE_RULES=[
  [/amapiano|piano ?house|log ?drum/,"Afro","Amapiano"],[/afro ?house/,"Afro","Afro house"],[/shatta/,"Afro","Shatta"],[/kompa|konpa/,"Afro","Kompa"],[/zouk/,"Afro","Zouk"],
- [/dancehall|reggae|soca|bouyon/,"Afro","Dancehall"],[/afrobeat|afro ?pop|afropop|naija|afro|coupe ?decale|ndombolo|bongo|gqom|african/,"Afro","Afrobeats"],
- [/drill/,"Hip-hop","Drill"],[/rap fr|french rap|rap francais|francais|french/,"Hip-hop","Rap FR"],[/trap/,"Hip-hop","Trap"],[/hip ?hop|rap/,"Hip-hop","Rap US"],
+ [/reggaeton|dembow/,"Open format","Latino"],[/dancehall|\breggae\b|soca|bouyon/,"Afro","Dancehall"],[/afrobeat|afro ?pop|afropop|naija|afro|coupe ?decale|ndombolo|bongo|gqom|african/,"Afro","Afrobeats"],
+ [/drill/,"Hip-hop","Drill"],[/rap fr|french rap|rap francais|(hip hop|rap).*(francais|french)|(francais|french).*(hip hop|rap)/,"Hip-hop","Rap FR"],[/trap/,"Hip-hop","Trap"],[/hip ?hop|rap/,"Hip-hop","Rap US"],
  [/r ?n ?b|r b|rnb|soul|neo soul/,"R&B","R&B"],[/latin|reggaeton|dembow/,"Open format","Latino"],[/house|techno|edm|electro|dance/,"Open format","House / Dance"],
- [/disco|funk|80s|90s|oldies|classic/,"Open format","Classiques"],[/pop|hits|variete|chanson/,"Open format","Hits"]];
+ [/disco|funk|80s|90s|oldies|classic/,"Open format","Classiques"],[/pop|hits|variete|chanson|francais|french/,"Open format","Hits"]];
 function classify(genre,artist){
-  const fx=S.genreFix[norm(artist).trim()];if(fx)return [fx[0],fx[1],85,"appris"];
-  const n=norm(genre);if(!n.trim())return ["?","Inconnu",0,"aucun"];
-  for(const [re,g,sg] of GENRE_RULES)if(re.test(n))return [g,sg,re.source.length>6&&n.trim().length<30?90:75,"tag"];
-  return ["?",String(genre).slice(0,24),30,"tag"];
+  const fx=S.genreFix[norm(artist).trim()];let r=null;
+  const n=norm(genre);if(!n.trim())r=["?","Inconnu",0,"aucun"];
+  if(!r)for(const [re,g,sg] of GENRE_RULES)if(re.test(n)){r=[g,sg,re.source.length>6&&n.trim().length<30?90:75,"tag"];break;}
+  if(!r)r=["?",String(genre).slice(0,24),30,"tag"];
+  if(fx&&r[2]<85)return [fx[0],fx[1],85,"appris"];
+  return r;
 }
 const eraOf=y=>!y?"?":y<1990?"80s et avant":y<2000?"90s":y<2010?"2000s":y<2020?"2010s":"Actuel";
 
@@ -575,8 +633,8 @@ function toast(msg,undo=false,err=false,group=null){
   el.innerHTML=`<span class="tm">${msg}</span>${undo?'<button onclick="doUndo();this.parentElement.remove()">Annuler</button>':""}`;box.appendChild(el);
   TOAST.el=el;TOAST.group=group;clearTimeout(TOAST.timer);
   TOAST.timer=setTimeout(()=>{el.classList.add("out");setTimeout(()=>el.remove(),180);if(TOAST.el===el){TOAST.group=null;TOAST.el=null;}},err?4000:2000);}   // l’annulation reste possible ensuite via ↶ ou Ctrl/Cmd+Z
-function pushUndo(label,fn){S.undo.push({label,fn});updUndo();}
-async function doUndo(){const u=S.undo.pop();if(!u)return;try{await u.fn();}catch(e){toast("Annulation impossible : "+esc(e.message),false,true);}updUndo();save(true);render();toast("Annulé : "+u.label);}
+function pushUndo(label,fn){S.undo.push({label,fn});if(S.undo.length>50)S.undo.shift();updUndo();}
+async function doUndo(){const u=S.undo.pop();if(!u)return;let ok=true;try{await u.fn();}catch(e){ok=false;toast("Annulation impossible : "+esc(e.message),false,true);}updUndo();save(true);render();if(ok)toast("Annulé : "+u.label);}
 function updUndo(){const b=$("#undoBtn");b.disabled=!S.undo.length;b.dataset.tip=S.undo.length?"Annuler : "+S.undo[S.undo.length-1].label:"Rien à annuler";}
 /* CHG-05 : infobulle seulement avec une vraie souris, toujours entière dans l’écran (elle se retourne près des bords),
    jamais au toucher, fermée au défilement / clic / appui. */
@@ -606,13 +664,18 @@ function pendingDeb(){return pastGigs().filter(g=>!g.deb&&g.type!=="Live / conte
    Les sous-sections d'un raccourci sont de petites pastilles en haut de l'écran. */
 const GROUPS=[
   {k:"home",l:"Accueil",ico:"home",subs:[["home","Accueil"]]},
-  {k:"musique",l:"Musique",ico:"lib",subs:[["lib","Ma bibliothèque"],["listen","Écouter"]]},
-  {k:"soiree",l:"Soirée",ico:"gigs",subs:[["next","Préparer un set"],["gigs","Mes soirées"],["debrief","Débrief vocal"]]},
-  {k:"decouvrir",l:"Découvrir",ico:"trend",subs:[["trend","Tendances"]]},
+  {k:"musique",l:"Ma musique",ico:"lib",subs:[["lib","Ma bibliothèque"],["listen","Mes playlists"]]},
+  {k:"soiree",l:"Mes soirées",ico:"gigs",first:"gigs",subs:[["gigs","Mes soirées"],["next","Mon set"],["debrief","Raconter ma soirée"]]},
+  {k:"decouvrir",l:"Trouver du son",ico:"trend",subs:[["trend","Trouver du son"]]},
   {k:"reglages",l:"Réglages",ico:"settings",subs:[["settings","Réglages"]]}];
 const groupOf=sc=>GROUPS.find(g=>g.subs.some(x=>x[0]===sc))||GROUPS[0];
 const grpLast={};
-function goGroup(k){const g=GROUPS.find(x=>x.k===k)||GROUPS[0],l=grpLast[k];go(g.subs.some(x=>x[0]===l)?l:g.subs[0][0]);}
+function goGroup(k){const g=GROUPS.find(x=>x.k===k)||GROUPS[0],l=grpLast[k];if(g.first)return go(g.first);go(g.subs.some(x=>x[0]===l)?l:g.subs[0][0]);}
+/* 1.12 : titre unique de chaque écran (affiché dans la barre du haut sur téléphone) */
+const TITLES={home:"Accueil",lib:"Ma musique",listen:"Mes playlists",gigs:"Mes soirées",next:"Mon set",debrief:"Mon bilan",trend:"Trouver du son",settings:"Réglages"};
+const BANOFF={};   // bandeaux fermés pendant cette session
+let AIDE=null,aideT=0;
+function backBar(){return S.screen==="next"||S.screen==="debrief"?`<button class="backb" onclick="go('gigs')" aria-label="Retour à Mes soirées">‹ Mes soirées</button>`:"";}
 function subBadge(sc){const v=valQueue().length,miss=wishes().length+upgrades().length,pd=pendingDeb().length;
   if(sc==="lib"&&v)return `<span class="bdg" data-tip="${v} à vérifier">${v}</span>`;
   if(sc==="trend"&&miss)return `<span class="bdg blue" data-tip="${miss} à récupérer">${miss}</span>`;
@@ -626,33 +689,41 @@ function renderNav(){
    `<div class="navsp"></div><button class="nb ${cur.k==="reglages"?"on":""}" onclick="goGroup('reglages')" aria-label="Réglages" ${cur.k==="reglages"?'aria-current="page"':""}>${svg("settings")}<span class="ll">Réglages</span><span class="ls">Réglages</span></button>
    <div class="navfoot">${S.demo?"<b style='color:var(--orange)'>Mode démo</b><br>":""}${dot("serato")}Serato<br>${dot("music")}Musique<br>${dot("dl")}Téléchargements<br>${visible().length} sons</div>`;
 }
-function subNav(){const g=groupOf(S.screen);if(g.subs.length<2)return "";
+function subNav(){const g=groupOf(S.screen);if(g.subs.length<2||g.first)return "";
   return `<div class="subnav" role="tablist" aria-label="${g.l}">${g.subs.map(x=>`<button class="sn ${S.screen===x[0]?"on":""}" role="tab" aria-selected="${S.screen===x[0]}" onclick="go('${x[0]}')">${x[1]}${subBadge(x[0])}</button>`).join("")}</div>`;}
-function go(s){S.screen=s;grpLast[groupOf(s).k]=s;closeNotif();render();$("#main").scrollTop=0;}
+function go(s){if(recOn&&s!=="debrief")micOff();S.screen=s;grpLast[groupOf(s).k]=s;closeNotif();render();$("#main").scrollTop=0;}
 const VIEWS={};
-function render(){renderNav();renderTop();renderBanner();$("#main").innerHTML=`${subNav()}<div class="screen">${VIEWS[S.screen]()}</div>`;if(S.screen==="lib")libTable();if(S.screen==="listen")listenAfter();renderPlayer();}
+function render(){AIDE=null;renderNav();renderTop();renderBanner();$("#main").innerHTML=`${subNav()}${backBar()}<div class="screen">${VIEWS[S.screen]()}</div>`;if(S.screen==="lib")libTable();if(S.screen==="listen")listenAfter();renderPlayer();showAide();}
+/* 1.12 : une seule petite aide à la fois, en bas de l'écran, qui s'efface toute seule (plus de cadre « Compris » à fermer) */
+function showAide(){const o=document.getElementById("aide");if(o)o.remove();clearTimeout(aideT);if(!AIDE)return;const a=AIDE;
+  const d=document.createElement("div");d.id="aide";d.className="aide";d.setAttribute("role","status");d.textContent=a.t;document.body.appendChild(d);
+  const fin=()=>{const e=document.getElementById("aide");if(e)e.remove();S.tips[a.id]=1;save();};
+  aideT=setTimeout(fin,8000);d.addEventListener("click",()=>{clearTimeout(aideT);fin();});}
 /* 1.10.5 : si l'utilisateur est en train de taper, on remet le curseur dans le même champ (même id) après la reconstruction de l'écran */
 function softRender(){const m=$("#main"),st=m.scrollTop,ws=window.scrollY,a=document.activeElement,id=a&&a.id,typing=!!(id&&m.contains(a)&&(a.tagName==="INPUT"||a.tagName==="TEXTAREA")),ss=typing?a.selectionStart:null,se=typing?a.selectionEnd:null;
   render();m.scrollTop=st;window.scrollTo(0,ws);
   if(typing){const n=document.getElementById(id);if(n&&n!==a){try{n.focus({preventScroll:true});if(ss!=null)n.setSelectionRange(ss,se);}catch(e){}}}}
 /** Astuce d’une ligne, affichée une seule fois par écran. */
-function tip(id,html){return S.tips[id]?"":`<div class="tipbox"><span><b>Astuce</b> · ${html}</span><button class="btn sm ghost" onclick="S.tips['${id}']=1;save();softRender()">Compris</button></div>`;}
+function tip(id,html){if(!S.tips[id]&&!AIDE)AIDE={id,t:String(html).replace(/<[^>]*>/g,"")};return "";}
 function renderTop(){
   const p=$("#connPill");const ok=H.serato&&PERM.serato==="granted";
   p.className="pill "+(S.demo?"warn demodup":ok?"ok":"warn");p.innerHTML=`<i></i>${S.demo?"Mode démo":ok?"Serato connecté":H.serato?"Serato à reconnecter":"Serato non connecté"}`;
+  const tt=$("#topTtl");if(tt)tt.innerHTML=esc(TITLES[S.screen]||"");
   const n=S.notifs.filter(x=>!x.seen).length;
   $("#bellBtn").innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0112 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10 21a2 2 0 004 0"/></svg>${n?`<span class="n">${n}</span>`:""}`;updUndo();
 }
 function renderBanner(){
   const b=$("#banner");const need=["serato","music","dl"].filter(k=>H[k]&&PERM[k]!=="granted");
-  if(S.demo)b.innerHTML=`<div class="banner"><span class="bdm">Mode démo : sons d’exemple. Rien n’est écrit dans Serato.</span><span class="bds">Mode démo · sons d’exemple</span> <span class="tsp"></span><button class="btn sm orange" onclick="leaveDemo()">${MOBILE&&!FSA?"Quitter la démo":"Connecter ma vraie bibliothèque"}</button></div>`;
-  else if(need.length)b.innerHTML=`<div class="banner blue">Ton navigateur demande de reconfirmer l’accès à : ${need.map(k=>({serato:"Serato",music:"Musique",dl:"Téléchargements"})[k]).join(", ")}. <span class="tsp"></span><button class="btn sm" onclick="reconnect()">Reconnecter</button></div>`;
-  else if(!FSA&&MOBILE)b.innerHTML=`<div class="banner blue">Sur téléphone : tendances, écoute, débrief vocal et soirées. Le rangement et Serato se font sur le Mac, avec Chrome.</div>`;
-  else if(!FSA)b.innerHTML=`<div class="banner">Ce navigateur ne permet pas d’écrire dans tes dossiers. Ouvre SetMate dans <b>Chrome</b> ou <b>Edge</b> pour créer les crates et copier sur clé. Ici : lecture et téléchargement des crates.</div>`;
+  const fermer=k=>`<button class="x" aria-label="Fermer" onclick="BANOFF['${k}']=1;renderBanner();renderTop()">×</button>`;
+  /* 1.12 : un seul bandeau à la fois, en une ligne fine ; le gros bouton orange a disparu */
+  if(S.demo){if(!BANOFF.demo&&["home","lib","settings"].includes(S.screen))b.innerHTML=`<div class="banner slim"><span>Essai : sons d’exemple</span><span class="tsp"></span><button class="lnk" onclick="leaveDemo()">${MOBILE&&!FSA?"Quitter l’essai":"Utiliser ma musique"}</button>${fermer("demo")}</div>`;else b.innerHTML="";}
+  else if(need.length)b.innerHTML=`<div class="banner warnl">Autorise l’accès à : ${need.map(k=>({serato:"Serato",music:"Musique",dl:"Téléchargements"})[k]).join(", ")}. <span class="tsp"></span><button class="btn sm" onclick="reconnect()">Autoriser</button></div>`;
+  else if(!FSA&&MOBILE){b.innerHTML=BANOFF.mob?"":`<div class="banner slim blue"><span>Sur iPhone : écoute, nouveautés, bilan. Ta bibliothèque Serato se range sur ordinateur.</span>${fermer("mob")}</div>`;}
+  else if(!FSA){b.innerHTML=BANOFF.fsa?"":`<div class="banner slim"><span>Pour ranger tes sons et créer les crates, ouvre SetMate dans <b>Chrome</b> ou <b>Edge</b>.</span>${fermer("fsa")}</div>`;}
   else b.innerHTML="";
 }
 async function reconnect(){for(const k of ["serato","music","dl"])if(H[k]&&PERM[k]!=="granted")await ensurePerm(k,modeOf(k));
-  if(PERM.serato==="granted")await loadSerato(false);render();startWatch();}
+  if(PERM.serato==="granted"&&!S.demo)await loadSerato(false);render();startWatch();}
 function toggleNotif(){const b=$("#notifBox");if(b.innerHTML){closeNotif();return;}
   b.innerHTML=`<div class="notif">${S.notifs.length?S.notifs.slice().reverse().map(n=>`<div class="it" onclick="go('${n.go}')"><i style="${n.seen?"background:var(--line2)":""}"></i><div>${esc(n.txt)}<div class="hint">${fmtDate(n.date)}</div></div></div>`).join(""):'<div class="empty">Aucune notification</div>'}</div>`;
   S.notifs.forEach(n=>n.seen=true);save();setTimeout(renderTop,300);}
@@ -673,27 +744,47 @@ async function pickDir(k){
   render();return true;
 }
 async function loadSerato(announce){
+  if(loadSerato.busy)return false;loadSerato.busy=true;   /* lot 2 : pas deux relectures en même temps */
   try{
     const fh=await H.serato.getFileHandle("database V2");const dbFile=await fh.getFile();const buf=new Uint8Array(await dbFile.arrayBuffer());
     S.seratoDbAge=dbFile.lastModified?Math.floor((Date.now()-dbFile.lastModified)/864e5):null;   // indice : base Serato 3 figée = passage probable à Serato 4
-    const recs=serParse(buf);const old=new Map(S.tracks.map(t=>[t.path,t]));const out=[];const roots={};
-    for(const r of recs){if(r[0]!=="otrk")continue;const f=r[1];const path=fld(f,"pfil");if(!path)continue;
+    const recs=serParse(buf);const old=new Map(S.tracks.map(t=>[t.path,t]));const out=[];const roots={};const seenP=new Set();
+    for(const r of recs){if(r[0]!=="otrk")continue;const f=r[1];const path=fld(f,"pfil");if(!path||seenP.has(path))continue;seenP.add(path);
       const o=old.get(path)||{};const genre=fld(f,"tgen")||"";const artist=fld(f,"tart")||"";
       const fileBase=path.split("/").pop().replace(/\.[^.]+$/,"");
       const t={n:o.n||S.nextN++,path,t:fld(f,"tsng")||fileBase,a:artist||"",al:fld(f,"talb")||"",genreTag:genre,
         bpm:parseFloat(fld(f,"tbpm"))||o.bpmEst||null,bpmSrc:parseFloat(fld(f,"tbpm"))?"serato":o.bpmEst?"est":null,
         k:toCamelot(fld(f,"tkey"))||o.kEst||null,kSrc:toCamelot(fld(f,"tkey"))?"serato":o.kEst?"est":null,
         year:parseInt(fld(f,"ttyr"))||null,kbps:parseFloat(fld(f,"tbit"))||null,added:fld(f,"uadd")||parseInt(fld(f,"tadd"))||0,
-        missing:!!fld(f,"bmis"),inSerato:true,e:o.e||null,bpmEst:o.bpmEst,kEst:o.kEst,hidden:o.hidden||false,lastPlayed:o.lastPlayed||null,conf:0,notDup:o.notDup||false,cover:o.cover,upgrade:o.upgrade,stage:o.stage,doneAt:o.doneAt,doneVia:o.doneVia};
+        missing:!!fld(f,"bmis"),inSerato:true,e:o.e||null,bpmEst:o.bpmEst,kEst:o.kEst,hidden:o.hidden||false,lastPlayed:o.lastPlayed||null,conf:0,notDup:o.notDup||false,cover:o.cover,upgrade:o.upgrade,stage:o.stage,doneAt:o.doneAt,doneVia:o.doneVia,local:o.local,dz:o.dz};
       if(o.manual){t.g=o.g;t.sg=o.sg;t.conf=100;t.manual=true;}else{const c=classify(genre,artist);t.g=c[0];t.sg=c[1];t.conf=c[2];t.gSrc=c[3];}
       t.era=eraOf(t.year);out.push(t);const m=path.match(/^(Users\/[^/]+\/)/);if(m)roots[m[1]]=(roots[m[1]]||0)+1;}
-    let linked=0;
-    for(const t of S.tracks){if(t.inSerato||out.some(x=>x.path===t.path))continue;
-      // un son « à récupérer » (ou ajouté depuis Téléchargements) maintenant présent dans Serato : on fusionne et on garde ce qui a été appris
-      const bt=baseTitle(t.t),a=norm(t.a).split(" ")[1]||"";const s=bt.trim()&&out.find(x=>baseTitle(x.t)===bt&&(!a||norm(x.a).includes(" "+a)));
-      if(s&&(t.wish||t.local)){mergeInto(t,s);linked++;continue;}out.push(t);}
+    /* lot 2 : une base vide ou coupée ne remplace jamais la bibliothèque. Si la même lecture se répète à l'identique, c'est voulu : on l'accepte (sauf base vide). */
+    const prevS=S.tracks.filter(t=>t.inSerato).length,newS=out.length,sig=buf.length+":"+newS;
+    if(prevS>0&&(newS===0||(prevS>=10&&newS<prevS*0.5&&loadSerato.refused!==sig))){
+      loadSerato.refused=newS===0?null:sig;
+      toast("La base Serato lue semble incomplète ("+newS+" son"+(newS>1?"s":"")+" au lieu de "+prevS+"). Je garde ta bibliothèque actuelle. Ferme Serato puis réessaie."+(newS>0?" Si c’est voulu, relance la lecture une deuxième fois.":""),false,true);
+      return false;}
+    loadSerato.refused=null;
+    const keyOf=x=>{const ma=mainArtist(x.a),bt=baseTitle(x.t);return bt.trim()&&ma?bt+"|"+ma:"";};
+    const byKey=new Map();for(const x of out){const k=keyOf(x);if(k){if(!byKey.has(k))byKey.set(k,[]);byKey.get(k).push(x);}}
+    const seratoPaths=new Set(out.map(x=>x.path)),outPaths=new Set(seratoPaths);
+    const lost=S.tracks.filter(t=>t.inSerato&&!seratoPaths.has(t.path));
+    if(lost.length)await DB.set("tracks_prev",S.tracks);   /* copie de sécurité de la bibliothèque d'avant (effacée par « Tout effacer ») */
+    let linked=0;const claimed=new Set();
+    for(const t of S.tracks){if(t.inSerato||outPaths.has(t.path))continue;
+      // un son « à récupérer » (ou ajouté depuis Téléchargements) maintenant présent dans Serato : on fusionne seulement si UN SEUL son Serato a le même titre ET le même artiste principal
+      const k=(t.wish||t.local)?keyOf(t):"";const c=k?(byKey.get(k)||[]).filter(x=>!claimed.has(x)):[];
+      if(c.length===1){claimed.add(c[0]);mergeInto(t,c[0]);linked++;continue;}outPaths.add(t.path);out.push(t);}
+    /* lot 2 : un son déplacé ou renommé dans Serato garde son identité (genre corrigé, set, apprentissage) si un seul candidat non apparié a le même titre ET le même artiste */
+    const lostK=new Map();for(const o of lost){const k=keyOf(o);if(k)lostK.set(k,(lostK.get(k)||0)+1);}
+    for(const o of lost){const k=keyOf(o);if(!k||lostK.get(k)!==1)continue;
+      const c=(byKey.get(k)||[]).filter(x=>!old.has(x.path)&&!claimed.has(x));if(c.length!==1)continue;
+      const x=c[0];claimed.add(x);mergeInto(o,x);
+      x.hidden=o.hidden;x.notDup=o.notDup;x.stage=o.stage;x.doneAt=o.doneAt;x.doneVia=o.doneVia;x.upgrade=o.upgrade;
+      if(!x.bpmEst)x.bpmEst=o.bpmEst;if(!x.kEst)x.kEst=o.kEst;}
     if(linked&&announce!==false)setTimeout(()=>toast(`${pl(linked,"son")} « à récupérer » retrouvé${linked>1?"s":""} dans Serato et relié${linked>1?"s":""}.`),300);
-    S.tracks=out;S.userRoot=Object.entries(roots).sort((a,b)=>b[1]-a[1])[0]?.[0]||S.userRoot;
+    S.tracks=out;S.undo=[];updUndo();S.userRoot=Object.entries(roots).sort((a,b)=>b[1]-a[1])[0]?.[0]||S.userRoot;
     findDups();reindex();
     /* 1.10.6 : un son disparu de Serato ne doit pas rester dans le set ni comme son courant (comme au chargement) */
     S.set.ids=S.set.ids.filter(n=>T(n));if(S.cur!=null&&!T(S.cur))S.cur=S.set.ids.length?S.set.ids[S.set.ids.length-1]:null;
@@ -701,6 +792,7 @@ async function loadSerato(announce){
     if(announce)toast(`${out.filter(t=>t.inSerato).length} sons lus dans ta base Serato.`);
     return true;
   }catch(e){toast("Lecture de la base Serato impossible : "+esc(e.message),false,true);return false;}
+  finally{loadSerato.busy=false;}
 }
 /** Transfère l’identité d’un son (apprentissage, set, soirées) vers sa version Serato. */
 function mergeInto(from,to){const a=from.n,b=to.n;
@@ -709,9 +801,13 @@ function mergeInto(from,to){const a=from.n,b=to.n;
   S.set.ids=S.set.ids.map(n=>n===a?b:n);if(S.cur===a)S.cur=b;
   S.gigs.forEach(g=>{g.played=(g.played||[]).map(n=>n===a?b:n);});
   if(!to.e&&from.e)to.e=from.e;if(!to.cover&&from.cover)to.cover=from.cover;if(from.manual&&!to.manual){to.g=from.g;to.sg=from.sg;to.conf=100;to.manual=true;}
-  if(from.lastPlayed&&(!to.lastPlayed||to.lastPlayed<from.lastPlayed))to.lastPlayed=from.lastPlayed;}
+  if(from.lastPlayed&&(!to.lastPlayed||to.lastPlayed<from.lastPlayed))to.lastPlayed=from.lastPlayed;
+  /* lot 2 : on garde aussi le lien Deezer, le fichier local, BPM et tonalité s'ils manquent, et le journal de soirée suit le son */
+  if(!to.dz&&from.dz)to.dz=from.dz;if(!to.local&&from.local)to.local=from.local;
+  if(!to.bpm&&from.bpm){to.bpm=from.bpm;to.bpmSrc=from.bpmSrc;}if(!to.k&&from.k){to.k=from.k;to.kSrc=from.kSrc;}
+  if(S.soir&&Array.isArray(S.soir.log))S.soir.log.forEach(l=>{if(l&&l.n===a)l.n=b;});}
 function findDups(){const g={};S.tracks.forEach(t=>{t.dupOf=null;if(t.notDup||t.wish||t.hidden)return;const ar=mainArtist(t.a);if(!ar)return;const k=baseTitle(t.t)+"|"+ar;(g[k]=g[k]||[]).push(t);});
-  for(const arr of Object.values(g))if(arr.length>1){const kb=t=>t.kbps||192;arr.sort((a,b)=>kb(b)-kb(a));for(const t of arr.slice(1))t.dupOf=arr[0].n;}}
+  for(const arr of Object.values(g))if(arr.length>1){const kb=t=>t.kbps||192;arr.sort((a,b)=>(!!a.missing-!!b.missing)||(kb(b)-kb(a)));for(const t of arr.slice(1))t.dupOf=arr[0].n;}}
 async function mapMusic(){
   const name=H.music.name;const sample=S.tracks.filter(t=>t.inSerato).slice(0,400);const counts={};
   for(const t of sample){const i=("/"+t.path).indexOf("/"+name+"/");if(i>=0){const pre=t.path.slice(0,i-1+name.length+2);counts[pre]=(counts[pre]||0)+1;}}
@@ -729,9 +825,12 @@ async function fileOf(t,pre=S.musicPrefix){
 
 /* ===================== MODE DÉMO ===================== */
 const DEMO=[["Calm Down","Rema",107,"10A","Afrobeats",2022,320],["Water","Tyla",117,"9A","Amapiano",2023,320],["Love Me JeJe","Tems",103,"11B","Afrobeats",2024,320],["Lonely at the Top","Asake",112,"9A","Amapiano",2023,320],["Djadja","Aya Nakamura",100,"10A","Afropop",2018,320],["In Da Club","50 Cent",90,"4A","Hip Hop",2003,320],["Yeah!","Usher",105,"2A","R&B",2004,320],["Kill Bill","SZA",89,"1A","R&B",2022,320],["Meuda","Tiakola",115,"8A","Rap FR",2022,320],["Last Last","Burna Boy",85,"10B","Afrobeats",2022,320],["Tanzania","Uncle Waffles",113,"8A","Amapiano",2022,320],["Mwaka Moon","Kalash",88,"9A","Rap francais",2017,320],["Work","Rihanna",92,"11A","Dancehall",2016,320],["Crazy in Love","Beyoncé",99,"10B","R&B",2003,320],["One Dance","Drake",104,"11A","",2016,320],["4 Kampé","Joé Dwèt Filé",96,"9B","Kompa",2023,256],["Essence","Wizkid",104,"10A","Afrobeats",2020,320],["Jefe","Ninho",143,"5A","Rap FR",2021,160],["Hot in Herre","Nelly",107,"9B","Hip Hop",2002,320],["Get Busy","Sean Paul",100,"10A","Dancehall",2002,320],["Pookie","Aya Nakamura",92,"8A","Afropop",2019,320],["Shape of You","Ed Sheeran",96,"12A","Pop",2017,320],["Blinding Lights","The Weeknd",171,"4A","Pop",2019,320],["No Scrubs","TLC",93,"8A","R&B",1999,320],["Mnike","Tyler ICU",112,"8A","Amapiano",2023,128],["Water (Extended)","Tyla",117,"9A","Amapiano",2023,128]];
-const REAL_KEYS=["tracks","L","P","rules","set","cur","nextN","gigs","todo","genreFix","userRoot","musicPrefix","created"];
+const REAL_KEYS=["tracks","L","P","rules","set","cur","nextN","gigs","todo","genreFix","userRoot","musicPrefix","created","soir"];
+/* La soirée en direct et la pile d'annulation d'un contexte ne doivent jamais passer dans l'autre (ids de démo, objets périmés) */
+function resetLiveContext(){S.undo=[];S.soir={on:false,gig:null,t0:0,log:[]};try{clearInterval(soirClock);soirUnwake();soirDraw();}catch(e){}try{updUndo();}catch(e){}}
 function enterDemo(){
-  if(!S.demo&&S.tracks.length){S.realSnap={};REAL_KEYS.forEach(k=>S.realSnap[k]=JSON.parse(JSON.stringify(S[k])));S.L={};S.P={};S.rules=[];S.gigs=[];S.todo=[];}
+  if(!S.demo){S.realSnap={};REAL_KEYS.forEach(k=>S.realSnap[k]=JSON.parse(JSON.stringify(S[k]===undefined?DEFAULTS[k]:S[k])));S.L={};S.P={};S.rules=[];S.gigs=[];S.todo=[];}
+  resetLiveContext();
   S.demo=true;S.tracks=DEMO.map((d,i)=>{const c=classify(d[4],d[1]);return {n:i+1,path:"Users/demo/Music/DJ/"+d[1]+" - "+d[0]+".mp3",t:d[0],a:d[1],bpm:d[2],bpmSrc:"serato",k:d[3],kSrc:"serato",genreTag:d[4],g:c[0],sg:c[1],conf:c[2],year:d[5],era:eraOf(d[5]),kbps:d[6],inSerato:true,e:null,lastPlayed:i%5===0?Date.now()-6*864e5:null};});
   S.nextN=DEMO.length+1;S.userRoot="Users/demo/";findDups();reindex();S.cur=S.tracks[4].n;S.set={name:"Set démo",ids:[S.cur],gig:null};
   if(!S.gigs.length)seedGigs();save(true);
@@ -739,9 +838,15 @@ function enterDemo(){
 function seedGigs(){const d=o=>{const x=new Date();x.setDate(x.getDate()+o);return x.toISOString().slice(0,10);};
   S.gigs=[{id:1,date:d(2),time:"23h · 4h",lieu:"Club (exemple)",type:"Club",theme:"Prochaine soirée",played:[],deb:null,check:{}},{id:2,date:d(-5),time:"",lieu:"Soirée passée (exemple)",type:"Club",theme:"Club",played:S.tracks.slice(0,10).map(t=>t.n),deb:null,check:{}}];}
 function exitDemoState(){if(!S.demo)return;S.demo=false;
-  if(S.realSnap){REAL_KEYS.forEach(k=>S[k]=S.realSnap[k]);delete S.realSnap;toast("Ta vraie bibliothèque et tout ce que j’ai appris sont revenus.");}
-  else{S.tracks=[];S.set={name:"Mon set",ids:[],gig:null};S.cur=null;S.L={};S.P={};S.rules=[];S.gigs=[];S.todo=[];}
-  reindex();save(true);}
+  resetLiveContext();
+  if(S.realSnap){const sn=S.realSnap;REAL_KEYS.forEach(k=>{if(k in sn&&k!=="soir")S[k]=sn[k];});delete S.realSnap;
+    if(isObj(sn.soir)&&Array.isArray(sn.soir.log)&&sn.soir.on)S.soir=sn.soir;   // une vraie soirée en direct reprend là où elle s'était arrêtée
+    toast("Ta vraie bibliothèque et tout ce que j’ai appris sont revenus.");}
+  /* ancien état sans copie : on retire seulement les sons d'exemple, jamais les soirées, règles ou listes qui ne viennent pas de la démo */
+  else{S.tracks=[];S.set={name:"Mon set",ids:[],gig:null};S.cur=null;S.gigs=(S.gigs||[]).filter(g=>!/\(exemple\)/.test((g&&g.lieu)||""));}
+  reindex();if(S.soir.on){if(soirGig())soirOpen();else S.soir={on:false,gig:null,t0:0,log:[]};}save(true);}
+function askDemo(){if(!S.tracks.length||S.demo){enterDemo();render();return;}
+  modal(`<h2>Passer en mode démo ?</h2><p class="hint mt2">Je mets ta bibliothèque de côté et je te montre des sons d’exemple. Tu la retrouves en quittant le mode démo.</p><div class="row mt" style="justify-content:flex-end;gap:8px"><button class="btn ghost" onclick="closeModal()">Annuler</button><button class="btn" onclick="closeModal();enterDemo();render()">Passer en démo</button></div>`);}
 function leaveDemo(){exitDemoState();go(S.tracks.length?"home":"settings");}
 
 /* ===================== ACCUEIL ===================== */
@@ -779,14 +884,16 @@ function gigCheck(g){const w=Date.now()-S.trends.date<7*864e5,mine=S.set.gig===g
   const c=[[w,"Regarder les tendances de la semaine","go('trend')"],[mine&&S.set.ids.length>1,`Préparer le set${mine&&S.set.ids.length?` (${S.set.ids.length} sons)`:""}`,`linkSet(${g.id})`]];
   if(miss)c.push([false,`Récupérer ${miss} son${miss>1?"s":""} du set`,"S.trTab='liste';go('trend')"]);
   c.push([!!(g.check&&g.check.usb),"Copier le set sur la clé USB",`linkSet(${g.id})`]);return c;}
-function linkSet(id){if(S.set.gig!==id){const g=S.gigs.find(x=>x.id===id);if(S.set.ids.length<=1||confirmSwitch()){S.set.gig=id;S.set.name=(g.theme||g.type)+" · "+g.lieu;save();}}go("next");}
-function confirmSwitch(){return true;}
+function linkSet(id){if(S.set.gig!==id){const g=S.gigs.find(x=>x.id===id);if(g){const prev=S.gigs.find(x=>x.id===S.set.gig);
+  if(!(prev&&S.set.ids.length>1)||confirmSwitch()){const o=snapSet(),dn=x=>(x.theme||x.type)+" · "+x.lieu;const rename=!S.set.name||S.set.name==="Mon set"||(prev&&S.set.name===dn(prev));   // 1.12.1 : confirmation + annulation, et un nom choisi par toi n'est pas écrasé
+    S.set.gig=id;if(rename)S.set.name=dn(g);pushUndo("changement de soirée",()=>restoreSet(o));save();}}}go("next");}
+function confirmSwitch(){try{return confirm("Ton set est déjà lié à une autre soirée. Le lier à celle-ci à la place ?");}catch(e){return false;}}
 function welcome(){
-  if(MOBILE&&!FSA)return `<div style="max-width:520px;margin:10px auto;text-align:center"><div class="disc" style="width:76px;height:76px;margin:0 auto 16px"></div><h1 style="font-size:28px">Bienvenue dans SetMate</h1>
-  <p class="sub" style="font-size:15px">Ton assistant DJ. Sur le téléphone : tendances du moment, extraits à écouter, débrief vocal après la soirée, tes dates.</p>
-  <div class="card" style="text-align:left"><h3>Essayer tout de suite</h3><p class="hint mt2">Le mode démo charge des sons d’exemple. Les tendances et le débrief vocal fonctionnent pour de vrai.</p><button class="btn block mt" onclick="enterDemo();render()">Essayer en mode démo</button></div>
-  <div class="card mt" style="text-align:left"><h3>Les tendances, sans rien installer</h3><p class="hint mt2">Les sons qui montent cette semaine en France, avec extraits.</p><button class="btn ghost block mt" onclick="go('trend');refreshTrends()">Voir les tendances</button></div>
-  <div class="card mt" style="text-align:left"><h3>Ta vraie bibliothèque</h3><p class="hint mt2">Ouvre ce même lien sur ton Mac avec Chrome, puis connecte ton dossier <code>_Serato_</code>.</p></div></div>`;
+  if(MOBILE&&!FSA)return `<div style="max-width:520px;margin:10px auto;text-align:center"><div class="disc" style="width:76px;height:76px;margin:0 auto 16px"></div><h1 style="font-size:28px">Bienvenue sur SetMate</h1>
+  <p class="sub" style="font-size:16px">Ton assistant DJ : je te dis quel son mettre après celui-ci.</p>
+  <div class="card2" style="text-align:left"><b style="font-size:17px">Commence par un essai</b><p class="hint" style="margin:6px 0 14px">Je charge quelques sons d’exemple. Tu peux tout toucher, rien n’est écrit dans Serato.</p><button class="cta" onclick="enterDemo();render()">Essayer avec des sons d’exemple</button></div>
+  <div class="card2" style="text-align:left"><b style="font-size:17px">Voir ce qui se passe en ce moment</b><p class="hint" style="margin:6px 0 14px">Les sons qui montent cette semaine en France, avec un extrait à écouter.</p><button class="cta sec" onclick="go('trend');refreshTrends()">Trouver du son</button></div>
+  <p class="hint" style="margin-top:18px">Pour ranger ta vraie bibliothèque Serato, ouvre ce même lien sur ton ordinateur avec Chrome.</p></div>`;
   return `<div style="max-width:720px;margin:20px auto;text-align:center"><div class="disc" style="width:76px;height:76px;margin:0 auto 16px"></div><h1 style="font-size:30px">Bienvenue dans SetMate</h1>
   <p class="sub" style="font-size:15px">Range ta musique, trouve le son suivant, suis les tendances, apprends de chaque soirée. Tout reste sur ton ordinateur.</p>
   <div class="card" style="text-align:left"><h3>1 · Connecte ta bibliothèque Serato</h3><p class="hint mt2">Choisis le dossier <code>_Serato_</code> dans ton dossier Musique. Je lis tes sons, BPM et tonalités déjà analysés. Je ne modifie rien sans ton accord.</p>
@@ -809,23 +916,23 @@ function libRows(){const words=normSearch(S.libQ).trim().split(" ").filter(Boole
   let r=(S.libView==="check"?valQueue():S.libView==="wish"?wishes():visible()).filter(x=>S.libG==="Tous"||x.g===S.libG)
     .filter(x=>S.libB==="all"||(x.bpm&&({a:x.bpm<95,b:x.bpm>=95&&x.bpm<108,c:x.bpm>=108&&x.bpm<120,d:x.bpm>=120})[S.libB])||(S.libB==="none"&&!x.bpm))
     .filter(x=>{if(qVide)return false;if(!words.length)return true;const h=normSearch([x.t,x.a,x.sg,x.al].filter(Boolean).join(" "));return words.every(w=>h.includes(w));});
-  const [k,d]=S.sort;r.sort((a,b)=>{let A=a[k],B=b[k];if(k==="k"){A=a.k?kn(a.k)*2+(kl(a.k)==="B"):99;B=b.k?kn(b.k)*2+(kl(b.k)==="B"):99;}if(A==null)A=d>0?"￿":"";if(B==null)B=d>0?"￿":"";if(typeof A==="string")return FRC.compare(A,B)*d;return (A-B)*d;});
+  const [k,d]=S.sort;r.sort((a,b)=>{let A=a[k],B=b[k];if(k==="k"){A=a.k?kn(a.k)*2+(kl(a.k)==="B"):null;B=b.k?kn(b.k)*2+(kl(b.k)==="B"):null;}const na=A==null||A==="",nb=B==null||B==="";if(na||nb)return na&&nb?0:na?1:-1;if(typeof A==="string"||typeof B==="string")return FRC.compare(String(A),String(B))*d;return (A-B)*d;});
   return r;}
 VIEWS.lib=()=>{if(!S.tracks.length)return welcome();const vq=valQueue().length,wq=wishes().length;const gs=["Tous",...new Set(visible().map(x=>x.g))];
-  return `<div class="row between"><div><h1>Ma bibliothèque</h1><p class="sub">${pl(visible().length-wq,"son")}${wq?` + ${wq} à récupérer`:""} · touche un son pour le voir en détail.</p>${S.seratoVer==="4"||S.seratoVer==="5"?`<p class="hint" style="color:var(--orange);margin-top:-12px;margin-bottom:14px">Tu es en ${esc(SV_LABEL[S.seratoVer])} : cette liste vient de ton ancienne base Serato 3. Les sons ajoutés depuis peuvent manquer.</p>`:""}</div>
+  return `<div class="row between"><div><h1 class="scrT">Ma bibliothèque</h1><p class="sub">${pl(visible().length-wq,"son")}${wq?` + ${wq} à récupérer`:""} · touche un son pour le détail.</p>${S.seratoVer==="4"||S.seratoVer==="5"?`<p class="hint" style="color:var(--orange);margin-top:-12px;margin-bottom:14px">Tu es en ${esc(SV_LABEL[S.seratoVer])} : cette liste vient de ton ancienne base Serato 3. Les sons ajoutés depuis peuvent manquer.</p>`:""}</div>
     <div class="row">${H.music&&PERM.music==="granted"?`<button class="btn ghost sm" onclick="analyzeMissing()">${svg("refresh",14)}Analyser l’énergie</button>`:""}
-    <div class="seg"><button class="${S.libView==="all"?"on":""}" onclick="S.libView='all';S.sel=null;render()">Tous</button><button class="${S.libView==="check"?"on":""}" onclick="S.libView='check';S.sel=null;render()">À vérifier (${vq})</button><button class="${S.libView==="wish"?"on":""}" onclick="S.libView='wish';S.sel=null;render()">À récupérer (${wq})</button></div></div></div>
-  <div class="row" style="margin-bottom:12px"><input class="f" id="libQ" placeholder="Titre, artiste, style…" value="${esc(S.libQ)}" oninput="S.libQ=this.value;S.libLimit=200;libTable()" style="flex:1;min-width:180px;max-width:300px">
+    <div class="seg"><button class="${S.libView==="all"?"on":""}" onclick="S.libView='all';S.sel=null;render()">Tous</button><button class="${S.libView==="check"?"on":""}" onclick="S.libView='check';S.sel=null;render()">À contrôler (${vq})</button><button class="${S.libView==="wish"?"on":""}" onclick="S.libView='wish';S.sel=null;render()">À récupérer (${wq})</button></div></div></div>
+  <div class="row libbar" style="margin-bottom:12px"><input class="f" id="libQ" placeholder="Cherche un titre ou un artiste" value="${esc(S.libQ)}" oninput="S.libQ=this.value;S.libLimit=200;libTable()" style="flex:1;min-width:180px;max-width:300px"><button class="chip filtb ${S.libFilt||S.libG!=="Tous"||S.libB!=="all"?"on":""}" onclick="S.libFilt=!S.libFilt;render()">Filtres${S.libG!=="Tous"||S.libB!=="all"?" ●":""}</button><div class="filtbox ${S.libFilt?"open":""}">
     ${gs.slice(0,8).map(g=>`<button class="chip ${S.libG===g?"on":""}" data-g="${esc(g)}" onclick="S.libG=this.dataset.g;render()">${esc(g==="?"?"Non classé":g)}</button>`).join("")}
-    <select class="f" onchange="S.libB=this.value;libTable()">${[["all","Tous les BPM"],["a","< 95"],["b","95 à 107"],["c","108 à 119"],["d","120 +"],["none","Sans BPM"]].map(([v,l])=>`<option value="${v}" ${S.libB===v?"selected":""}>${l}</option>`).join("")}</select></div>
+    <select class="f" onchange="S.libB=this.value;libTable()">${[["all","Tous les BPM"],["a","< 95"],["b","95 à 107"],["c","108 à 119"],["d","120 +"],["none","Sans BPM"]].map(([v,l])=>`<option value="${v}" ${S.libB===v?"selected":""}>${l}</option>`).join("")}</select></div></div>
   <div class="grid g-lib"><div class="card" style="padding:0"><div class="tw" id="libT"></div></div><div id="libSide">${libSide()}</div></div>`;};
 function libTable(){if(!$("#libT"))return;const r=libRows(),[k,d]=S.sort,ar=c=>k===c?(d>0?" ↑":" ↓"):"";const th=(c,l,cls="")=>`<th class="s ${cls}" onclick="sortBy('${c}')">${l}${ar(c)}</th>`;
   const rows=r.slice(0,S.libLimit);
-  $("#libT").innerHTML=r.length?`<table class="tbl"><thead><tr>${th("t","Titre")}${th("bpm","BPM")}${th("k","Ton.")}${th("g","Genre","hm")}${th("e","Énergie","hm")}${th("era","Époque","hm")}<th></th></tr></thead><tbody>${rows.map(x=>{
-    const iss=x.wish?`<span class="tag info">À récupérer</span>`:[x.conf<75?`<span class="tag warn">Genre ?</span>`:"",x.dupOf?`<span class="tag bad">Doublon</span>`:"",x.kbps&&x.kbps<192?`<span class="tag bad">${Math.round(x.kbps)} kbps</span>`:"",x.missing?`<span class="tag bad">Introuvable</span>`:"",!x.inSerato?`<span class="tag info">Hors Serato</span>`:""].join(" ");
+  $("#libT").innerHTML=r.length?`<table class="tbl"><thead><tr>${th("t","Titre")}${th("bpm","Tempo")}${th("k","Tonalité")}${th("g","Genre","hm")}${th("e","Énergie","hm")}${th("era","Époque","hm")}<th></th></tr></thead><tbody>${rows.map(x=>{
+    const iss=x.wish?`<span class="tag info">À récupérer</span>`:[x.conf<75?`<span class="tag warn">Genre à confirmer</span>`:"",x.dupOf?`<span class="tag bad">En double</span>`:"",x.kbps&&x.kbps<192?`<span class="tag bad">Qualité basse</span>`:"",x.missing?`<span class="tag bad">Fichier perdu</span>`:"",!x.inSerato?`<span class="tag info">Pas dans Serato</span>`:""].join(" ");
     const cc=x.conf>=85?"var(--green)":x.conf>=75?"var(--blue)":"var(--orange)";
     return `<tr class="r ${S.sel===x.n?"sel":""}" onclick="selTrack(${x.n})"><td><div class="tt">${cover(x)}<div style="min-width:0"><b>${esc(x.t)}</b><small>${esc(x.a)}</small></div></div></td><td>${x.bpm?Math.round(x.bpm)+(x.bpmSrc==="est"?"<span class=hint>*</span>":""):'<span class="hint">?</span>'}</td><td>${keyTag(x.k,x.kSrc==="est")}</td><td class="hm">${esc(x.g==="?"?"Non classé":x.g)} <span class="hint">› ${esc(x.sg)}</span><span class="conf" style="background:${cc}" data-tip="Confiance ${x.conf} %"></span></td><td class="hm">${nrg(x.e)}</td><td class="hm">${esc(x.era)}</td><td><div class="row" style="gap:5px;flex-wrap:nowrap">${iss}<button class="play ${isPlaying(x)?"on":""}" onclick="event.stopPropagation();playTrack(${x.n})" aria-label="Écouter">${svg(isPlaying(x)?"pause":"play",12)}</button></div></td></tr>`}).join("")}</tbody></table>${r.length>S.libLimit?`<div style="padding:12px;text-align:center"><button class="btn ghost sm" onclick="S.libLimit+=300;libTable()">Afficher plus (${r.length-S.libLimit} restants)</button></div>`:""}`
-   :`<div class="empty">${svg(S.libView==="check"?"check":"lib",40)}<div>${S.libView==="check"?"Tout est vérifié.":S.libView==="wish"?"Rien à récupérer. Ajoute des sons depuis Tendances avec le +.":"Aucun son ne correspond."}</div></div>`;}
+   :`<div class="empty">${svg(S.libView==="check"?"check":"lib",40)}<div>${S.libView==="check"?"Tout est en ordre.":S.libView==="wish"?"Rien à récupérer. Ajoute des sons depuis « Trouver du son » avec le +.":"Aucun son ne correspond."}</div></div>`;}
 function sortBy(c){S.sort=[c,S.sort[0]===c?-S.sort[1]:1];libTable();}
 function selTrack(n){S.sel=S.sel===n?null:n;libTable();$("#libSide").innerHTML=libSide();}
 const GOPTS=[["Afro","Afrobeats"],["Afro","Amapiano"],["Afro","Afro house"],["Afro","Afropop"],["Afro","Dancehall"],["Afro","Shatta"],["Afro","Kompa"],["Afro","Zouk"],["Hip-hop","Rap FR"],["Hip-hop","Rap US"],["Hip-hop","Drill"],["Hip-hop","Trap"],["R&B","R&B"],["Open format","Hits"],["Open format","Classiques"],["Open format","House / Dance"],["Open format","Latino"]];
@@ -862,8 +969,10 @@ function setGenre(n,v){if(!v)return;const x=T(n),[g,sg]=v.split("|");const ak=no
   const oldFix=S.genreFix[ak];if(ak)S.genreFix[ak]=[g,sg];
   pushUndo("correction du genre",()=>{changed.forEach(([t,a,b,c,d,e])=>{t.g=a;t.sg=b;t.conf=c;t.manual=d;t.gSrc=e;});if(oldFix)S.genreFix[ak]=oldFix;else delete S.genreFix[ak];});
   save(true);toast(`Corrigé : ${g} › ${sg}${changed.length>1?` (+${changed.length-1} sons du même artiste)`:""}.`,true);afterLib();}
-function hideTrack(n){const x=T(n);x.hidden=true;findDups();pushUndo("masquage",()=>{x.hidden=false;findDups();});S.sel=null;save(true);toast("Masqué dans SetMate. Le fichier reste sur ton disque.",true);afterLib();}
-function notDup(n){const x=T(n),o=x.dupOf;x.dupOf=null;x.notDup=true;pushUndo("doublon",()=>{x.dupOf=o});save(true);afterLib();}
+function hideTrack(n){const x=T(n);const o=(S.set.ids.includes(x.n)||S.cur===x.n)?snapSet():null;x.hidden=true;findDups();
+  if(o){S.set.ids=S.set.ids.filter(i=>i!==x.n);if(S.cur===x.n)S.cur=S.set.ids.length?S.set.ids[S.set.ids.length-1]:null;}   // 1.12.1 : un son masqué sort aussi du set
+  pushUndo("masquage",()=>{x.hidden=false;findDups();if(o)restoreSet(o);});S.sel=null;save(true);toast("Masqué dans SetMate. Le fichier reste sur ton disque.",true);afterLib();}
+function notDup(n){const x=T(n),o=x.dupOf;x.dupOf=null;x.notDup=true;pushUndo("doublon",()=>{x.notDup=false;x.dupOf=o;});save(true);afterLib();}
 function toTodo(n){const x=T(n);x.upgrade=true;pushUndo("à remplacer",()=>{x.upgrade=false;});save(true);toast(`« ${esc(x.t)} » noté « à remplacer » (Tendances › À récupérer).`,true);renderNav();}
 function afterLib(){renderNav();if(S.screen==="lib"){libTable();$("#libSide").innerHTML=libSide();}}
 let anaRun=false;
@@ -881,25 +990,27 @@ async function analyzeMissing(){
 function pitch(a,b){let best=[[b,""],[b*2,"double"],[b/2,"moitié"]].map(([v,m])=>({v,m,d:Math.abs(v-a)})).sort((x,y)=>x.d-y.d)[0];
   if(best.m&&Math.abs(best.v-a)/a*100>8)best={v:b,m:""};   // double / moitié seulement si ça se mixe vraiment
   const pct=(best.v-a)/a*100,ap=Math.abs(pct),s=ap<=2?1:ap>=8?0:1-(ap-2)/6,diff=Math.round(b-a);
-  return {s,pct,m:best.m,lab:best.m?`BPM ${best.m} (${Math.round(b)})`:(diff===0?"Même BPM":`${diff>0?"+":""}${diff} BPM`)};}
+  return {s,pct,m:best.m,lab:best.m?`BPM ${best.m} (${Math.round(b)})`:(diff===0?"Même tempo":`${diff>0?"+":""}${diff} BPM`)};}
 function keyS(a,b){if(!a||!b)return [.5,"Tonalité inconnue"];const d=(kn(b)-kn(a)+12)%12;
   if(a===b)return [1,"Même tonalité"];if(kn(a)===kn(b))return [.85,"Tonalité relative"];if((d===1||d===11)&&kl(a)===kl(b))return [.9,"Tonalité voisine"];
   if(d===2&&kl(a)===kl(b))return [.6,"+2 · boost d’énergie"];if(d===7&&kl(a)===kl(b))return [.5,"+7 · changement marqué"];return [.15,"Tonalité éloignée"];}
 const GW=[["amapiano",x=>x.sg==="Amapiano","amapiano"],["afrobeat",x=>x.sg==="Afrobeats","afrobeats"],["afro",x=>x.g==="Afro","afro"],["rap",x=>x.g==="Hip-hop","rap"],["drill",x=>x.sg==="Drill","drill"],[" r b ",x=>x.g==="R&B","R&B"],["rnb",x=>x.g==="R&B","R&B"],["dancehall",x=>x.sg==="Dancehall","dancehall"],["shatta",x=>x.sg==="Shatta","shatta"],["kompa",x=>x.sg==="Kompa","kompa"],["zouk",x=>x.sg==="Zouk","zouk"],["hits",x=>x.g==="Open format","hits"],["house",x=>x.sg==="House / Dance","house"]];
 let _reC={k:null,v:null};   // 1.10.6 : appelée pour chaque son dans compat() ; le résultat ne dépend que du texte des règles
-function ruleEffects(rules=S.rules){const key=rules.join("\u0001");if(_reC.k===key)return _reC.v;const ef=[];rules.forEach(r=>{const n=norm(r);GW.forEach(([w,f,l])=>{const i=w.startsWith(" ")?n.indexOf(w):n.search(new RegExp(" "+w+"s?(?= )"));if(i<0)return;const pre=n.slice(Math.max(0,i-24),i);
-  let sgn=0;if(/trop|moins/.test(pre))sgn=-1;else if(/plus|voulai|reclam|demand|assez|manqu|envie/.test(pre))sgn=1;if(sgn&&!ef.some(e=>e.l===l))ef.push({f,sgn,l});});});_reC={k:key,v:ef};return ef;}
+function ruleEffects(rules=S.rules){const key=rules.join("\u0001");if(_reC.k===key)return _reC.v;const ef=[];const lastIx=(re,s)=>{let m,ix=-1;re.lastIndex=0;while((m=re.exec(s)))ix=m.index;return ix;};   // 1.12.1 : la règle la plus récente gagne ; seuls les 3 mots avant le genre comptent ; le mot le plus proche décide, « trop peu / pas assez » = plus
+  [...rules].reverse().forEach(r=>{const n=norm(r);GW.forEach(([w,f,l])=>{const i=w.startsWith(" ")?n.indexOf(w):n.search(new RegExp(" "+w+"s?(?= )"));if(i<0)return;const pre=n.slice(0,i).trim().split(" ").slice(-3).join(" ");
+  const ip=lastIx(/trop peu|pas assez|manqu|plus|voulai|reclam|demand|assez|envie/g,pre),im=lastIx(/trop|moins/g,pre);
+  const sgn=ip<0&&im<0?0:ip>=im?1:-1;if(sgn&&!ef.some(e=>e.l===l))ef.push({f,sgn,l});});});_reC={k:key,v:ef};return ef;}
 function compat(cur,c,full=true){
   let s,why=[];
   if(cur.bpm&&c.bpm){const p=pitch(cur.bpm,c.bpm);s=.4*p.s;why.push([p.s>.75?"ok":p.s>.3?"warn":"bad",p.lab+(Math.abs(p.pct)>=.5&&Math.abs(p.pct)<=12&&!p.m?` · pitch ${p.pct>0?"+":""}${p.pct.toFixed(1).replace(".",",")} %`:"")]);}
   else{s=.2;why.push(["warn","BPM inconnu"]);}
   const [ks,kl2]=keyS(cur.k,c.k);s+=.4*ks;why.push([ks>=.85?"ok":ks>=.5?"warn":"bad",kl2+(c.kSrc==="est"?" (estimée)":"")]);
-  const days=c.lastPlayed?Math.round((Date.now()-c.lastPlayed)/864e5):null;
+  const days=c.lastPlayed&&c.lastPlayed<=Date.now()?Math.round((Date.now()-c.lastPlayed)/864e5):null;   // 1.12.1 : une date future (soirée à venir) n'est pas « joué il y a -3 j »
   if(days!=null&&days<14){s+=.05;why.push(["warn",`Joué il y a ${days} j`]);}else{s+=.2;why.push(["ok",days==null?"Pas joué récemment":`Pas joué depuis ${days} j`]);}
   if(full){if(S.L[c.n]){s+=S.L[c.n].v;why.push(["learn",S.L[c.n].why]);}const pk=cur.n+">"+c.n;if(S.P[pk]){s+=S.P[pk].v;why.push(["learn",S.P[pk].why]);}
     ruleEffects().forEach(e=>{if(e.f(c)){s+=e.sgn*.08;why.push(["learn",`Règle : ${e.sgn>0?"plus":"moins"} ${de(e.l)}`]);}});
     if(S.dir!=="any"&&cur.e&&c.e){const d=c.e-cur.e;if(S.dir==="up"){s+=d>0?.07:d<0?-.1:0;if(d>0)why.push(["info","Monte l’énergie"]);}if(S.dir==="keep"){s+=Math.abs(d)<=1?.06:-.06;if(Math.abs(d)<=1)why.push(["info","Garde l’énergie"]);}if(S.dir==="down"){s+=d<0?.07:d>0?-.1:0;if(d<0)why.push(["info","Fait redescendre"]);}}}
-  return {c,s:Math.max(0,Math.min(1,s)),why};}
+  return {c,s:Math.max(0,Math.min(1,s)),raw:s,why};}   // raw = score non plafonné : sert à départager les sons parfaits
 /* ---------- CHG-01 : suggestions pertinentes, variées, sans répétition ----------
    Mémoire de SESSION (non sauvegardée, vidée à la fermeture) : sons montrés, refusés, mis en pause.
    - refusé (✕)                         → plus proposé pendant la durée de session (réglable)
@@ -907,6 +1018,7 @@ function compat(cur,c,full=true){
    - diversité : pas deux fois le même artiste dans une liste, malus si l’artiste est déjà dans le set
    - s’il ne reste pas assez de sons pertinents, on le dit au lieu de recycler en silence */
 const SESS={shown:{},dismissed:{},cool:{},log:[]};
+const ctxOf=cur=>cur.n+"|"+[...S.set.ids].sort((a,b)=>a-b).join(",");   // 1.12.1 : la situation ne dépend pas de l'ordre du set
 const MIN_PERTINENT=.35,COOL_AFTER=3;
 const sessTTL=()=>((S.reco&&S.reco.ttl)||30)*60e3;
 const akey=a=>norm(a).trim().split(" ").slice(0,2).join(" ");
@@ -916,64 +1028,66 @@ function sessExcluded(id){const now=Date.now(),d=SESS.dismissed[id],c=SESS.cool[
 /* 1.10.5 : une pause posée « à cause de cette situation » ne retire pas le son tant qu'on reste dans la même situation (sinon il disparaît au simple clic sur « pourquoi ? ») */
 function markShown(list,ctx,idOf,titleOf){SESS.ctx=ctx;list.forEach(o=>{const id=idOf(o);const sh=SESS.shown[id]=SESS.shown[id]||new Set();
   if(sh.has(ctx))return;sh.add(ctx);if(sh.size>=COOL_AFTER&&!SESS.cool[id]){SESS.cool[id]={at:Date.now(),why:`proposé ${COOL_AFTER} fois sans être choisi`,ctx};slog(id,titleOf(o),SESS.cool[id].why);}});}
-function dismissSugg(id,title){SESS.dismissed[id]={at:Date.now()};slog(id,title,"refusé par toi");
+function dismissSugg(id,title){if(SESS.dismissed[id]&&Date.now()-SESS.dismissed[id].at<sessTTL())return;   // 1.12.1 : un double appui ne pose pas deux annulations
+  SESS.dismissed[id]={at:Date.now()};slog(id,title,"refusé par toi");
   pushUndo("refus de la suggestion",()=>{delete SESS.dismissed[id];});toast(`« ${esc(title)} » écarté pour cette session`,true,false,"refus");softRender();}
 function otherIdeas(ids){ids.forEach(([id,t])=>{SESS.cool[id]={at:Date.now(),why:"« autres propositions » demandé"};slog(id,t,"autres propositions");});softRender();}
 function resetExclusions(silent){const n=Object.keys(SESS.dismissed).length+Object.keys(SESS.cool).length;SESS.dismissed={};SESS.cool={};SESS.shown={};
   if(!silent){toast(n?`${pl(n,"son")} remis dans les propositions`:"Rien à remettre");softRender();}}
 const excludedCount=()=>Object.keys(SESS.dismissed).filter(k=>sessExcluded(k)).length+Object.keys(SESS.cool).filter(k=>sessExcluded(k)).length;
 function suggestions(){const cur=T(S.cur);if(!cur)return [];
-  SESS.ctx=cur.n+"|"+S.set.ids.join(",");
+  SESS.ctx=ctxOf(cur);
   const inSet=new Set(S.set.ids);
   const inGrp=new Set([...S.set.ids,cur.n].map(n=>{const t=T(n);return t?(t.dupOf||t.n):n;}));   // un son et ses copies comptent pour un seul
   const base=visible().filter(x=>x.n!==cur.n&&!inSet.has(x.n)&&!x.missing&&!inGrp.has(x.dupOf||x.n)).filter(x=>!S.sameGenre||x.g===cur.g).filter(x=>!S.keyF||x.k===S.keyF);
-  if(!flag("reco2"))return base.map(x=>compat(cur,x)).sort((a,b)=>b.s-a.s).slice(0,5);
+  if(!flag("reco2"))return base.map(x=>compat(cur,x)).map(rawOk).sort((a,b)=>b.raw-a.raw).slice(0,5);
   const setArtists=new Set(S.set.ids.map(T).filter(Boolean).map(t=>akey(t.a)));
-  const pool=[];for(const x of base){if(sessExcluded("t"+x.n))continue;const r=compat(cur,x);
-    if(setArtists.has(akey(x.a))){r.s-=.1;r.why.push(["warn","Artiste déjà dans ton set"]);}pool.push(r);}
-  pool.sort((a,b)=>b.s-a.s);const out=[];
+  const pool=[];for(const x of base){if(sessExcluded("t"+x.n))continue;const r=rawOk(compat(cur,x));
+    if(setArtists.has(akey(x.a))){r.s-=.1;r.raw-=.1;r.why.push(["warn","Artiste déjà dans ton set"]);}pool.push(r);}
+  pool.sort((a,b)=>b.raw-a.raw);const out=[];
   while(out.length<5&&pool.length){let bi=0,bv=-9;
-    for(let i=0;i<Math.min(pool.length,60);i++){const p=pool[i];if(p.s<MIN_PERTINENT)continue;let v=p.s;if(out.some(o=>akey(o.c.a)===akey(p.c.a)))v-=.3;v-=.04*out.filter(o=>o.c.sg===p.c.sg).length;if(v>bv){bv=v;bi=i;}}
+    for(let i=0;i<Math.min(pool.length,60);i++){const p=pool[i];if(p.s<MIN_PERTINENT)continue;let v=p.raw;if(out.some(o=>akey(o.c.a)===akey(p.c.a)))v-=.3;v-=.04*out.filter(o=>o.c.sg===p.c.sg).length;if(v>bv){bv=v;bi=i;}}
     if(bv===-9)break;const pick=pool.splice(bi,1)[0];out.push(pick);}
-  markShown(out,cur.n+"|"+S.set.ids.join(","),o=>"t"+o.c.n,o=>o.c.t);
+  markShown(out,ctxOf(cur),o=>"t"+o.c.n,o=>o.c.t);
   return out;}
 const scol=s=>s>=.75?"var(--green)":s>=.5?"var(--orange)":"var(--red)";
-const verdict=s=>s>=.85?["Parfait","ok"]:s>=.7?["Très bien","ok"]:s>=.5?["Possible","warn"]:["Risqué","bad"];
+const verdict=s=>s>=.85?["Va très bien après","ok"]:s>=.7?["Va bien après","ok"]:s>=.5?["À essayer","warn"]:["Attention","bad"];
 const ALLKEYS=[];for(let n=1;n<=12;n++)for(const L of ["A","B"])ALLKEYS.push(n+L);
 function coverage(){const cnt={};visible().forEach(x=>{if(x.k)cnt[x.k]=(cnt[x.k]||0)+1;});return {cnt,n:ALLKEYS.filter(k=>cnt[k]).length,empty:ALLKEYS.filter(k=>!cnt[k])};}
 function onlinePool(){const seen=new Set(),out=[];
   for(const x of [...S.trends.items.map(y=>y&&{...y,from:"trend"}),...(S.disc.items||[]).map(y=>y&&{...y,from:"trend"}),...Object.values(S.found||{}).map(y=>y&&{...y,from:"found"}),...(S.search.items||[]).map(y=>y&&{...y,from:"found"})]){if(!x||seen.has(x.dz))continue;seen.add(x.dz);const c=S.trendCache[x.dz];if(c&&!libMatch(x))out.push({...x,bpm:c.bpm,k:c.k,e:c.e,kSrc:"est"});}
   return out;}
+const rawOk=r=>{if(r&&r.raw==null)r.raw=r.s;return r;};   // 1.12.1 : un score sans « raw » (calcul simplifié) vaut son score affiché
 function discoverSugg(){const cur=T(S.cur);if(!cur)return [];
   let l=onlinePool();if(flag("reco2"))l=l.filter(x=>!sessExcluded("dz"+x.dz));
-  const out=l.map(x=>compat(cur,x,false)).filter(r=>r.s>=.7).sort((a,b)=>b.s-a.s).slice(0,3);
-  if(flag("reco2"))markShown(out,cur.n+"|"+S.set.ids.join(","),o=>"dz"+o.c.dz,o=>o.c.t);return out;}
+  const out=l.map(x=>rawOk(compat(cur,x,false))).filter(r=>r.s>=.7).sort((a,b)=>b.raw-a.raw).slice(0,3);
+  if(flag("reco2"))markShown(out,ctxOf(cur),o=>"dz"+o.c.dz,o=>o.c.t);return out;}
 const jsq=s=>esc(String(s).replace(/\\/g,"\\\\").replace(/'/g,"\\'"));
 function sugRow({c,s,why}){const [w,cl]=verdict(s);const main=[why[0][1],why[1][1],...why.filter(x=>x[0]==="learn").map(x=>x[1])].slice(0,3).join(" · ");const open=S.openWhy===c.n;
   return `<div class="sg"><div class="sc"><span class="tag ${cl}">${w}</span></div>${cover(c)}
-    <div class="sgm" onclick="S.openWhy=${open?"null":c.n};softRender()"><div class="sgt"><b>${esc(c.t)}</b> <span class="hint">· ${esc(c.a)}</span></div>${c.wish?'<span class="tag info">à récupérer</span> ':""}<div class="hint sgw">${esc(main)} · <u>${open?"moins":"pourquoi ?"}</u></div>${open?`<div class="why">${why.map(([t,l])=>`<span class="tag ${t}">${esc(l)}</span>`).join("")}</div>`:""}</div>
-    <button class="play" onclick="playTrack(${c.n})" aria-label="Écouter">${svg(isPlaying(c)?"pause":"play",12)}</button>${flag("reco2")?`<button class="mi" onclick="dismissSugg('t${c.n}','${jsq(c.t)}')" aria-label="Pas pour ce set" title="Pas pour ce set">${svg("x",14)}</button>`:""}<button class="btn sm add" onclick="addSet(${c.n})" aria-label="Ajouter au set">${svg("plus",15)}<span class="addl">Ajouter</span></button></div>`;}
+    <div class="sgm" onclick="S.openWhy=${open?"null":c.n};softRender()"><div class="sgt"><b>${esc(c.t)}</b> <span class="hint">· ${esc(c.a)}</span></div>${c.wish?'<span class="tag info">à récupérer</span> ':""}<div class="hint sgw">${esc(main)} · <u>${open?"moins":"En savoir plus"}</u></div>${open?`<div class="why">${why.map(([t,l])=>`<span class="tag ${t}">${esc(l)}</span>`).join("")}</div>`:""}</div>
+    <button class="play" onclick="playTrack(${c.n})" aria-label="Écouter">${svg(isPlaying(c)?"pause":"play",12)}</button>${flag("reco2")?`<button class="mi" onclick="dismissSugg('t${c.n}','${jsq(c.t)}')" aria-label="Pas pour ce set" title="Pas pour ce set">${svg("x",14)}<span class="nol">Pas pour ce set</span></button>`:""}<button class="btn sm add" onclick="addSet(${c.n})" aria-label="Ajouter au set">${svg("plus",15)}<span class="addl">Ajouter</span></button></div>`;}
 function discRow({c,s}){const [w,cl]=verdict(s);const inL=inWish(c);const on=PL&&PL.u==="dz"+c.dz;
   return `<div class="sg sgd"><div class="sc"><span class="tag ${cl}">${w}</span></div>${cover(c)}<div class="sgm"><div class="sgt"><b>${esc(c.t)}</b> <span class="hint">· ${esc(c.a)}</span></div><div class="hint sgw">${Math.round(c.bpm)} BPM · ${c.k} · ${c.peu?"pépite peu connue":c.from==="found"?"trouvé en ligne":"en tendance"}</div></div>
     <button class="play ${on?"on":""}" onclick="playDz(${c.dz})" aria-label="Écouter">${svg(on?"pause":"play",12)}</button>${flag("reco2")&&!inL?`<button class="mi" onclick="dismissSugg('dz${c.dz}','${jsq(c.t)}')" aria-label="Pas pour ce set" title="Pas pour ce set">${svg("x",14)}</button>`:""}<button class="btn sm ${inL?"ghost":"violet"}" onclick="addIdea(${c.dz})" ${inL?"disabled":""}>${inL?"✓ Ajouté":"+ Musique"}</button></div>`;}
 VIEWS.next=()=>{
   if(!S.tracks.length||!visible().length)return welcome();
-  if(!T(S.cur)||T(S.cur).hidden){S.cur=visible()[0].n;if(!S.set.ids.length)S.set.ids=[S.cur];}
+  if(!T(S.cur)||T(S.cur).hidden){S.set.ids=S.set.ids.filter(n=>T(n)&&!T(n).hidden);S.cur=S.set.ids.length?S.set.ids[S.set.ids.length-1]:visible()[0].n;if(!S.set.ids.length)S.set.ids=[S.cur];}
   const cur=T(S.cur),sg=suggestions(),ds=discoverSugg(),cov=coverage(),rules=ruleEffects(),opts=S.dir!=="any"||S.sameGenre||S.keyF;
-  return `<div class="row between"><div><h1>Préparer un set</h1><p class="sub">Choisis un son : je te dis lesquels enchaîner derrière.</p></div>
-    <div style="position:relative;flex:1;min-width:220px;max-width:340px"><input class="f" id="pickQ" placeholder="Partir d’un autre son…" style="width:100%" oninput="pickDrop()" onfocus="pickDrop()" onkeydown="pickKey(event)" autocomplete="off"><div id="pickD"></div></div></div>
+  return `<div class="row between"><div><h1 class="scrT">Mon set</h1><p class="sub">Choisis un son : je te dis lequel mettre ensuite.</p></div>
+    <div style="position:relative;flex:1;min-width:220px;max-width:340px"><input class="f" id="pickQ" placeholder="Changer de son de départ…" style="width:100%" oninput="pickDrop()" onfocus="pickDrop()" onkeydown="pickKey(event)" autocomplete="off"><div id="pickD"></div></div></div>
   ${tip("next","Appuie sur <b>+</b> pour ajouter un son à ton set. Les propositions se recalculent à partir de lui.")}
-  <div class="card hi now">${cover(cur,"lg")}<div style="flex:1;min-width:0"><span class="tag info">Tu joues</span><div class="big mt2" style="overflow:hidden;text-overflow:ellipsis">${esc(cur.t)}</div><div class="hint">${esc(cur.a)}</div></div>
+  <div class="card hi now">${cover(cur,"lg")}<div style="flex:1;min-width:0"><span class="tag info">TU JOUES</span><div class="big mt2" style="overflow:hidden;text-overflow:ellipsis">${esc(cur.t)}</div><div class="hint">${esc(cur.a)}</div></div>
     <div style="text-align:center"><div class="big">${cur.bpm?Math.round(cur.bpm):"?"}</div><div class="hint">BPM</div></div>${keyTag(cur.k,cur.kSrc==="est")}
     <button class="play" style="width:44px;height:44px" onclick="playTrack(${cur.n})" aria-label="Écouter">${svg(isPlaying(cur)?"pause":"play",16)}</button></div>
   <div class="grid g-next mt"><div>
-    <div class="row between"><h3>Enchaîne avec</h3><button class="chip ${opts?"on":""}" onclick="S.showOpts=!S.showOpts;softRender()">Options${opts?" ●":""}</button></div>
+    <div class="row between"><h3>Quoi mettre après ?</h3><button class="chip ${opts?"on":""}" onclick="S.showOpts=!S.showOpts;softRender()">Filtres${opts?" ●":""}</button></div>
     ${S.showOpts?`<div class="card mt2" style="padding:12px"><div class="row"><span class="hint">Énergie</span><div class="seg">${[["any","Peu importe"],["up","Monter"],["keep","Garder"],["down","Descendre"]].map(([v,l])=>`<button class="${S.dir===v?"on":""}" onclick="S.dir='${v}';save();render()">${l}</button>`).join("")}</div></div>
       <div class="row mt2"><button class="chip ${S.sameGenre?"on":""}" onclick="S.sameGenre=!S.sameGenre;render()">Même genre seulement</button>${S.keyF?`<button class="chip on" onclick="S.keyF=null;render()">Tonalité ${S.keyF} ✕</button>`:""}${rules.map(r=>`<span class="tag learn">Retenu : ${r.sgn>0?"plus":"moins"} ${de(r.l)}</span>`).join("")}</div></div>`:""}
     ${sg.length?sg.map(sugRow).join(""):""}
     ${flag("reco2")&&sg.length<5?`<div class="card mt2" style="padding:12px"><b>${sg.length?"Plus d’autres propositions pertinentes":"Aucune proposition pertinente"}</b><p class="hint mt2">${excludedCount()?`${pl(excludedCount(),"son")} écarté${excludedCount()>1?"s":""} pendant cette session (refusés ou déjà proposés souvent).`:"Ta musique n’a pas d’autre son qui s’enchaîne bien ici."} ${S.dir!=="any"||S.sameGenre||S.keyF?"Tu peux aussi enlever une option.":""}</p>${excludedCount()?`<button class="btn sm ghost mt2" onclick="resetExclusions()">Remettre les sons écartés</button>`:""}</div>`:!sg.length?`<div class="empty">Aucun son ne correspond. Enlève une option.</div>`:""}
     ${flag("reco2")&&sg.length?`<button class="chip mt2" onclick='otherIdeas(${JSON.stringify(sg.map(r=>["t"+r.c.n,r.c.t])).replace(/'/g,"&#39;")})'>↻ Autres propositions</button>`:""}
-    ${ds.length?`<h3 class="mt">À découvrir <span class="hint" style="font-weight:400">· pas encore dans ta musique</span></h3>${ds.map(discRow).join("")}`:""}
+    ${ds.length?`<h3 class="mt">Idées à ajouter <span class="hint" style="font-weight:400">· pas encore dans ta musique</span></h3>${ds.map(discRow).join("")}`:""}
   </div>
   <div class="card"><div class="row between"><h3>Roue des tonalités</h3><span class="tag ${cov.n===24?"ok":"warn"}" data-tip="Tonalités où tu as au moins un son">${cov.n}/24</span></div>${wheel(cur.k,cov)}
     <p class="hint" style="text-align:center">Couleur : compatible avec ton son.${cov.n<24?`<br>Pointillés : tu n’as aucun son. <b style="color:var(--txt)">Touche-les</b> pour en trouver.`:""}</p></div></div>
@@ -1007,7 +1121,7 @@ function setPanel(){const items=S.set.ids.map(T).filter(Boolean);const W=280,H2=
   const gig=S.gigs.find(g=>g.id===S.set.gig);
   return `<div class="card mt"><div class="row between"><div class="row" style="gap:8px"><h3>Set en cours</h3><input class="f" value="${esc(S.set.name)}" onchange="S.set.name=this.value;save()" style="padding:4px 8px;font-size:12px;width:200px">
       <select class="f" style="padding:4px 8px;font-size:12px" onchange="S.set.gig=+this.value||null;save();render()"><option value="">Lier à une soirée…</option>${S.gigs.map(g=>`<option value="${g.id}" ${g.id===S.set.gig?"selected":""}>${fmtDate(g.date)} · ${esc(g.lieu)}</option>`).join("")}</select></div>
-    <div class="row" style="gap:8px"><button class="btn ghost sm" onclick="clearSet()">Vider</button><button class="btn ghost sm" onclick="importSet()">${svg("imp",13)}Importer un set</button><button class="btn ghost sm" onclick="playSet()">${svg("play",13)}Écouter le set</button><button class="btn sm" id="sendBtn" onclick="sendMenu()">${svg("share",13)}Envoyer…</button></div></div>
+    <div class="row" style="gap:8px"><button class="btn ghost sm" onclick="clearSet()">Vider</button><button class="btn ghost sm" onclick="importSet()">${svg("imp",13)}Importer un set</button><button class="btn ghost sm" onclick="playSet()">${svg("play",13)}Écouter le set</button><button class="btn sm" id="sendBtn" onclick="sendMenu()">${svg("share",13)}Exporter le set</button></div></div>
     <div class="row mt2" style="gap:18px"><span class="hint"><b style="color:var(--txt)">${items.length}</b> sons · ≈ <b style="color:var(--txt)">${Math.round(items.length*3.4)} min</b>${items.some(x=>x.bpm)?` · BPM ${Math.round(Math.min(...items.filter(x=>x.bpm).map(x=>x.bpm)))} à ${Math.round(Math.max(...items.filter(x=>x.bpm).map(x=>x.bpm)))}`:""}${gig?` · pour ${esc(gig.lieu)} (${fmtDate(gig.date)})`:""}</span></div>
     ${items.some(x=>x.wish)?`<p class="mt2 clk" style="color:var(--orange);font-size:13px" onclick="S.trTab='liste';go('trend')">${pl(items.filter(x=>x.wish).length,"son")} du set à récupérer avant la soirée →</p>`:""}
     ${items.length>1&&items.some(x=>x.e)?`<svg viewBox="0 0 ${W} ${H2}" style="width:100%;max-width:340px;height:${H2}px"><polyline points="${pts.map(p=>p.join(",")).join(" ")}" fill="none" stroke="var(--orange)" stroke-width="2"/>${pts.map((p,i)=>`<circle cx="${p[0]}" cy="${p[1]}" r="5" fill="var(--orange)" stroke="var(--panel)" stroke-width="2" data-tip="${i+1}. ${esc(items[i].t)} · énergie ${items[i].e||"?"}"/>`).join("")}</svg>`:""}
@@ -1017,19 +1131,19 @@ function setPanel(){const items=S.set.ids.map(T).filter(Boolean);const W=280,H2=
 let pickTimer=0,pickSel=-1,pickRes=[];
 function pickHi(){[...document.querySelectorAll("#pickD .drop>div")].forEach((e,i)=>{e.classList.toggle("on",i===pickSel);if(i===pickSel)e.scrollIntoView({block:"nearest"});});}
 function pickKey(e){if(e.key==="ArrowDown"||e.key==="ArrowUp"){if(!pickRes.length)pickDrop();if(!pickRes.length)return;pickSel=e.key==="ArrowDown"?Math.min(pickSel+1,pickRes.length-1):Math.max(pickSel-1,0);pickHi();e.preventDefault();}
-  else if(e.key==="Enter"){const x=pickRes[pickSel>=0?pickSel:0];if(x){e.preventDefault();startFrom(x.n);}}
+  else if(e.key==="Enter"){const x=pickRes[pickSel>=0?pickSel:0];if(x&&(pickSel>=0||($("#pickQ").value||"").trim())){e.preventDefault();startFrom(x.n);}}
   else if(e.key==="Escape"){clearTimeout(pickTimer);const d=$("#pickD");if(d)d.innerHTML="";pickRes=[];pickSel=-1;}}
 function pickDrop(){clearTimeout(pickTimer);const q=norm($("#pickQ").value).trim();const r=visible().filter(x=>!q||norm(x.t+" "+x.a).includes(q)).slice(0,10);pickRes=r;pickSel=-1;
   $("#pickD").innerHTML=`<div class="drop">${r.map(x=>`<div onmousedown="startFrom(${x.n})">${cover(x)}<span style="flex:1;min-width:0"><b>${esc(x.t)}</b><br><span class="hint">${esc(x.a)}</span></span><span class="hint">${x.bpm?Math.round(x.bpm):"?"}</span>${keyTag(x.k)}</div>`).join("")||'<div class="hint">Aucun résultat</div>'}</div>`;
   $("#pickQ").onblur=()=>{clearTimeout(pickTimer);pickTimer=setTimeout(()=>{const d=$("#pickD");if(d)d.innerHTML="";pickRes=[];pickSel=-1;},150);};}
 function snapSet(){return [S.cur,JSON.parse(JSON.stringify(S.set))];}
 function restoreSet(o){[S.cur,S.set]=o;}
-function startFrom(n){const o=snapSet();S.cur=n;S.set.ids=[n];S.keyF=null;pushUndo("changement du son de départ",()=>restoreSet(o));save();go("next");}
+function startFrom(n){if(S.set.ids.length>1&&!confirm("Repartir de ce son ? Ton set de "+S.set.ids.length+" sons sera remplacé (tu pourras annuler)."))return;const o=snapSet();S.cur=n;S.set.ids=[n];S.keyF=null;pushUndo("changement du son de départ",()=>restoreSet(o));save();go("next");}
 function addSet(n){if(S.set.ids.includes(n))return;   // un double clic n’ajoute pas deux fois
   const o=snapSet();S.set.ids.push(n);S.cur=n;S.keyF=null;S.flash=n;pushUndo("ajout au set",()=>restoreSet(o));save();softRender();
   if(flag("toast2"))toast(`« ${esc(T(n).t)} » ajouté au set`,true,false,"ajout");else toast(`« ${esc(T(n).t)} » ajouté. Suggestions recalculées.`,true);
   setTimeout(()=>{if(S.flash===n)S.flash=null;},1200);}
-function mv(n,d){const a=S.set.ids,i=a.indexOf(n);if(i<0)return;const j=i+d;if(j<0||j>=a.length)return;[a[i],a[j]]=[a[j],a[i]];save();render();}
+function mv(n,d){const a=S.set.ids,i=a.indexOf(n);if(i<0)return;const j=i+d;if(j<0||j>=a.length)return;const o=snapSet(),wasLast=S.cur===a[a.length-1];[a[i],a[j]]=[a[j],a[i]];if(wasLast)S.cur=a[a.length-1];pushUndo("déplacement dans le set",()=>restoreSet(o));save();render();}
 function rmSet(n){const i=S.set.ids.indexOf(n);if(i<0)return;const o=snapSet();S.set.ids.splice(i,1);if(!S.set.ids.length)S.set.ids=[o[0]];S.cur=S.set.ids[S.set.ids.length-1];pushUndo("retrait du set",()=>restoreSet(o));save();render();}
 function clearSet(){const o=snapSet();S.set.ids=[S.cur];pushUndo("vidage du set",()=>restoreSet(o));save();render();toast("Set vidé.",true);}
 /** Sons du set qui ont un fichier (les « à récupérer » sont mis de côté, avec un message). */
@@ -1047,8 +1161,8 @@ function m3uAsk(then){const c=m3uCfg();
    <label class="hint mt" style="display:block">Lettre du disque pour Windows : <input id="m3d" maxlength="1" value="${esc(c.drive||"C")}" style="width:2.2em;text-transform:uppercase;text-align:center;font-size:16px"></label>`);
   const go=os=>{const d=(($("#m3d").value||"C").trim().toUpperCase().match(/[A-Z]/)||["C"])[0];S.m3u={os,drive:d};save();closeModal();then();};
   $("#m3w").onclick=()=>go("win");$("#m3m").onclick=()=>go("mac");}
-function exportM3U(){const items=setFiles();if(!items.length)return;
-  download(new Blob([m3uText(items)],{type:"audio/x-mpegurl"}),safeName(S.set.name)+".m3u8");exportM3Uwarn();}
+function exportM3U(){const items=setFiles();if(!items.length)return;const fname=safeName(S.set.name)+".m3u8",left=S.set.ids.map(T).filter(t=>t&&t.wish).length;
+  download(new Blob([m3uText(items)],{type:"audio/x-mpegurl"}),fname);exportM3Uwarn(items.length,fname,left);}
 function exportM3Uchoose(){if(!S.set.ids.length)return;m3uAsk(exportM3U);}
 function download(blob,name){const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1000);}
 const safeName=s=>String(s||"Sans nom").replace(/[\/\\:*?"<>|%]/g,"-").replace(/\s+/g," ").trim().slice(0,80)||"Sans nom";
@@ -1099,8 +1213,9 @@ function seratoAlternatives(kind){const v=S.seratoVer||"?";
    ${kind==="set"?`<div class="conn"><div style="flex:1;min-width:0"><b>Un dossier à glisser dans Serato</b><div class="hint">Je copie les sons du set dans un dossier. Dans Serato, ouvre l’onglet <b>Files</b> (pas besoin du Finder), va dans ce dossier et glisse-le sur la zone <b>Crates</b> : il devient une crate. Les fichiers sont numérotés dans l’ordre du set (01, 02…) ; l’ordre obtenu dans Serato est à vérifier chez toi. Les fichiers sont copiés, pas déplacés.</div></div><button class="btn sm" onclick="closeModal();exportFolder()">Choisir</button></div>`:""}
    <div class="conn"><div style="flex:1;min-width:0"><b>Playlist M3U8</b><div class="hint">${v==="5"?"Testé sur Serato DJ Pro 5.0 (Windows). <b>3 étapes</b> : 1) onglet <b>Files</b> en haut à droite ; 2) trouve le fichier .m3u8 dans l’arbre de gauche ; 3) glisse-le sur la zone <b>Crates</b>. Une crate apparaît avec les sons dans l’ordre. Si elle est vide et que Serato affiche « Some files could not be imported » : les chemins ne correspondent pas à cet ordinateur, refais le fichier en choisissant le bon ordinateur.":"Pour VirtualDJ et Traktor. En Serato 4, l’import M3U est signalé absent (non officiel)."}</div></div><button class="btn sm ghost" onclick="closeModal();${kind==="set"?"exportM3Uchoose()":"exportRuleM3Uchoose()"}">Télécharger</button></div>
    <div class="row mt" style="justify-content:space-between"><button class="btn ghost sm" onclick="closeModal();askSeratoVersion()">Changer de version</button><button class="btn" onclick="closeModal()">Fermer</button></div>`);}
-function exportRuleM3U(){const list=RULES.map((r,i)=>S.crates[i]?{name:r[0],items:visible().filter(x=>!x.wish).filter(r[1])}:null).filter(Boolean);
-  list.forEach(c=>download(new Blob([m3uText(c.items)],{type:"audio/x-mpegurl"}),`SetMate - ${safeName(c.name)}.m3u8`));
+async function exportRuleM3U(){const list=RULES.map((r,i)=>S.crates[i]?{name:r[0],items:visible().filter(x=>!x.wish).filter(r[1])}:null).filter(Boolean);
+  if(!list.length){toast("Aucune playlist à télécharger : choisis d’abord des styles.",false,true);return;}
+  for(const c of list){download(new Blob([m3uText(c.items)],{type:"audio/x-mpegurl"}),`SetMate - ${safeName(c.name)}.m3u8`);if(list.length>1)await sleep(400);}
   toast(`${pl(list.length,"playlist")} téléchargée${list.length>1?"s":""}`);}
 function exportRuleM3Uchoose(){m3uAsk(exportRuleM3U);}
 /** Copie des fichiers du set dans un dossier (un fichier manquant ne bloque pas le reste). */
@@ -1215,7 +1330,8 @@ function gigDetail(id){const g=S.gigs.find(x=>x.id===id);
    <div class="mt" style="max-height:320px;overflow:auto">${g.played.length?g.played.map((n,i)=>{const x=T(n);if(!x)return "";const l=S.L[n];return `<div class="mini"><span class="hint" style="width:20px">${i+1}</span>${cover(x)}<div style="flex:1;min-width:0"><b>${esc(x.t)}</b><div class="hint">${esc(x.a)}</div></div>${l?`<span class="tag ${l.v>0?"ok":"bad"}">${l.v>0?"▲":"▼"}</span>`:""}${keyTag(x.k)}</div>`}).join(""):`<p class="hint">Pas encore de liste. Importe l’historique Serato de cette soirée, ou utilise le set préparé.</p><div class="row mt2"><button class="btn sm ghost" onclick="closeModal();importHistory(${g.id})">Importer l’historique</button>${S.set.gig===g.id&&S.set.ids.length?`<button class="btn sm ghost" onclick="usePrepared(${g.id})">Utiliser le set préparé</button>`:""}</div>`}</div>
    <div class="row mt" style="justify-content:flex-end"><button class="btn ghost" onclick="closeModal();editGig(${g.id})">Modifier</button>${!g.deb&&g.type!=="Live / contenu"?`<button class="btn red" onclick="closeModal();S.dGig=${g.id};go('debrief')">Faire le débrief</button>`:""}<button class="btn ghost" onclick="closeModal()">Fermer</button></div>`);}
 function usePrepared(id){const g=S.gigs.find(x=>x.id===id);g.played=[...S.set.ids];markPlayed(g);save(true);closeModal();gigDetail(id);}
-function markPlayed(g){const ts=D(g.date).getTime();g.played.forEach(n=>{const t=T(n);if(t&&(!t.lastPlayed||t.lastPlayed<ts))t.lastPlayed=ts;});}
+function markPlayed(g){const ts=D(g.date).getTime();if(ts>Date.now())return;   // 1.12.1 : une soirée à venir n'a encore rien joué
+  g.played.forEach(n=>{const t=T(n);if(t&&(!t.lastPlayed||t.lastPlayed<ts))t.lastPlayed=ts;});}
 async function importHistory(gid){
   let files=[];
   if(H.serato&&PERM.serato==="granted"){try{const he=await H.serato.getDirectoryHandle("History Export");for await(const [n,h] of he.entries())if(h.kind==="file"&&/\.(csv|txt|m3u8?)$/i.test(n))files.push({n,h,m:(await h.getFile()).lastModified});}catch(e){}}
@@ -1235,20 +1351,20 @@ function parseCSV(txt){const rows=[];let row=[],cell="",q=false;const sep=(txt.s
 function matchTrack(title,artist,path){
   if(path){const p=relPath(path);const t=byPath.get(p)||S.tracks.find(x=>x.path.endsWith("/"+p.split("/").pop()));if(t)return t;}
   const bt=baseTitle(title);if(!bt.trim())return null;const cands=S.tracks.filter(x=>baseTitle(x.t)===bt);
-  if(cands.length<=1)return cands[0]||null;const a=norm(artist).split(" ")[1]||"";return cands.find(x=>norm(x.a).includes(" "+a))||cands[0];}
+  const aw=norm(artist).split(" ").filter(w=>w.length>1);if(aw.length){const m=cands.find(x=>{const na=norm(x.a);return aw.some(w=>na.includes(" "+w+" "));});return m||null;}return cands.length===1?cands[0]:null;}
 function histParse(txt,name,mtime){
   const out=[],miss=[];let date=null;
   if(/\.m3u8?$/i.test(name)){txt.split(/\r?\n/).filter(l=>l.trim()&&!l.startsWith("#")).forEach(l=>{const t=matchTrack("","",l.trim());t?out.push(t):miss.push(l.trim().split("/").pop());});}
-  else if(/\.csv$/i.test(name)){const rows=parseCSV(txt);const h=rows[0].map(c=>norm(c).trim());const col=(...ns)=>h.findIndex(c=>ns.some(n=>c===n||c.includes(n)));
-    const ti=col("name","title","song","titre"),ai=col("artist","artiste"),di=col("start time","date","time","debut");
+  else if(/\.csv$/i.test(name)){const rows=parseCSV(txt);if(!rows.length){toast("Fichier vide ou non reconnu",false,true);return;}const h=rows[0].map(c=>norm(c).trim());const col=(...ns)=>h.findIndex(c=>ns.some(n=>c===n||c.includes(n)));
+    const ti=col("name","title","song","titre"),ai=col("artist","artiste"),di=col("start time","date","time","debut");if(ti<0){toast("Colonne du titre introuvable dans ce fichier",false,true);return;}
     rows.slice(1).forEach(r=>{const t=matchTrack(r[ti]||"",r[ai]||"");if(t)out.push(t);else if((r[ti]||"").trim())miss.push((r[ai]?r[ai]+" - ":"")+r[ti]);if(!date&&di>=0&&r[di]){const d=new Date(r[di]);if(!isNaN(d))date=d;}});}
   else{txt.split(/\r?\n/).map(l=>l.trim()).filter(Boolean).forEach(l=>{const m=l.replace(/^\d+[.)]\s*/,"").replace(/^\d{1,2}:\d{2}(:\d{2})?\s*(am|pm)?\s*/i,"");const p=m.split(/\s+-\s+/);
     const t=p.length>=2?(matchTrack(p.slice(1).join(" - "),p[0])||matchTrack(p[0],p[1])):matchTrack(m,"");t?out.push(t):miss.push(m);});}
-  const uniq=[...new Set(out.map(t=>t.n))];
+  const uniq=[...new Set(out.map(t=>t.n))];if(!uniq.length){toast("Aucun son reconnu dans ce fichier",false,true);return;}
   const sel=$("#hG")?.value||"new";let g;
   if(sel==="new"){const d=(date||new Date(mtime||Date.now()));g={id:Date.now(),lieu:"Soirée importée",date:d.toISOString().slice(0,10),type:"Club",theme:"",time:"",played:[],deb:null,check:{}};S.gigs.push(g);}
   else g=S.gigs.find(x=>x.id===+sel);
-  const old=[...g.played];g.played=uniq;markPlayed(g);pushUndo("import d’historique",()=>{g.played=old;});save(true);
+  const old=[...g.played];g.played=[...new Set([...old,...uniq])];markPlayed(g);pushUndo("import d’historique",()=>{g.played=old;});save(true);
   modal(`<h2>Historique importé</h2><p class="mt2"><b>${pl(uniq.length,"son")}</b> reconnu${uniq.length>1?"s":""} et relié${uniq.length>1?"s":""} à « ${esc(g.lieu)} ».</p>${miss.length?`<p class="hint mt2">${pl(miss.length,"ligne")} non reconnue${miss.length>1?"s":""} : ${esc(miss.slice(0,6).join(" · "))}${miss.length>6?"…":""}</p>`:""}
    <div class="row mt" style="justify-content:flex-end"><button class="btn ghost" onclick="closeModal();editGig(${g.id})">Renommer la soirée</button><button class="btn" onclick="closeModal();S.dGig=${g.id};go('debrief')">Faire le débrief</button></div>`);}
 
@@ -1259,8 +1375,8 @@ function histParse(txt,name,mtime){
 const SOURCES=[{id:"pl:1109890291",l:"Top France",g:null},{id:"chart:116",l:"Rap / Hip-hop",g:"rap"},{id:"chart:2",l:"Musique africaine",g:"afro"},{id:"chart:165",l:"R&B",g:"rnb"},{id:"pl:5964916564",l:"Amapiano",g:"amapiano"},{id:"chart:132",l:"Pop",g:"pop"}];
 const STYLES=[["amapiano","Amapiano"],["afrobeats","Afrobeats"],["afro house","Afro house"],["shatta","Shatta"],["dancehall","Dancehall"],["kompa","Kompa"],["zouk","Zouk"],["rap fr","Rap FR"],["drill fr","Drill"],["rnb","R&B"],["coupé décalé","Coupé-décalé"],["throwback rnb","Throwback"]];
 const PEU_CONNU=500000;   // popularité Deezer de 0 à 1 000 000 : en dessous, le son est peu écouté
-function jsonp(url,ms=8000){return new Promise((res,rej)=>{const cb="dz"+Date.now()+Math.floor(Math.random()*1e6),s=document.createElement("script");const clean=()=>{clearTimeout(to);delete window[cb];s.remove();};
-  const to=setTimeout(()=>{clean();rej(new Error("délai dépassé"))},ms);window[cb]=d=>{clean();d&&d.error?rej(new Error(d.error.message||"erreur Deezer")):res(d)};s.onerror=()=>{clean();rej(new Error("réseau"))};
+function jsonp(url,ms=8000){return new Promise((res,rej)=>{const cb="dz"+Date.now()+Math.floor(Math.random()*1e6),s=document.createElement("script");const clean=late=>{clearTimeout(to);s.remove();if(late){window[cb]=()=>{};setTimeout(()=>{delete window[cb]},60000);}else delete window[cb];};   /* 1.12.1 : après un délai dépassé, une réponse tardive tombe dans une fonction vide au lieu de lever une erreur */
+  const to=setTimeout(()=>{clean(true);rej(new Error("délai dépassé"))},ms);window[cb]=d=>{clean();d&&d.error?rej(new Error(d.error.message||"erreur Deezer")):res(d)};s.onerror=()=>{clean();rej(new Error("réseau"))};
   s.src=url+(url.includes("?")?"&":"?")+"output=jsonp&callback="+cb;document.body.appendChild(s);});}
 const dzItem=t=>({dz:t.id,t:t.title_short||t.title,a:t.artist?t.artist.name:"",cover:t.album&&t.album.cover_medium,pop:t.rank||0});
 function lastThursday(){const d=new Date();d.setHours(8,0,0,0);while(d.getDay()!==4||d>new Date())d.setDate(d.getDate()-1);return d.getTime();}
@@ -1276,14 +1392,15 @@ const wishes=()=>S.tracks.filter(t=>t.wish&&!t.hidden&&t.stage!=="done");
 const upgrades=()=>S.tracks.filter(t=>t.upgrade&&!t.wish&&!t.hidden);
 const ONLINE_G={"Rap / Hip-hop":"rap","Musique africaine":"afrobeats","R&B":"rnb","Amapiano":"amapiano","Pop":"pop"};
 function classifyOnline(x){if(x.style)return classify(x.style,x.a);const s=(x.srcs||[]).find(s=>ONLINE_G[s]);return classify(s?ONLINE_G[s]:"",x.a);}
+let addBulk=false;   /* vrai pendant « Tout ajouter » : pas d'analyse ni de recherche de style son par son */
 function addToLib(x,src="moi"){
   const m=libMatch(x);if(m){if(m.wish&&src==="soiree"){m.src="soiree";m.why=WHY.soiree;}return {t:m,isNew:false};}
   const c=S.trendCache[x.dz],[g,sg,conf]=classifyOnline(x);
   const t={n:S.nextN++,path:"wish/"+x.dz,wish:true,dz:x.dz,cover:x.cover,t:x.t,a:x.a,src,why:WHY[src]||WHY.moi,bpm:c?.bpm||null,bpmSrc:"est",k:c?.k||null,kSrc:"est",e:c?.e||null,
     g,sg,conf:conf||0,gSrc:"en ligne",genreTag:x.style||"",year:null,era:"Actuel",kbps:null,inSerato:false,added:Math.floor(Date.now()/1000),pop:x.pop};
   S.tracks.push(t);reindex();save(true);
-  if(!c)analyzeDz(x).then(r=>{if(r&&t.wish){t.bpm=t.bpm||r.bpm;t.k=t.k||r.k;t.e=t.e||r.e;save(true);liveRefresh();}});
-  if(g==="?")fetchGenre(t);
+  if(!c&&!addBulk)analyzeDz(x).then(r=>{if(r&&t.wish){t.bpm=t.bpm||r.bpm;t.k=t.k||r.k;t.e=t.e||r.e;save(true);liveRefresh();}});
+  if(g==="?"&&!addBulk)fetchGenre(t);
   return {t,isNew:true};
 }
 async function fetchGenre(t){try{const d=await jsonp(`https://api.deezer.com/track/${t.dz}`);if(!d.album)return;const al=await jsonp(`https://api.deezer.com/album/${d.album.id}`);
@@ -1306,7 +1423,7 @@ function addAll(kind){const on=new Set(STYLES.filter(([k])=>S.styles[k]).map(x=>
   const old=kind==="disc"?[...S.disc.items]:null;if(kind==="disc"){S.disc.items=[];refillDisc(30);}
   pushUndo(`ajout de ${added.length} sons`,()=>{added.forEach(removeFromLib);if(old)S.disc.items=old;});
   save(true);toast(`${pl(added.length,"son")} ajouté${added.length>1?"s":""} à ta musique.${kind==="disc"?" Voici de nouvelles pépites.":""}`,true);liveRefresh();}
-function rmWish(n){const t=T(n);if(!t)return;removeFromLib(t);pushUndo("retrait de ta musique",()=>{S.tracks.push(t);reindex();});save(true);liveRefresh();}
+function rmWish(n){const t=T(n);if(!t)return;const idx=S.set.ids.indexOf(t.n),L=S.L[t.n],wasCur=S.cur===t.n;removeFromLib(t);const curAfter=S.cur;pushUndo("retrait de ta musique",()=>{S.tracks.push(t);reindex();if(L)S.L[t.n]=L;if(idx>=0&&!S.set.ids.includes(t.n))S.set.ids.splice(Math.min(idx,S.set.ids.length),0,t.n);if(wasCur&&S.cur===curAfter)S.cur=t.n;});save(true);liveRefresh();}
 function clearUpgrade(n){const t=T(n);if(!t)return;t.upgrade=false;pushUndo("retrait",()=>{t.upgrade=true;});save(true);liveRefresh();}
 
 /* ---------- Du moment ---------- */
@@ -1316,9 +1433,11 @@ async function refreshTrends(silent){
   const agg=new Map();let ok=0;
   for(const s of SOURCES.filter(s=>!s.g||S.genres[s.g])){try{const [k,id]=s.id.split(":");const d=await jsonp(k==="pl"?`https://api.deezer.com/playlist/${id}/tracks?limit=50`:`https://api.deezer.com/chart/${id}/tracks?limit=50`);ok++;
     (d.data||[]).forEach((t,i)=>{const e=agg.get(t.id)||{...dzItem(t),score:0,srcs:[]};e.score+=(51-i)/50;e.srcs.push(s.l);agg.set(t.id,e);});}catch(e){}}
+  const need=SOURCES.filter(s=>!s.g||S.genres[s.g]).length;
+  if(ok&&ok<need&&S.trends.items.length){if(!silent)toast("Classements incomplets : je garde les précédents.",false,true);trBusy=false;if(["trend","home","next"].includes(S.screen))liveRefresh();return;}   /* un classement partiel ne remplace pas le complet */
   if(ok){const prev={};S.trends.items.forEach(x=>prev[x.dz]=x.pos);
     const items=[...agg.values()].sort((a,b)=>b.score-a.score).slice(0,40).map((x,i)=>({...x,pos:i+1,prev:prev[x.dz]||null}));
-    S.trends={date:Date.now(),items};save();notify(`Nouveautés prêtes : ${items.filter(x=>!libMatch(x)).length} sons que tu n’as pas`,"trend");analyzeQueue(items);}
+    S.trends={date:ok<need?(S.trends.date||0):Date.now(),items};save();notify(`Nouveautés prêtes : ${items.filter(x=>!libMatch(x)).length} sons que tu n’as pas`,"trend");analyzeQueue(items);}
   else if(!silent)toast("Impossible de joindre Deezer. Vérifie ta connexion internet.",false,true);
   trBusy=false;if(["trend","home","next"].includes(S.screen))liveRefresh();
 }
@@ -1392,16 +1511,16 @@ function addAllBtn(kind,list){const n=list.filter(x=>!libMatch(x)).length;return
 VIEWS.trend=()=>{
   const it=S.trends.items,on=new Set(STYLES.filter(([k])=>S.styles[k]).map(x=>x[1])),dsc=(S.disc.items||[]).filter(x=>on.has(x.style)),tab=S.trTab||"moment";
   const wl=wishes(),ug=upgrades(),listN=wl.length+ug.length;
-  const head=`<h1>Découvrir</h1><p class="sub">Appuie sur <b style="color:var(--txt)">+</b> : le son entre dans ta musique et sert tout de suite pour préparer tes sets.</p>
+  const head=`<h1 class="scrT">Trouver du son</h1><p class="sub">Touche <b style="color:var(--txt)">+</b> pour garder un son dans ta musique.</p>
    <form class="sbar" onsubmit="event.preventDefault();doSearch($('#trQ').value)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
-     <input id="trQ" placeholder="Cherche n’importe quel son ou artiste…" value="${esc(S.search.q||"")}" autocomplete="off" enterkeyhint="search">${S.search.q?`<button type="button" class="mi" onclick="doSearch('')" aria-label="Effacer">${svg("x",14)}</button>`:""}<button class="btn sm" type="submit">Chercher</button></form>`;
+     <input id="trQ" placeholder="Cherche un son ou un artiste" value="${esc(S.search.q||"")}" autocomplete="off" enterkeyhint="search">${S.search.q?`<button type="button" class="mi" onclick="doSearch('')" aria-label="Effacer">${svg("x",14)}</button>`:""}<button class="btn sm" type="submit">Chercher</button></form>`;
   if(S.search.q){const r=S.search.items;
     return head+`<div class="row between mt"><h3>Résultats pour « ${esc(S.search.q)} »</h3><button class="chip" onclick="doSearch('')">Revenir aux tendances</button></div>
       <div class="card mt2" style="padding:4px 14px">${S.search.busy?`<div class="empty">Je cherche…</div>`:S.search.err?`<div class="empty">Recherche impossible : ${esc(S.search.err)}</div>`:r.length?r.map(x=>trRow(x,false)).join(""):`<div class="empty">Aucun résultat.</div>`}</div>${addAllBtn("search",r)}`;}
-  const tabs=`<div class="seg mt" style="display:flex;width:100%;max-width:560px">${[["moment","Du moment"],["decouverte","Découverte"],["liste",`À récupérer${listN?" ("+listN+")":""}`]].map(([k,l])=>`<button style="flex:1;text-align:center" class="${tab===k?"on":""}" onclick="S.trTab='${k}';save();openTab('${k}')">${l}</button>`).join("")}</div>`;
+  const tabs=`<div class="seg mt" style="display:flex;width:100%;max-width:560px">${[["moment","Du moment"],["decouverte","Idées pour toi"],["liste",`À télécharger${listN?" ("+listN+")":""}`]].map(([k,l])=>`<button style="flex:1;text-align:center" class="${tab===k?"on":""}" onclick="S.trTab='${k}';save();openTab('${k}')">${l}</button>`).join("")}</div>`;
   let body="";
   if(tab==="moment"){const age=S.trends.date?Math.round((Date.now()-S.trends.date)/36e5):null;
-    body=`<div class="row between mt"><span class="hint">${it.length?`Top France et classements · ${age<1?"à l’instant":age<24?"il y a "+age+" h":"il y a "+Math.round(age/24)+" j"}`:""}</span><button class="chip" onclick="refreshTrends()" ${trBusy?"disabled":""}>${trBusy?"Mise à jour…":"Actualiser"}</button></div>
+    body=`<div class="row between mt"><span class="hint">${it.length?`Top France et classements · ${age<1?"à l’instant":age<24?"il y a "+age+" h":"il y a "+Math.round(age/24)+" j"}`:""}</span><button class="chip" onclick="refreshTrends()" ${trBusy?"disabled":""}>${trBusy?"Mise à jour…":"Rafraîchir"}</button></div>
       <div class="card mt2" style="padding:4px 14px">${it.length?it.map(x=>trRow(x,true)).join(""):`<div class="empty">${trBusy?"Je récupère les classements…":`<button class="btn" onclick="refreshTrends()">Voir les sons du moment</button>`}</div>`}</div>${addAllBtn("moment",it)}`;}
   if(tab==="decouverte"){
     body=`<p class="hint mt">Des sons <b style="color:var(--txt)">peu connus</b> de tes styles, tirés au hasard. Chaque son ajouté est remplacé par un nouveau.</p>
@@ -1415,7 +1534,7 @@ VIEWS.trend=()=>{
     body=`<p class="hint mt">Ces sons sont déjà dans ta musique : tu peux préparer tes sets avec. Il te reste à récupérer les fichiers. ${H.dl&&PERM.dl==="granted"?"Dès qu’un fichier arrive dans Téléchargements, je le relie tout seul.":"Connecte ton dossier Téléchargements (Réglages) : je relierai les fichiers dès qu’ils arrivent."}</p>
       ${grp("Demandés en soirée","entendus dans tes débriefs",wl.filter(t=>t.src==="soiree"))}${grp("Ajoutés","tendances, pépites et recherches",wl.filter(t=>t.src!=="soiree"))}${grp("À remplacer","meilleure qualité",ug)}
       ${listN?"":`<div class="card mt"><div class="empty">Rien à récupérer. Appuie sur <b>+</b> à côté d’un son pour l’ajouter à ta musique.</div></div>`}`;}
-  return head+tabs+tip("trend2","Le <b>+</b> met le son dans ta musique. « Va bien après » te dit avec quel son l’enchaîner.")+body+`<p class="hint mt">Source : Deezer. TikTok n’a pas d’accès officiel, Spotify est fermé aux nouvelles applis.</p>`;
+  return head+tabs+tip("trend2","Le <b>+</b> met le son dans ta musique. « Va bien après » te dit avec quel son l’enchaîner.")+body+`<p class="hint mt">Source : Deezer.</p>`;
 };
 function openTab(k){if(k==="decouverte"&&!(S.disc.items||[]).length&&!discBusy)loadDiscovery();else if(k==="moment"&&!S.trends.items.length&&!trBusy)refreshTrends();else softRender();}
 /* ===================== SURVEILLANCE DES TÉLÉCHARGEMENTS =====================
@@ -1423,27 +1542,30 @@ function openTab(k){if(k==="decouverte"&&!(S.disc.items||[]).length&&!discBusy)l
    (il garde ce qui a été appris, sa place dans le set et dans les soirées). Sinon, il est ajouté comme nouveau son. */
 let watchT=null;const AUDIO=/\.(mp3|m4a|aac|wav|aiff?|flac|ogg|alac)$/i;
 function startWatch(){clearInterval(watchT);if(H.dl&&PERM.dl==="granted"){scanDl();watchT=setInterval(scanDl,60000);}}
-const arrivals=[];
-function matchWanted(tg,fname){const cands=[...wishes(),...upgrades()];const n1=norm(tg.t),n2=norm(fname);
-  return cands.find(t=>{const bt=baseTitle(t.t);if(bt.trim().length<2)return false;const a=norm(t.a).split(" ")[1]||"";
-    return (n1.includes(bt)||n2.includes(bt))&&(!a||norm(tg.a).includes(" "+a)||n2.includes(" "+a));})||null;}
-async function scanDl(){if(!H.dl||PERM.dl!=="granted")return;const since=S.dlLast||0;let newest=since;const found=[];
+const arrivals=[];var CURARR=null,SCANNING=false;
+function matchWanted(tg,fname){const cands=[...S.tracks.filter(t=>t.wish&&!t.hidden),...upgrades()];   /* lot 5 : aussi les sons déjà marqués « récupéré » à la main */const n1=norm(tg.t),n2=norm(fname);
+  /* lot 2 : l'artiste principal doit être connu ET retrouvé ; si plusieurs sons attendus conviennent, on ne choisit pas à la place de Sabri */
+  const ok=cands.filter(t=>{const bt=baseTitle(t.t);if(bt.trim().length<2)return false;const ma=mainArtist(t.a);if(!ma&&bt.trim().length<8)return false;   /* sans artiste connu : seulement un titre assez long et unique */
+    return (n1.includes(bt)||n2.includes(bt))&&(!ma||mainArtist(tg.a)===ma||n2.includes(" "+ma+" "));});
+  return ok.length===1?ok[0]:null;}
+async function scanDl(){if(SCANNING)return;SCANNING=true;try{await scanDl0();}finally{SCANNING=false;}}
+async function scanDl0(){if(!H.dl||PERM.dl!=="granted")return;const since=S.dlLast||0;let newest=since;const found=[];
   try{for await(const [n,h] of H.dl.entries()){if(h.kind!=="file"||!AUDIO.test(n))continue;const f=await h.getFile();if(f.lastModified>since){found.push(f);newest=Math.max(newest,f.lastModified);}}}catch(e){return;}
   S.dlLast=newest;save();
-  for(const f of found){if(S.tracks.some(t=>t.local&&t.local.rel===f.name))continue;const tg=await readTags(f);arrivals.push({f,tg,want:matchWanted(tg,f.name)});}
+  for(const f of found){if(S.tracks.some(t=>t.local&&t.local.rel===f.name)||arrivals.some(a=>a.f.name===f.name)||(CURARR&&CURARR.f.name===f.name))continue;const tg=await readTags(f);arrivals.push({f,tg,want:matchWanted(tg,f.name)});}
   if(arrivals.length&&!$(".ov"))showArrival();}
 async function showArrival(){const a=arrivals.shift();if(!a)return;const {f,tg,want}=a;
   modal(`<span class="tag info">Nouveau fichier dans Téléchargements</span><h2 class="mt2">${esc(tg.t||f.name)}</h2><p class="hint">${esc(tg.a||"Artiste inconnu")} · ${(f.size/1e6).toFixed(1)} Mo</p>
    ${want?`<div class="card mt" style="background:rgba(61,220,132,.07);border-color:#1f5a3a;padding:12px"><b style="color:var(--green)">C’est « ${esc(want.t)} »</b><p class="hint mt2">${want.wish?"Il était dans ta musique, à récupérer. Je le relie à ce fichier : il garde tout ce que je sais de lui.":"C’est la meilleure version que tu attendais."}</p></div>`:""}
    <div class="card mt" style="background:var(--panel2);padding:12px" id="arrA"><span class="hint">J’analyse le BPM, la tonalité et l’énergie…</span></div>
    <p class="hint mt">${S.demo?"Mode démo : rien n’est écrit dans Serato.":"Je le range aussi dans la crate <b>SetMate › Nouveautés</b> de Serato."} Le fichier n’est pas déplacé.</p>
-   <div class="row mt" style="justify-content:flex-end"><button class="btn ghost" id="arrNo">Ignorer</button><button class="btn" id="arrYes" disabled>${want&&want.wish?"Relier":"Ajouter"}</button></div>`);
+   <div class="row mt" style="justify-content:flex-end"><button class="btn ghost" id="arrNo">Ignorer</button><button class="btn" id="arrYes" disabled>${want&&want.wish?"Relier":"Ajouter"}</button></div>`);CURARR=a;
   let r=null;try{r=await analyzeFile(f);}catch(e){}
   const bpm=tg.bpm||r?.bpm||(want&&want.bpm),k=toCamelot(tg.key)||r?.key||(want&&want.k),c=classify(tg.genre,tg.a);
   const box=$("#arrA");if(box)box.innerHTML=`<div class="grid g2" style="gap:8px;font-size:13px"><div><span class="hint">BPM</span><br><b>${bpm?Math.round(bpm):"?"}</b></div><div><span class="hint">Tonalité</span><br>${keyTag(k,!tg.key)}</div><div><span class="hint">Énergie</span><br>${r?nrg(r.energy)+" "+r.energy+"/10":"?"}</div><div><span class="hint">Genre</span><br><b>${esc(want&&want.g!=="?"?want.g+" › "+want.sg:c[0]==="?"?"à choisir":c[0]+" › "+c[1])}</b></div></div>`;
-  const y=$("#arrYes");if(!y)return;y.disabled=false;
-  $("#arrNo").onclick=()=>{closeModal();setTimeout(showArrival,200);};
-  y.onclick=async()=>{const path=(S.userRoot||"")+H.dl.name+"/"+f.name;let t,undo;
+  const y=$("#arrYes");if(!y||CURARR!==a)return;y.disabled=false;
+  $("#arrNo").onclick=()=>{CURARR=null;closeModal();setTimeout(showArrival,200);};
+  y.onclick=async()=>{CURARR=null;const path=(S.userRoot||"")+(H.dl?H.dl.name:"Téléchargements")+"/"+f.name;let t,undo;
     if(want&&want.wish){t=want;const o={...want};Object.assign(t,{wish:false,path,local:{root:"dl",rel:f.name},bpm:bpm||t.bpm,bpmSrc:tg.bpm?"tag":"est",k:k||t.k,kSrc:tg.key?"tag":"est",e:r?.energy||t.e,year:tg.year||t.year,era:eraOf(tg.year)||t.era,added:Math.floor(Date.now()/1000)});
       if(t.g==="?"&&c[0]!=="?"){t.g=c[0];t.sg=c[1];t.conf=c[2];}undo=()=>{Object.keys(t).forEach(k=>delete t[k]);Object.assign(t,o);};}
     else{if(want)want.upgrade=false;
@@ -1451,34 +1573,39 @@ async function showArrival(){const a=arrivals.shift();if(!a)return;const {f,tg,w
       S.tracks.push(t);undo=()=>{S.tracks=S.tracks.filter(x=>x!==t);if(want)want.upgrade=true;};}
     reindex();findDups();pushUndo(want&&want.wish?"liaison du fichier":"ajout du nouveau son",()=>{undo();reindex();});save(true);
     closeModal();toast(want&&want.wish?`« ${esc(t.t)} » est relié à son fichier.`:`« ${esc(t.t)} » ajouté. ${t.g==="?"?"Choisis son genre dans Ma musique.":""}`,true);
-    if(!S.demo&&H.serato&&PERM.serato==="granted"&&(!flag("seratover")||S.seratoVer==="3")){const all=S.tracks.filter(x=>!x.inSerato&&!x.wish&&!x.hidden).map(x=>x.path);
+    if(!S.demo&&H.serato&&PERM.serato==="granted"&&!S.userRoot)toast("Je n’ai pas encore lu Serato : je ne range pas ce son dans la crate Nouveautés (chemin inconnu).",false,true);
+    else if(!S.demo&&H.serato&&PERM.serato==="granted"&&(!flag("seratover")||S.seratoVer==="3")){const all=S.tracks.filter(x=>!x.inSerato&&!x.wish&&!x.hidden).map(x=>x.path);
       if(await confirmClosed("Ajouter dans Serato","Je mets les nouveaux sons dans la crate « SetMate › Nouveautés ». Serato les ajoutera à ta bibliothèque à l’ouverture.")){
         try{const ui=stepsUI("Crate Nouveautés",["Écriture","Vérification"]);ui.run(0);await writeCrates(H.serato,[{name:"Nouveautés",paths:all}],"main");ui.ok(0);ui.ok(1,"Relu et vérifié");ui.end(`<div class="row mt" style="justify-content:flex-end"><button class="btn" onclick="closeModal()">OK</button></div>`);}catch(e){toast("Écriture impossible : "+esc(e.message),false,true);closeModal();}}}
     render();setTimeout(()=>{if(!$(".ov"))showArrival();},200);};}
 /* ===================== DÉBRIEF VOCAL ===================== */
-let REC=null,recOn=false,recT=null,recS=0,finalTxt="";
+let REC=null,recOn=false,recT=null,recS=0,finalTxt="",lastInterim="";
+function micOff(){const r=REC;clearInterval(recT);if(recOn){S.dTxt=(finalTxt+lastInterim).trim();}recOn=false;   // on garde ce qui a été dicté, on coupe le micro
+  try{if(r){r.onend=null;r.onresult=null;r.onerror=null;r.stop();}}catch(e){}try{r&&r.abort&&r.abort();}catch(e){}}
+addEventListener("pagehide",()=>{try{if(recOn)micOff();}catch(e){}});
 VIEWS.debrief=()=>{const opts=pastGigs().filter(g=>g.type!=="Live / contenu");
-  if(!opts.length)return `<h1>Débrief vocal</h1><p class="sub">Raconte ta soirée, je retiens ce qui marche.</p><div class="card"><div class="empty">${svg("gigs",40)}<div>Ajoute d’abord une soirée passée (Soirées › Nouvelle soirée, ou importe un historique Serato).</div><button class="btn mt" onclick="go('gigs')">Aller aux soirées</button></div></div>`;
+  if(!opts.length)return `<h1 class="scrT">Raconte ta soirée</h1><p class="sub">Raconte ta soirée, je retiens ce qui marche.</p><div class="card"><div class="empty">${svg("gigs",40)}<div>Aucune soirée passée pour l’instant. Ajoute-en une dans Mes soirées.</div><button class="cta mt" onclick="go('gigs')">Aller à Mes soirées</button></div></div>`;
   if(!opts.some(g=>g.id===S.dGig))S.dGig=(pendingDeb()[0]||opts[0]).id;const g=S.gigs.find(x=>x.id===S.dGig);const SR=srOK();
-  return `<h1>Débrief vocal</h1><p class="sub">Appuie, raconte ta soirée comme à une copine, puis analyse. Je relie ce que tu dis aux sons joués, tu valides chaque point.</p>
+  return `<h1 class="scrT">Raconte ta soirée</h1><p class="sub">Appuie sur le micro et parle comme à un ami : qu’est-ce qui a marché, qu’est-ce qui a raté ? Ensuite je relie ça aux sons joués.</p>
   <div class="grid g2"><div class="card" style="text-align:center">
     <select class="f" onchange="S.dGig=+this.value;S.dPts=null;render()" style="width:100%">${opts.map(o=>`<option value="${o.id}" ${o.id===S.dGig?"selected":""}>${fmtDate(o.date)} · ${esc(o.lieu)}${o.deb?" (déjà fait)":""}</option>`).join("")}</select>
     <p class="hint mt2">${g.played.length?pl(g.played.length,"son")+" joué"+(g.played.length>1?"s":"")+" ce soir-là":"Pas de liste de sons : je chercherai dans toute ta bibliothèque."}</p>
     <div class="guide"><span>Ce qui a marché ?</span><span>Ce qui a flop ?</span><span>Les enchaînements ?</span><span>Les demandes ?</span></div>
     <button class="mic ${recOn?"rec":""}" onclick="micToggle()" aria-label="Enregistrer">${recOn?'<svg viewBox="0 0 24 24" fill="#fff"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>':'<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3"/></svg>'}</button>
     <p id="micTxt" style="font-weight:600">${recOn?"Je t’écoute… appuie pour terminer":SR?"Appuie pour parler":(isIOS&&installed()?"Micro de l’appli indisponible sur iPhone : touche la zone de texte et dicte avec le micro du clavier":"Micro non disponible dans ce navigateur : écris ton débrief")}</p>
-    <textarea class="f mt" id="dTxt" placeholder="Ta transcription apparaît ici. Tu peux aussi écrire ou corriger." oninput="S.dTxt=this.value;updAn()">${esc(S.dTxt||"")}</textarea>
-    <div class="row mt2" style="justify-content:flex-end"><button class="btn" id="anB" onclick="runAnalyse()" ${(S.dTxt||"").trim().length>8?"":"disabled"}>Analyser</button></div>
+    <textarea class="f mt" id="dTxt" placeholder="Ta transcription apparaît ici. Tu peux aussi écrire ou corriger." oninput="S.dTxt=this.value;if(recOn){finalTxt=this.value.trim()?this.value.trim()+' ':'';lastInterim='';}updAn();save()" ${recOn?"readonly":""}>${esc(S.dTxt||"")}</textarea>
+    <div class="row mt2" style="justify-content:flex-end"><button class="btn" id="anB" onclick="runAnalyse()" ${(S.dTxt||"").trim().length>8?"":"disabled"}>Analyser ma soirée</button></div>
     <p class="hint mt">La reconnaissance vocale passe par le service de ton navigateur. Le texte est analysé ici, sur ton ordinateur.</p></div>
   <div class="card"><div class="row between"><h3>Voici ce que j’ai compris</h3>${S.dPts?`<span class="hint">${pl(S.dPts.length,"point")}</span>`:""}</div><div id="pts">${ptsHtml()}</div>
     ${S.dPts&&S.dPts.length?`<button class="btn green block mt" onclick="applyDebrief()">${svg("check",15)}Appliquer les points cochés</button><p class="hint mt2" style="text-align:center">Tu pourras tout annuler.</p>`:""}</div></div>`;};
 function updAn(){const b=$("#anB");if(b)b.disabled=!((S.dTxt||"").trim().length>8);}
-function micToggle(){const SR=srOK();if(recOn){REC&&REC.stop();return;}
+function micToggle(){const SR=srOK();if(recOn){const r=REC;try{r&&r.stop();}catch(e){}
+    setTimeout(()=>{if(recOn&&REC===r){try{r.abort();}catch(e){}try{r.onend&&r.onend();}catch(e){}}},2000);return;}   // certains navigateurs (iOS) n'envoient jamais « fin » après stop()
   if(!SR){toast("Micro indisponible ici : touche la zone de texte et dicte avec le micro du clavier.",false,true);return;}
-  try{REC=new SR();REC.lang="fr-FR";REC.continuous=true;REC.interimResults=true;finalTxt=(S.dTxt||"").trim();if(finalTxt)finalTxt+=" ";
-    REC.onresult=e=>{let it="";for(let i=e.resultIndex;i<e.results.length;i++){const r=e.results[i];if(r.isFinal)finalTxt+=r[0].transcript.trim()+". ";else it+=r[0].transcript;}S.dTxt=finalTxt+it;const ta=$("#dTxt");if(ta)ta.value=S.dTxt;updAn();};
+  try{REC=new SR();REC.lang="fr-FR";REC.continuous=true;REC.interimResults=true;finalTxt=(S.dTxt||"").trim();if(finalTxt)finalTxt+=" ";lastInterim="";
+    REC.onresult=e=>{let it="";for(let i=e.resultIndex;i<e.results.length;i++){const r=e.results[i];if(r.isFinal)finalTxt+=r[0].transcript.trim()+". ";else it+=r[0].transcript;}lastInterim=it;S.dTxt=finalTxt+it;const ta=$("#dTxt");if(ta)ta.value=S.dTxt;updAn();save();};
     REC.onerror=ev=>{if(ev.error==="not-allowed"||ev.error==="service-not-allowed")toast("Micro refusé. Autorise-le (icône à gauche de l’adresse) ou écris ton débrief.",false,true);else if(ev.error!=="no-speech"&&ev.error!=="aborted")toast("Reconnaissance vocale indisponible ("+esc(ev.error)+"). Écris ton débrief.",false,true);};
-    REC.onend=()=>{recOn=false;clearInterval(recT);S.dTxt=finalTxt.trim();if(S.screen==="debrief")render();if(S.dTxt.length>8)runAnalyse();};
+    REC.onend=()=>{if(!recOn)return;recOn=false;clearInterval(recT);S.dTxt=(finalTxt+lastInterim).trim();save();if(S.screen==="debrief")render();if(S.dTxt.length>8)runAnalyse();};
     REC.start();recOn=true;recS=0;render();recT=setInterval(()=>{recS++;const m=$("#micTxt");if(m)m.textContent=`Je t’écoute… ${Math.floor(recS/60)}:${String(recS%60).padStart(2,"0")} · appuie pour terminer`;},1000);}
   catch(e){toast("Impossible de lancer le micro ici.",false,true);}}
 const POS=["a marche","ca marche","bien marche","retourne","kiff","le feu","du feu","tue ","bombe","enorme","valide","propre","chaud","explose","danse","chante","adore","cartonne","parfait","banger","incroyable","de ouf","mortel","garde"];
@@ -1491,7 +1618,10 @@ function findTracks(n,pool){let f=pool.filter(t=>{const tt=baseTitle(t.t).trim()
 function analyse(text){const g=S.gigs.find(x=>x.id===S.dGig);const played=g.played.map(T).filter(Boolean);const all=visible();
   const sents=text.replace(/\b(par contre|mais|et puis|ensuite)\b/gi,". ").split(/[.!?;\n]+/).map(s=>s.trim()).filter(s=>s.length>3);const pts=[];
   sents.forEach(s=>{const n=norm(s);let f=findTracks(n,played);if(!f.length)f=findTracks(n,all);const neg=hasAny(n,NEG),pos=!neg&&hasAny(n,POS),req=/ demand| reclam/.test(n);
-    if(f.length>=2&&/ (vers|puis|enchain|transition|apres|sur) /.test(n)){pts.push({type:neg?"pairdown":"pair",a:f[0].n,b:f[1].n,src:s});return;}
+    if(f.length>=2&&/ (vers|puis|enchain|transition|apres|sur) /.test(n)){
+      {const l0=baseTitle(f[0].t).trim(),i0=n.indexOf(l0),i1=n.indexOf(baseTitle(f[1].t).trim());   // « B après A » : A a été joué avant B, on remet dans l'ordre réel
+       if(i0>=0&&i1>i0){const seg=" "+n.slice(i0+l0.length,i1)+" ";if(/ apres /.test(seg)&&!/ (vers|puis|enchain|transition|sur) /.test(seg))f=[f[1],f[0],...f.slice(2)];}}
+      pts.push({type:neg?"pairdown":"pair",a:f[0].n,b:f[1].n,src:s});return;}
     if(req){const tr=S.trends.items.filter(x=>n.includes(baseTitle(x.t)));pts.push({type:"req",ids:f.map(x=>x.n),tr:tr.map(x=>x.dz),src:s});return;}
     if(f.length&&(pos||neg)){f.forEach(t=>pts.push({type:neg?"down":"up",n:t.n,src:s}));return;}
     if(!f.length&&GW.some(([w])=>n.includes(w.startsWith(" ")?w:" "+w))&&/trop|plus de|pas assez|moins|voulai|reclam|manqu|envie/.test(n)){pts.push({type:"rule",text:s,src:s});return;}
@@ -1512,29 +1642,29 @@ function ptsHtml(){if(!S.dPts)return `<div class="empty">${svg("debrief",40)}<di
     if(p.type==="mood"){tag=`<span class="tag ${p.neg?"warn":"ok"}">Ambiance</span>`;txt=`Ambiance générale ${p.neg?"difficile":"au top"} → notée dans la soirée`;}
     return `<label class="pt"><input type="checkbox" ${p.on?"checked":""} onchange="S.dPts[${i}].on=this.checked" ${p.type==="unsure"?"disabled":""}><div style="flex:1">${tag}<div class="mt2">${txt}</div><q>${esc(p.src)}</q></div></label>`;}).join("");}
 function fixPt(i,t){S.dPts[i].type=t;S.dPts[i].on=true;$("#pts").innerHTML=ptsHtml();}
-function applyDebrief(){const g=S.gigs.find(x=>x.id===S.dGig);const snap=JSON.stringify({L:S.L,P:S.P,r:S.rules,deb:g.deb,notes:g.notes});const addedW=[];
+function applyDebrief(){const g=S.gigs.find(x=>x.id===S.dGig);if(!g||!S.dPts||!S.dPts.some(p=>p.on&&p.type!=="unsure"))return toast("Coche au moins un point (ou précise les « À préciser »).",false,true);const snap=JSON.stringify({L:S.L,P:S.P,r:S.rules,deb:g.deb,notes:g.notes});const addedW=[];
   const on=S.dPts.filter(p=>p.on&&p.type!=="unsure");const lab=fmtDate(g.date);
-  on.forEach(p=>{if(p.type==="up")S.L[p.n]={v:.12,why:`▲ A marché (${lab})`};if(p.type==="down")S.L[p.n]={v:-.3,why:`▼ Flop en ${g.type.toLowerCase()} (${lab})`};
+  on.forEach(p=>{if(p.type==="up")S.L[p.n]={v:.12,why:`▲ A marché (${lab})`};if(p.type==="down")S.L[p.n]={v:-.3,why:`▼ Flop en ${String(g.type||"soirée").toLowerCase()} (${lab})`};
     if(p.type==="pair")S.P[p.a+">"+p.b]={v:.18,why:`▲ Enchaînement validé (${lab})`};if(p.type==="pairdown")S.P[p.a+">"+p.b]={v:-.3,why:`▼ Enchaînement raté (${lab})`};
-    if(p.type==="rule")S.rules.push(p.text);if(p.type==="req"){p.tr.forEach(dz=>{const x=S.trends.items.find(y=>y.dz===dz);if(!x)return;const m=libMatch(x);if(m&&!m.wish){S.L[m.n]={v:.08,why:`▲ Demandé par le public (${lab})`};return;}const r=addToLib(x,"soiree");if(r.isNew)addedW.push(r.t);S.L[r.t.n]={v:.08,why:`▲ Demandé par le public (${lab})`};});p.ids.forEach(n=>{S.L[n]={v:.08,why:`▲ Demandé par le public (${lab})`};});}});
-  g.deb={n:on.length,date:Date.now()};g.notes=(g.notes||"")+(S.dTxt||"");
+    if(p.type==="rule"&&!S.rules.includes(p.text))S.rules.push(p.text);if(p.type==="req"){p.tr.forEach(dz=>{const x=S.trends.items.find(y=>y.dz===dz);if(!x)return;const m=libMatch(x);if(m&&!m.wish){S.L[m.n]={v:.08,why:`▲ Demandé par le public (${lab})`};return;}const r=addToLib(x,"soiree");if(r.isNew)addedW.push(r.t);S.L[r.t.n]={v:.08,why:`▲ Demandé par le public (${lab})`};});p.ids.forEach(n=>{S.L[n]={v:.08,why:`▲ Demandé par le public (${lab})`};});}});
+  g.deb={n:on.length,date:Date.now()};if(S.dTxt&&!(g.notes||"").includes(S.dTxt))g.notes=(g.notes?g.notes+"\n":"")+S.dTxt;
   pushUndo("application du débrief",()=>{addedW.forEach(removeFromLib);const o=JSON.parse(snap);S.L=o.L;S.P=o.P;S.rules=o.r;g.deb=o.deb;g.notes=o.notes;});
   S.dPts=null;S.dTxt="";save(true);notify(`Débrief du ${lab} appliqué : ${pl(on.length,"point")}`,"home");go("home");toast(`Débrief appliqué : ${pl(on.length,"point")} retenu${on.length>1?"s":""}.`,true);}
 
 /* ===================== RÉGLAGES ===================== */
 VIEWS.settings=()=>{const st=k=>H[k]?(PERM[k]==="granted"?'<span class="tag ok">Connecté</span>':'<span class="tag warn">À reconnecter</span>'):'<span class="tag">Non connecté</span>';
   const conn=(k,ic,col,title,desc,btn)=>`<div class="conn"><div class="ic" style="background:${col}22;color:${col}">${svg(ic,18)}</div><div style="flex:1;min-width:0"><b>${title}</b> ${st(k)}<div class="hint">${desc}${H[k]?` · dossier « ${esc(H[k].name)} »`:""}</div></div><button class="btn sm ${H[k]?"ghost":""}" onclick="pickDir('${k}')" ${FSA?"":"disabled"}>${H[k]?"Changer":btn}</button></div>`;
-  return `<h1>Réglages</h1><p class="sub">Tout reste sur ton ordinateur. Seules les recherches de tendances passent par internet (Deezer).</p>
-  <div class="grid g2"><div class="card"><h3>Tes dossiers</h3>
-    ${conn("serato","lib","#2fa4ff","Serato","Musique › _Serato_ · lire ta bibliothèque, écrire les crates","Connecter")}
-    ${conn("music","folder","#3ddc84","Musique","Le dossier qui contient tes sons · écoute, analyse, copie sur clé","Connecter")}
-    ${conn("dl","dl","#ff8a1f","Téléchargements","Repérer les nouveaux sons récupérés","Connecter")}
-    ${H.serato&&PERM.serato==="granted"?`<button class="btn ghost sm mt" onclick="loadSerato(true).then(render)">${svg("refresh",13)}Relire ma base Serato</button>`:""}
+  return `<h1 class="scrT">Réglages</h1><p class="sub">Tes sons restent sur ton appareil. Seules les recherches en ligne passent par Deezer.</p>
+  <div class="grid g2"><div class="card"><h3>Brancher ma musique</h3>
+    ${conn("serato","lib","#2fa4ff","Serato","Pour que SetMate lise ta bibliothèque Serato et y range tes playlists","Choisir le dossier")}
+    ${conn("music","folder","#3ddc84","Musique","Le dossier où sont tes sons : pour les écouter et les copier sur une clé USB","Choisir le dossier")}
+    ${conn("dl","dl","#ff8a1f","Téléchargements","Pour repérer les sons que tu viens de télécharger","Choisir le dossier")}
+    ${H.serato&&PERM.serato==="granted"&&!S.demo?`<button class="btn ghost sm mt" onclick="loadSerato(true).then(render)">${svg("refresh",13)}Relire ma base Serato</button>`:""}
     ${S.musicPrefix?`<p class="hint mt2">Sons retrouvés sous <code>/${esc(S.musicPrefix)}</code></p>`:""}
     ${H.serato?`<div class="row mt2"><span class="hint">Ta version de Serato</span><select class="f" onchange="S.seratoVer=this.value||null;save();render()"><option value="">À préciser</option>${["3","4","5","?"].map(v=>`<option value="${v}" ${S.seratoVer===v?"selected":""}>${v==="?"?"Je ne sais pas":SV_LABEL[v]}</option>`).join("")}</select></div>
     <p class="hint mt2">${S.seratoVer==="3"?"Crates SetMate et clé USB au format Serato 3.":S.seratoVer==="5"?"Serato 5.0 : j’écris les crates dans SetMate (Serato fermé), elles apparaissent quand tu relances Serato (testé sur Windows). Clé USB : non testé, je copie seulement les fichiers.":S.seratoVer?"Serato 4 : je n’écris aucune crate (non testé). Je te propose un dossier à glisser dans Serato, ou une playlist M3U8.":"Indique ta version avant d’envoyer des crates."}${S.seratoDbAge>30?` <span style="color:var(--orange)">Ta base Serato 3 n’a pas changé depuis ${S.seratoDbAge} jours.</span>`:""}</p>`:""}
     ${!FSA?`<p class="hint mt">Pour connecter des dossiers, ouvre SetMate dans Chrome ou Edge. <button class="btn sm ghost" onclick="importDbFile()">Importer « database V2 »</button></p>`:""}</div>
-  <div class="card"><h3>Veille des tendances</h3><p class="hint mt2">Récap automatique chaque jeudi (à l’ouverture de SetMate).</p>
+  <div class="card"><h3>Mes styles</h3><p class="hint mt2">Chaque jeudi, je te prépare les nouveautés de ces styles.</p>
     <div class="row mt2">${[["rap","Rap / Hip-hop"],["afro","Afro"],["amapiano","Amapiano"],["rnb","R&B"],["pop","Pop"]].map(([k,l])=>`<button class="chip ${S.genres[k]?"on":""}" onclick="S.genres.${k}=S.genres.${k}?0:1;save();render()">${l}</button>`).join("")}</div>
     <p class="hint mt2">Le Top France est toujours inclus.</p></div>
   <div class="card"><h3>Sécurité</h3>
@@ -1544,7 +1674,7 @@ VIEWS.settings=()=>{const st=k=>H[k]?(PERM[k]==="granted"?'<span class="tag ok">
     <div class="row mt"><button class="btn ghost sm" onclick="exportData()">${svg("dl",13)}Sauvegarder mes données SetMate</button><button class="btn ghost sm" onclick="importData()">Restaurer</button></div></div>
   <div class="card"><h3>Toi</h3><div class="row mt2"><span class="hint" style="width:70px">Prénom</span><input class="f" value="${esc(S.name)}" placeholder="Ton prénom" onchange="S.name=this.value.trim();save()"></div>
     <p class="hint mt">Raccourcis : Ctrl ou Cmd + K pour chercher · Ctrl ou Cmd + Z pour annuler · Espace pour écouter.</p>
-    <div class="row mt">${S.demo?`<button class="btn sm orange" onclick="leaveDemo()">Quitter le mode démo</button>`:`<button class="btn ghost sm" onclick="enterDemo();render()">Mode démo</button>`}<button class="btn ghost sm" style="color:var(--red)" onclick="resetAll()">Tout effacer</button></div>
+    <div class="row mt">${S.demo?`<button class="btn sm orange" onclick="leaveDemo()">Quitter le mode démo</button>`:`<button class="btn ghost sm" onclick="askDemo()">Mode démo</button>`}<button class="btn ghost sm" style="color:var(--red)" onclick="resetAll()">Tout effacer</button></div>
     <p class="hint mt">SetMate ${VERSION}</p></div>
   <div class="card"><h3>Correctifs du test terrain</h3><p class="hint mt2">Chaque correctif peut être désactivé pour revenir à l’ancien comportement.</p>
     ${Object.entries(FLAG_INFO).map(([k,l])=>`<label class="ck" style="cursor:pointer"><input type="checkbox" ${flag(k)?"checked":""} onchange="S.flags.${k}=this.checked;save();render()" style="accent-color:var(--green);width:16px;height:16px"><span>${l}</span></label>`).join("")}
@@ -1554,23 +1684,27 @@ function showSuggLog(){const rows=SESS.log.slice(-60).reverse();
   modal(`<h2>Journal des suggestions</h2><p class="hint">Pourquoi un son n’est plus proposé (cette session seulement, rien n’est envoyé).</p><div class="mt" style="max-height:50vh;overflow:auto">${rows.length?rows.map(r=>`<div class="mini"><span class="hint" style="width:44px">${new Date(r.at).toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"})}</span><div style="flex:1;min-width:0"><b>${esc(r.t)}</b><div class="hint">${esc(r.reason)}</div></div></div>`).join(""):'<p class="hint">Rien pour l’instant.</p>'}</div><div class="row mt" style="justify-content:flex-end"><button class="btn" onclick="closeModal()">OK</button></div>`);}
 function exportData(){const st={...S,undo:undefined};download(new Blob([JSON.stringify({setmate:VERSION,date:Date.now(),state:st})],{type:"application/json"}),`SetMate sauvegarde ${new Date().toISOString().slice(0,10)}.json`);toast("Sauvegarde téléchargée.");}
 function importData(){const i=$("#fileIn");i.accept=".json";i.onchange=async()=>{try{const d=JSON.parse(await i.files[0].text());if(!d.setmate)throw new Error("fichier non reconnu");await restoreState(d);}catch(e){toast("Restauration impossible : "+esc(e.message),false,true);}i.value="";};i.click();}
-function resetAll(){modal(`<h2>Tout effacer ?</h2><p class="hint mt2">Efface les données SetMate de ce navigateur (bibliothèque lue, soirées, débriefs, préférences). Tes fichiers et ta bibliothèque Serato ne sont pas touchés.</p><div class="row mt" style="justify-content:flex-end"><button class="btn ghost" onclick="closeModal()">Annuler</button><button class="btn red" onclick="doReset()">Effacer</button></div>`);}
-async function doReset(){for(const k of ["state","tracks","h_serato","h_music","h_dl",...(S.own||[]).map(o=>"file_"+o.fid)])await DB.del(k);location.reload();}
+function resetAll(){modal(`<h2>Tout effacer ?</h2><p class="hint mt2">Efface les données SetMate de ce navigateur : bibliothèque lue, soirées, débriefs, préférences, et aussi les fichiers audio ajoutés sur ce téléphone. Les fichiers de ton ordinateur et ta bibliothèque Serato ne sont pas touchés. C'est définitif : fais d'abord une sauvegarde.</p><div class="row mt" style="justify-content:flex-end"><button class="btn ghost" id="rstSave" onclick="exportData()">Télécharger une sauvegarde d'abord</button><button class="btn ghost" onclick="closeModal()">Annuler</button><button class="btn red" onclick="doReset()">Effacer</button></div>`);}
+async function doReset(){clearTimeout(saveT);saveT=null;RESETTING=true;try{if(saving)await saving;}catch(e){}
+  let ok=false;if(DB.db){ok=await new Promise(res=>{try{const t=DB.db.transaction("kv","readwrite");t.objectStore("kv").clear();t.oncomplete=()=>res(true);t.onerror=t.onabort=()=>res(false);}catch(e){res(false)}});}
+  if(!ok){for(const k of ["state","tracks","tracks_prev","h_serato","h_music","h_dl","log","diag",...(S.own||[]).map(o=>"file_"+o.fid)])await DB.del(k);}
+  location.reload();}
 
 /* ===================== LECTEUR ===================== */
 const AU=new Audio();let PL=null,progT=null;const DZC={};
 const isPlaying=x=>PL&&PL.u==="t"+x.n;
-async function playTrack(n,force=false){const x=T(n);const u="t"+n;if(!force&&PL&&PL.u===u)return stopPlay();if(!force)Q.items=[];stopPlay();PL={u,x,src:"…"};renderPlayer();refreshPlay();
+let PFAIL=false;   /* vrai quand le dernier son demandé a vraiment échoué (et pas quand on l'a arrêté ou remplacé) */
+async function playTrack(n,force=false){const x=T(n);const u="t"+n;PFAIL=false;if(!x){PFAIL=true;return stopPlay();}if(!force&&PL&&PL.u===u)return stopPlay();if(!force)Q.items=[];stopPlay();PL={u,x,src:"…"};renderPlayer();refreshPlay();
   const f=await fileOf(x);if(PL?.u!==u)return;
   if(f){AU.src=URL.createObjectURL(f);PL.src="ton fichier";}
-  else if(x.dz){try{const d=await jsonp(`https://api.deezer.com/track/${x.dz}`);if(PL?.u!==u)return;AU.src=d.preview;PL.src="extrait 30 s · Deezer";}catch(e){previewFail();return stopPlay();}}
-  else{const p=await dzSearch(x);if(PL?.u!==u)return;if(!p){toast("Pas d’extrait disponible. Connecte ton dossier Musique pour écouter tes fichiers.",false,true);return stopPlay();}AU.src=p.preview;PL.src="extrait 30 s · Deezer";if(p.cover)x.cover=x.cover||p.cover;}
-  try{await AU.play();}catch(e){toast("Lecture impossible : "+esc(e.message),false,true);return stopPlay();}startProg();renderPlayer();refreshPlay();}
-async function dzSearch(x){const k=x.a+"|"+x.t;if(k in DZC&&(!DZC[k]||Date.now()-DZC[k].t<8*60e3))return DZC[k];try{const art=String(x.a).split(/,|&| feat/i)[0].trim(),tit=String(x.t).replace(/\(.*\)/,"").trim();
-  const d=await jsonp("https://api.deezer.com/search?q="+encodeURIComponent(art+" "+tit)+"&limit=5");const a0=norm(art).trim().split(" ")[0];
-  const r=(d.data||[]).find(it=>it.preview&&norm(it.artist?.name).includes(a0)&&norm(it.title).includes(norm(tit).trim().split(" ")[0]));DZC[k]=r?{preview:r.preview,cover:r.album?.cover_medium,t:Date.now()}:null;}catch(e){DZC[k]=null;}return DZC[k];}
-async function playDz(dz,force=false,meta=null){const u="dz"+dz;if(!force&&PL&&PL.u===u)return stopPlay();if(!force)Q.items=[];stopPlay();const it=meta||findDz(dz)||{t:"…",a:""};PL={u,x:{dz,t:it.t,a:it.a,cover:it.cover,k:S.trendCache[dz]?.k,bpm:S.trendCache[dz]?.bpm},src:"…"};renderPlayer();refreshPlay();
-  try{const d=await jsonp(`https://api.deezer.com/track/${dz}`);if(PL?.u!==u)return;AU.src=d.preview;PL.src="extrait 30 s · Deezer";await AU.play();startProg();}catch(e){previewFail();return stopPlay();}renderPlayer();refreshPlay();}
+  else if(x.dz){try{const d=await jsonp(`https://api.deezer.com/track/${x.dz}`);if(PL?.u!==u)return;AU.src=d.preview;PL.src="extrait 30 s · Deezer";}catch(e){if(PL?.u!==u)return;PFAIL=true;previewFail();return stopPlay();}}
+  else{const p=await dzSearch(x);if(PL?.u!==u)return;if(!p){PFAIL=true;toast("Pas d’extrait disponible. Connecte ton dossier Musique pour écouter tes fichiers.",false,true);return stopPlay();}AU.src=p.preview;PL.src="extrait 30 s · Deezer";if(p.cover)x.cover=x.cover||p.cover;}
+  try{await AU.play();}catch(e){if(PL?.u!==u)return;PFAIL=true;toast("Lecture impossible : "+esc(e.message),false,true);return stopPlay();}startProg();renderPlayer();refreshPlay();}
+async function dzSearch(x){const k=x.a+"|"+x.t;const c0=DZC[k];if(c0&&Date.now()-c0.t<(c0.none?60e3:8*60e3))return c0.none?null:c0;try{const art=String(x.a).split(/,|&| feat/i)[0].trim(),tit=String(x.t).replace(/\(.*\)/,"").trim();
+  const d=await jsonp("https://api.deezer.com/search?q="+encodeURIComponent(art+" "+tit)+"&limit=5");const a0=norm(art).trim(),t0=norm(tit).trim(),inc=(a,b)=>!!a&&!!b&&(" "+a+" ").includes(" "+b+" ");
+  const r=(d.data||[]).find(it=>{if(!it.preview)return false;const an=norm(it.artist?.name).trim(),tn=norm(it.title_short||it.title).trim(),tf=norm(it.title).trim();return a0&&(inc(an,a0)||inc(a0,an))&&t0&&(inc(tn,t0)||inc(t0,tn)||inc(tf,t0));});DZC[k]=r?{preview:r.preview,cover:r.album?.cover_medium,t:Date.now()}:{none:true,t:Date.now()};}catch(e){return null;}   /* une erreur de réseau n'est pas mémorisée */const c1=DZC[k];return c1.none?null:c1;}
+async function playDz(dz,force=false,meta=null){const u="dz"+dz;PFAIL=false;if(!force&&PL&&PL.u===u)return stopPlay();if(!force)Q.items=[];stopPlay();const it=meta||findDz(dz)||{t:"…",a:""};PL={u,x:{dz,t:it.t,a:it.a,cover:it.cover,k:S.trendCache[dz]?.k,bpm:S.trendCache[dz]?.bpm},src:"…"};renderPlayer();refreshPlay();
+  try{const d=await jsonp(`https://api.deezer.com/track/${dz}`);if(PL?.u!==u)return;AU.src=d.preview;PL.src="extrait 30 s · Deezer";await AU.play();startProg();}catch(e){if(PL?.u!==u)return;PFAIL=true;previewFail();return stopPlay();}renderPlayer();refreshPlay();}
 function startProg(){clearInterval(progT);progT=setInterval(()=>{const b=$("#pbar");if(b&&AU.duration)b.style.width=(AU.currentTime/AU.duration*100)+"%";},250);}
 function stopPlay(){AU.pause();clearInterval(progT);if(AU.src.startsWith("blob:"))URL.revokeObjectURL(AU.src);PL=null;renderPlayer();refreshPlay();}
 function refreshPlay(){if($(".ov")){if(window.findRefresh)findRefresh();return;}if(S.screen==="lib")libTable();else if(["next","trend","listen"].includes(S.screen))softRender();}
@@ -1595,10 +1729,11 @@ function qStart(items,i=0,label="",rand=false){Q.items=items.filter(Boolean);Q.l
   if(!Q.items.length)return toast("Rien à écouter ici pour l’instant.",false,true);
   if(rand){Q.shuffle=true;i=Math.floor(Math.random()*Q.items.length);}qPlay(Math.min(i,Q.items.length-1));}
 async function qPlay(i){if(i<0||i>=Q.items.length)return stopPlay();const tok=++qTok;Q.i=i;Q.played.add(i);const it=Q.items[i];
-  if(it.n)await playTrack(it.n,true);else if(it.fid)await playOwn(it.fid,true);else await playDz(it.dz,true,it);
+  if(it.n&&!T(it.n)){Q.items.splice(i,1);if(i>=Q.items.length)return stopPlay();return qPlay(i);}   // son retiré de la bibliothèque : on l'enlève de la file
+  PFAIL=false;if(it.n)await playTrack(it.n,true);else if(it.fid)await playOwn(it.fid,true);else await playDz(it.dz,true,it);
   if(tok!==qTok)return;
   // un extrait indisponible ne bloque pas la file : on passe au suivant (3 essais au plus)
-  if(!PL){if(++Q.fails<4&&Q.items.length>1)return qNext();}else Q.fails=0;}
+  if(!PL){if(PFAIL&&++Q.fails<4&&Q.items.length>1)return qNext();}else Q.fails=0;}
 function qPrev(){if(AU.currentTime>3){AU.currentTime=0;return;}qPlay(Math.max(0,Q.i-1));}
 function qToggle(){if(!PL){if(Q.items.length)qPlay(Math.max(0,Q.i));return;}if(AU.paused)AU.play().catch(()=>{});else AU.pause();renderPlayer();}
 function qRepeat(){Q.repeat=Q.repeat==="off"?"all":Q.repeat==="all"?"one":"off";renderPlayer();toast(Q.repeat==="off"?"Répétition coupée.":Q.repeat==="all"?"Je répète toute la file.":"Je répète ce son.");}
@@ -1641,10 +1776,10 @@ function addOwnFiles(){if(!DB.db)return toast("Stockage indisponible dans ce nav
     for(const f of fs){const fid=Date.now().toString(36)+Math.random().toString(36).slice(2,7),m=parseName(f.name);
       try{await dbPut("file_"+fid,f);S.own.push({fid,t:m.t,a:m.a,size:f.size,type:f.type,added:Date.now()});ok++;}catch(e){ko++;}}
     save();toast(`${pl(ok,"fichier")} prêt${ok>1?"s":""} à écouter, même sans réseau${ko?`. ${ko} refusé${ko>1?"s":""} : place insuffisante ?`:"."}`,false,!!ko);S.lsTab="own";softRender();};i.click();}
-async function playOwn(fid,force=false){const u="f"+fid;if(!force&&PL&&PL.u===u)return stopPlay();if(!force)Q.items=[];stopPlay();
+async function playOwn(fid,force=false){const u="f"+fid;PFAIL=false;if(!force&&PL&&PL.u===u)return stopPlay();if(!force)Q.items=[];stopPlay();
   const o=S.own.find(x=>x.fid===fid);if(!o)return;PL={u,x:{t:o.t,a:o.a},src:"sur ce téléphone"};renderPlayer();
-  const b=await DB.get("file_"+fid);if(PL?.u!==u)return;if(!b){toast("Fichier introuvable sur ce téléphone.",false,true);return stopPlay();}
-  AU.src=URL.createObjectURL(b);try{await AU.play();}catch(e){toast("Lecture impossible : "+esc(e.message)+(/flac|aif/i.test(o.type)?" (format peu lu par l’iPhone : préfère MP3, M4A ou WAV)":""),false,true);return stopPlay();}
+  const b=await DB.get("file_"+fid);if(PL?.u!==u)return;if(!b){PFAIL=true;toast("Fichier introuvable sur ce téléphone.",false,true);return stopPlay();}
+  AU.src=URL.createObjectURL(b);try{await AU.play();}catch(e){if(PL?.u!==u)return;PFAIL=true;toast("Lecture impossible : "+esc(e.message)+(/flac|aif/i.test(o.type)?" (format peu lu par l’iPhone : préfère MP3, M4A ou WAV)":""),false,true);return stopPlay();}
   startProg();renderPlayer();refreshPlay();}
 function ownPlay(i=0,rand=false){qStart(S.own.map(o=>({fid:o.fid,t:o.t,a:o.a})),i,"Sur ce téléphone",rand);}
 async function ownRm(fid){const i=S.own.findIndex(o=>o.fid===fid);if(i<0)return;const o=S.own[i],b=await DB.get("file_"+fid);
@@ -1680,10 +1815,10 @@ async function dzMatch(x,swapped=false){const art=String(x.a||"").split(/,|&| fe
   if(!tit)return null;let best=null,bs=0;
   try{const d=await jsonp("https://api.deezer.com/search?q="+encodeURIComponent((art+" "+tit).trim())+"&limit=8");const T0=norm(tit).trim(),A0=norm(art).trim();
     for(const it of d.data||[]){const tt=norm(it.title_short||it.title).trim(),aa=norm(it.artist&&it.artist.name).trim();let s=0;
-      if(tt===T0)s+=3;else if(tt&&(tt.includes(T0)||T0.includes(tt)))s+=2;else if(tt.includes(T0.split(" ")[0]))s+=1;
+      let ts=0;if(tt===T0)ts=3;else if(tt&&((" "+tt+" ").includes(" "+T0+" ")||(" "+T0+" ").includes(" "+tt+" ")))ts=2;if(ts<2)continue;s+=ts;   // le titre doit au moins être inclus : un mot en commun ne suffit plus
       if(A0){if(aa===A0)s+=3;else if(aa&&(aa.includes(A0.split(" ")[0])||A0.includes(aa)))s+=2;}else s+=1;
       if(s>bs){bs=s;best=it;}}
-    if(best&&bs>=(A0?4:3))return dzItemA(best);}catch(e){return null;}
+    if(best&&bs>=(swapped?6:A0?4:3))return dzItemA(best);}catch(e){throw e;}   // une erreur de réseau n'est plus un « introuvable » : plMatch la distingue
   return !swapped&&x.a?dzMatch({t:x.a,a:x.t},true):null;}
 function importPlaylist(){modal(`<h2>Importer une playlist</h2><p class="hint mt2">Gratuit et sans compte. Choisis une des trois façons.</p>
   <div class="card mt" style="padding:12px"><b>1. Un lien Deezer</b><p class="hint">Dans Deezer : Partager, puis Copier le lien.</p><input class="f mt2" id="plUrl" placeholder="https://www.deezer.com/fr/playlist/…" style="width:100%" autocomplete="off"></div>
@@ -1710,15 +1845,15 @@ async function plFromDeezer(id,name){toast("J’importe la playlist Deezer…");
 function plFromItems(items,name,src){plCreate(name,src,items,null);}
 function plCreate(name,src,items,cv){const p={id:"p"+Date.now().toString(36),name,src,date:Date.now(),items,cover:cv||null};S.pls.unshift(p);save();
   S.lsTab="pls";S.plOpen=p.id;S.plLimit=200;go("listen");if(p.items.some(x=>!x.dz))plMatch(p);else toast(`Playlist « ${esc(name)} » importée : ${pl(items.length,"son")}.`);}
-let plBusy=null;
-async function plMatch(p){const todo=p.items.filter(x=>!x.dz&&!x.miss);if(!todo.length)return;plBusy={id:p.id,done:0,total:todo.length};softListen();let k=0;
+let plBusy=null;const plNet=new WeakSet();   /* sons dont la recherche a échoué par le réseau : pas marqués « introuvables », réessayés au prochain lancement */
+async function plMatch(p){const todo=p.items.filter(x=>!x.dz&&!x.miss&&!plNet.has(x));if(!todo.length)return;if(plBusy&&plBusy.id===p.id)return;const st={id:p.id,done:0,total:todo.length};plBusy=st;softListen();let k=0;
   // 3 recherches en parallèle, espacées : Deezer limite le nombre de requêtes par seconde
-  const worker=async()=>{while(k<todo.length){const x=todo[k++];const r=await dzMatch(x);if(r)Object.assign(x,{dz:r.dz,cover:r.cover,pop:r.pop,aid:r.aid,dzT:r.t,dzA:r.a});else x.miss=true;
-    plBusy.done++;if(plBusy.done%6===0)softListen();await sleep(250);}};
-  await Promise.all([worker(),worker(),worker()]);plBusy=null;
+  const worker=async()=>{while(k<todo.length){const x=todo[k++];let r;try{r=await dzMatch(x);}catch(e){r=undefined;plNet.add(x);}if(r)Object.assign(x,{dz:r.dz,cover:r.cover,pop:r.pop,aid:r.aid,dzT:r.t,dzA:r.a});else if(r===null)x.miss=true;
+    st.done++;if(st.done%6===0)softListen();await sleep(250);}};
+  try{await Promise.all([worker(),worker(),worker()]);}finally{if(plBusy===st)plBusy=null;}
   // deux lignes qui désignent le même son (ordre inversé, orthographe) n’en font plus qu’une
-  const sd=new Set(),n0=p.items.length;p.items=p.items.filter(x=>!x.dz||(sd.has(x.dz)?false:sd.add(x.dz)));const dup=n0-p.items.length;save();softListen();const miss=todo.filter(x=>x.miss).length;
-  toast(`« ${esc(p.name)} » prête : ${pl(todo.length-miss,"son")} trouvé${todo.length-miss>1?"s":""}${miss?`, ${miss} introuvable${miss>1?"s":""}`:""}${dup?`, ${dup} doublon${dup>1?"s":""} fusionné${dup>1?"s":""}`:""}.`,false,false,"lib");}
+  const sd=new Set(),n0=p.items.length;p.items=p.items.filter(x=>!x.dz||(sd.has(x.dz)?false:sd.add(x.dz)));const dup=n0-p.items.length;save();softListen();const miss=todo.filter(x=>x.miss).length,err=todo.filter(x=>plNet.has(x)&&!x.dz).length;
+  toast(`« ${esc(p.name)} » prête : ${pl(todo.length-miss-err,"son")} trouvé${todo.length-miss-err>1?"s":""}${err?`, ${err} pas cherché${err>1?"s":""} (réseau)`:""}${miss?`, ${miss} introuvable${miss>1?"s":""}`:""}${dup?`, ${dup} doublon${dup>1?"s":""} fusionné${dup>1?"s":""}`:""}.`,false,false,"lib");}
 function softListen(){if(S.screen==="listen"&&!$(".ov"))softRender();}
 function plQueueItem(x){const o=ownMatch(x);if(o)return {fid:o.fid,t:o.t,a:o.a};const m=libMatch(x);if(m&&!m.wish)return {n:m.n,t:m.t,a:m.a,cover:m.cover};
   return x.dz?{dz:x.dz,t:x.t,a:x.a,cover:x.cover}:null;}
@@ -1726,7 +1861,9 @@ function plPlay(id,i=0,rand=false){const p=plGet(id);if(!p)return;const map=[],i
   const k=map[i]!=null?map[i]:0,cur=items[k];if(!rand&&cur&&PL&&PL.u===qKey(cur)&&Q.label===p.name)return qToggle();qStart(items,k,p.name,rand);}
 function plAdd(id,i){const p=plGet(id),x=p&&p.items[i];if(!x||!x.dz)return;const {t,isNew}=addToLib(x,"playlist");if(!isNew)return toast(`« ${esc(x.t)} » est déjà dans ta musique.`);
   pushUndo("ajout à ta musique",()=>removeFromLib(t));save(true);toast(`« ${esc(x.t)} » ajouté à ta musique`,true,false,"lib");softRender();}
-function plAddAll(id){const p=plGet(id);if(!p)return;const added=[];for(const x of p.items){if(!x.dz)continue;const {t,isNew}=addToLib(x,"playlist");if(isNew)added.push(t);}
+async function plBulkAfter(added){for(const t of added){if(!t.wish)continue;if(!S.trendCache[t.dz]){while(!calm())await sleep(250);const r=await analyzeDz(t).catch(()=>null);if(r&&t.wish){t.bpm=t.bpm||r.bpm;t.k=t.k||r.k;t.e=t.e||r.e;save(true);liveRefresh();}}if(t.g==="?"&&t.wish)await fetchGenre(t);await sleep(250);}}
+function plAddAll(id){const p=plGet(id);if(!p)return;const added=[];addBulk=true;try{for(const x of p.items){if(!x.dz)continue;const {t,isNew}=addToLib(x,"playlist");if(isNew)added.push(t);}}finally{addBulk=false;}
+  if(added.length)plBulkAfter(added);   /* une seule analyse à la fois, au lieu d une par son */
   if(!added.length)return toast("Tout est déjà dans ta musique.");pushUndo(`ajout de ${added.length} sons`,()=>added.forEach(removeFromLib));save(true);
   toast(`${pl(added.length,"son")} ajouté${added.length>1?"s":""} à ta musique, marqué${added.length>1?"s":""} « à récupérer ».`,true,false,"lib");softRender();}
 function plRm(id,i){const p=plGet(id);if(!p)return;const [x]=p.items.splice(i,1);pushUndo("retrait de la playlist",()=>{p.items.splice(i,0,x);save();softRender();});save();toast(`« ${esc(x.t)} » retiré de la playlist.`,true);softRender();}
@@ -1798,9 +1935,9 @@ function plDetail(p){const busy=plBusy&&plBusy.id===p.id,dzN=p.items.filter(x=>x
     ${dzN<p.items.length&&!busy&&p.items.some(x=>x.miss)?`<p class="hint mt2">Les sons « introuvables » n’ont pas d’équivalent clair sur Deezer : vérifie l’orthographe ou ajoute le fichier sur ce téléphone.</p>`:""}`;}
 function qLabel(it){if(it.n){const t=T(it.n);return t?{t:t.t,a:t.a,cover:t.cover}:it;}if(it.fid){const o=S.own.find(x=>x.fid===it.fid);return o||it;}return it;}
 VIEWS.listen=()=>{const tab=S.lsTab||"pls",p=S.plOpen&&plGet(S.plOpen);
-  const inst=isIOS&&!installed()?tip("install",`installe SetMate comme une appli : dans Safari, touche <b style="color:var(--txt)">Partager</b>, puis <b style="color:var(--txt)">Sur l’écran d’accueil</b>.`):"";
+  const inst=isIOS&&!installed()?tip("install",`Installe SetMate comme une appli : dans Safari, touche <b style="color:var(--txt)">Partager</b>, puis <b style="color:var(--txt)">Sur l’écran d’accueil</b>.`):"";
   if(tab==="pls"&&p)return inst+plDetail(p);
-  const head=`<h1>Écouter</h1><p class="sub">Tes playlists, tes fichiers sur ce téléphone, et des radios pour découvrir. Sons du catalogue : extraits de 30 s. Tes fichiers : en entier, même sans réseau.</p>${inst}
+  const head=`<h1 class="scrT">Mes playlists</h1><p class="sub">Tes playlists, tes fichiers et des radios. Les sons du catalogue sont des extraits de 30 secondes.</p>${inst}
     <div class="seg mt" style="display:flex;width:100%;max-width:560px">${[["pls","Playlists"],["own","Sur ce téléphone"],["q",`File d’écoute${Q.items.length?" ("+Q.items.length+")":""}`]].map(([k,l])=>`<button style="flex:1;text-align:center" class="${tab===k?"on":""}" onclick="S.lsTab='${k}';save();softRender()">${l}</button>`).join("")}</div>`;
   if(tab==="own"){const own=S.own||[];
     return head+`<div class="row mt" style="gap:8px;flex-wrap:wrap"><button class="btn" onclick="addOwnFiles()">${svg("plus",15)}Ajouter des fichiers audio</button>${own.length?`<button class="btn ghost" onclick="ownPlay(0)">${svg("play",13)}Tout écouter</button><button class="btn ghost" onclick="ownPlay(0,true)">${svg("shuf",14)}Aléatoire</button>`:""}</div>
@@ -2014,10 +2151,25 @@ function confirmRestore(d){const st=d.state||{};return new Promise(res=>{window.
   modal(`<h2>Remplacer les données de cet appareil ?</h2><p class="hint mt2">Sauvegarde du ${new Date(d.date||Date.now()).toLocaleDateString("fr-FR")} : ${pl((st.tracks||[]).length||0,"son")} lus, ${pl((st.pls||[]).length,"playlist")}, ${pl((st.gigs||[]).length,"soirée")}.</p>
    <p class="hint mt2">Ici, actuellement : ${pl(S.pls.length,"playlist")}, ${pl(S.gigs.length,"soirée")}, ${pl((S.own||[]).length,"fichier")} sur ce téléphone. <b style="color:var(--txt)">Tout ça sera remplacé</b> par la sauvegarde (sauf les fichiers audio de ce téléphone, qui restent). Pense à envoyer tes données d’ici avant si elles comptent.</p>
    <div class="row mt" style="justify-content:flex-end;gap:8px"><button class="btn ghost" onclick="closeModal();window._rs(false)">Annuler</button><button class="btn red" onclick="closeModal();window._rs(true)">Remplacer</button></div>`);});}
-async function restoreState(d){if(!(await confirmRestore(d)))return false;const cur=S.own||[],keep=S.undo;Object.assign(S,d.state);S.undo=keep;
+async function restoreState(d){
+  if(!isObj(d)||!isObj(d.state)){toast("Cette sauvegarde est vide ou illisible : rien n’a été changé.",false,true);return false;}
+  if(!(await confirmRestore(d)))return false;
+  const cur=S.own||[],st=d.state;
+  /* on ne copie que des champs du bon genre (comme au démarrage) et jamais l'écran, la démo ou la soirée en cours de cet appareil */
+  const SKIP=["screen","sel","search","demo","realSnap","undo","soir","tracks","set","cur","own"];
+  for(const k of Object.keys(st)){if(SKIP.includes(k)||k==="__proto__")continue;if(sameKind(DEFAULTS[k],st[k]))S[k]=st[k];}
+  if(Array.isArray(st.tracks))S.tracks=st.tracks.filter(t=>isObj(t)&&typeof t.n==="number"&&typeof t.path==="string");
+  if(isObj(st.set)&&Array.isArray(st.set.ids))S.set=st.set;
+  if(Array.isArray(st.own))S.own=st.own.filter(o=>isObj(o)&&o.fid!=null);
+  if(S.demo){S.demo=false;delete S.realSnap;}   // la sauvegarde remplace tout : plus de copie « vraie bibliothèque » à rendre à la sortie de la démo
+  sanitizeState(DEFAULTS);reindex();
+  S.nextN=Math.max(S.nextN,...S.tracks.map(t=>t.n+1),1);
+  S.set.ids=S.set.ids.filter(n=>T(n));S.cur=T(st.cur)?st.cur:(T(S.cur)?S.cur:(S.set.ids.length?S.set.ids[S.set.ids.length-1]:null));
+  S.undo=[];try{updUndo();}catch(e){}
+  if(S.soir.on&&!soirGig()){S.soir={on:false,gig:null,t0:0,log:[]};clearInterval(soirClock);soirUnwake();soirDraw();}
   const all=[...cur,...(S.own||[])],seen=new Set(),ok=[];
   for(const o of all){if(seen.has(o.fid))continue;seen.add(o.fid);if(await DB.get("file_"+o.fid))ok.push(o);}
-  const lost=all.filter((o,i)=>all.findIndex(x=>x.fid===o.fid)===i).length-ok.length;S.own=ok;S.pls=S.pls||[];reindex();save(true);render();
+  const lost=all.filter((o,i)=>all.findIndex(x=>x.fid===o.fid)===i).length-ok.length;S.own=ok;S.pls=(Array.isArray(S.pls)?S.pls:[]).filter(isObj);reindex();save(true);render();
   toast(lost>0?`Données restaurées. ${pl(lost,"fichier")} audio de la sauvegarde ne sont pas sur ce téléphone : à rajouter.`:"Données restaurées.");return true;}
 
 /* ===================== 1.7 Liens avec Apple Music et Spotify, sans compte développeur =====================
@@ -2109,7 +2261,8 @@ function sendMenu(){const n=S.set.ids.length;if(!n)return toast("Ton set est vid
   const row=(ic,t,d,act,tag)=>`<div class="conn"><div style="flex:1;min-width:0"><b>${svg(ic,14)} ${t}</b><div class="hint">${d} · ${tag}</div></div><button class="btn sm ghost" onclick="closeModal();${act}">Choisir</button></div>`;
   modal(`<h2>Envoyer mon set</h2><p class="hint mt2">« ${esc(S.set.name)} » · ${pl(n,"son")}</p><div class="mt">
    ${row("apple","Apple Music, puis Serato sur iPhone","Ouvre chaque son dans Apple Music pour l’ajouter à ta playlist ; Serato mobile affiche tes playlists Apple Music","sendSetToApple()",no)}
-   ${row("dl","Playlist M3U pour Serato (ordinateur)","À glisser dans l’onglet Files puis sur Crates ; tu choisis Windows ou Mac","exportM3Uchoose()",ok+" sur Serato 5, Windows")}
+   ${row("dl","Playlist M3U pour Serato (fichier à glisser, le plus simple)","Un fichier à glisser dans l’onglet Files de Serato puis sur Crates ; je t’explique chaque étape","exportM3Uchoose()",ok+" sur Serato 5, Windows")}
+   ${row("dl","Fichier pour rekordbox (XML)","Format d’échange officiel de rekordbox ; un guide t’explique l’import","exportRbxChoose()",no)}
    ${row("folder","Crate Serato (écrite par SetMate)","Chrome ou Edge, Serato fermé ; apparaît quand tu relances Serato","exportSetCrate()",ok+" sur Serato 5, Windows")}
    ${row("usb","Clé USB","Copie les fichiers du set sur une clé","exportUsb()",no)}
    ${row("share","Partager la liste","Texte ou fichier, pour un autre DJ","shareSet()",ok)}
@@ -2161,7 +2314,7 @@ function parseHistory(text,name){const out={plays:[],playlists:[]},t=String(text
 
 /* ---------- Branchements ---------- */
 const _vListen=VIEWS.listen;
-VIEWS.listen=()=>{const p=S.plOpen&&plGet(S.plOpen);if(p&&!plBusy&&p.items.some(x=>!x.dz&&!x.miss))setTimeout(()=>plMatch(p),60);return _vListen();};
+VIEWS.listen=()=>{const p=S.plOpen&&plGet(S.plOpen);if(p&&!plBusy&&p.items.some(x=>!x.dz&&!x.miss&&!plNet.has(x)))setTimeout(()=>{if(!plBusy)plMatch(p);},60);return _vListen();};
 /* aides : les exports officiels sont plus fiables que les outils tiers */
 HELP.apple[1]+='<p class="mt2"><button class="chip" onclick="histoModal()">Mon historique Apple Music (fichier officiel)</button></p>';
 HELP.spotify[1]+='<p class="mt2"><button class="chip" onclick="histoModal()">Mes données Spotify (fichier officiel)</button></p>';
@@ -2215,7 +2368,7 @@ function recSelDo(act){const ns=[...SELR];if(!ns.length)return toast("Coche d’
   if(act==="done"||act==="todo"||act==="queue")return recMark(ns,act);
   if(act==="pl"){const ts=ns.map(T).filter(Boolean);return saveAsPlaylist("À récupérer",ts);}
   if(act==="rm"){const ts=ns.map(T).filter(t=>t&&t.wish);if(!ts.length)return toast("Seuls les sons sans fichier peuvent être retirés ici.",false,true);
-    const saved=ts.map(t=>({t,dI:S.set.ids.includes(t.n)}));ts.forEach(removeFromLib);pushUndo(`retrait de ${ts.length} sons`,()=>{saved.forEach(o=>S.tracks.push(o.t));reindex();save(true);});
+    const saved=ts.map(t=>({t,idx:S.set.ids.indexOf(t.n),L:S.L[t.n]})),cur0=S.cur,wasCur=ts.some(t=>t.n===cur0);ts.forEach(removeFromLib);const curAfter=S.cur;pushUndo(`retrait de ${ts.length} sons`,()=>{saved.forEach(o=>S.tracks.push(o.t));reindex();saved.forEach(o=>{if(o.L)S.L[o.t.n]=o.L;});saved.filter(o=>o.idx>=0).sort((x,y)=>x.idx-y.idx).forEach(o=>{if(!S.set.ids.includes(o.t.n))S.set.ids.splice(Math.min(o.idx,S.set.ids.length),0,o.t.n);});if(wasCur&&S.cur===curAfter)S.cur=cur0;save(true);});
     save(true);SELR.clear();toast(`${pl(ts.length,"son")} retiré${ts.length>1?"s":""} de ta musique.`,true);liveRefresh();}}
 function recRow(t,st){const on=t.dz&&PL&&PL.u==="t"+t.n&&!AU.paused,hasF=!t.wish;
   return `<div class="trow">${SELM?`<input type="checkbox" class="chk" ${SELR.has(t.n)?"checked":""} onchange="recTog(${t.n},this.checked)" aria-label="Sélectionner">`:""}${cover(t)}
@@ -2289,7 +2442,7 @@ function selToPl(){const it=selItems();if(!it.length)return toast("Coche d’abo
 function selAdd(){const it=selItems();if(!it.length)return toast("Coche d’abord des sons.");const added=[];for(const x of it){const {t,isNew}=addToLib(x,S.trTab==="decouverte"?"decouverte":"tendance");if(isNew)added.push(t);}
   const add=addToDefPl(added);pushUndo(`ajout de ${added.length} sons`,()=>{added.forEach(removeFromLib);const p=defPl(false);if(p)p.items=p.items.filter(y=>!add.includes(y));save(true);});
   save(true);toast(added.length?`${pl(added.length,"son")} ajouté${added.length>1?"s":""} à ta musique et à « Mes pépites ».`:"Tout est déjà dans ta musique.",!!added.length);SELD.clear();liveRefresh();}
-function selBar(){if(!SELT)return `<div class="row mt2"><button class="chip" onclick="selMode(true)">☑ Sélectionner plusieurs</button></div>`;
+function selBar(){if(!SELT)return `<div class="row mt2"><button class="chip" onclick="selMode(true)">☑ Choisir plusieurs</button></div>`;
   return `<div class="recbar"><div class="row" style="gap:8px;flex-wrap:wrap"><span class="hint" style="align-self:center">${SELD.size} coché${SELD.size>1?"s":""}</span><button class="chip" onclick="selAll()">Tout cocher</button><button class="btn sm" onclick="selAdd()">${svg("plus",14)}Ma musique + Mes pépites</button><button class="btn ghost sm" onclick="selToPl()">${svg("plplus",14)}Autre playlist</button><button class="chip on" onclick="selMode(false)">Terminé</button></div></div>`;}
 
 /* ---------- Branchements des vues ---------- */
@@ -2340,7 +2493,7 @@ function analyzeOff(ab,sec){if(!smwOK||!SMW)return Promise.resolve(smAnalyze(ab,
 
 /* ---------- File d'analyse : un son à la fois, seulement quand l'écran est calme ---------- */
 const _analyzeQueue=analyzeQueue;
-analyzeQueue=function(list,prio){_analyzeQueue(list,prio);while(anaQ.length>60){let i=anaQ.findIndex(y=>!anaPrio.has(y.dz));if(i<0)i=anaQ.length-1;anaQ.splice(i,1);}};   // on garde 60 sons : les plus récents, et ceux de la recherche en cours en priorité
+analyzeQueue=function(list,prio){_analyzeQueue(list,prio);while(anaQ.length>60){let i=-1;for(let j=anaQ.length-1;j>=0;j--)if(!anaPrio.has(anaQ[j].dz)){i=j;break;}if(i<0)i=anaQ.length-1;anaQ.splice(i,1);}};   // on garde 60 sons : les plus récents, et ceux de la recherche en cours en priorité
 
 NEWS["1.8.1"]=["<b>Fin des tremblements</b> : l’analyse des sons tourne maintenant en arrière-plan et l’écran ne se redessine plus pendant que ton doigt est posé ou que tu défiles."];
 /* ===================== 1.9 Partager un set d'un DJ à l'autre, garde-fous de compatibilité, signalement =====================
@@ -2390,12 +2543,14 @@ async function impGo(){if(!IMP)return;const dzOn=$("#impDz")&&$("#impDz").checke
   for(const r of rows){let t=r.m;
     if(!t&&dzOn){try{const d=await dzMatch(r.x);if(d){const res=addToLib(d,"moi");t=res.t;if(res.isNew)added.push(res.t);}}catch(e){}}
     if(t){ids.push(t.n);}else lost++;}
+  const uniq=[...new Set(ids)];   // 1.12.1 : pas de doublon, et pas de set vidé si rien n'est retrouvé
+  if(!uniq.length){IMP=null;return toast("Aucun son retrouvé : ton set reste comme il était.",false,true);}
   const old={ids:[...S.set.ids],name:S.set.name,cur:S.cur};
-  const merged=rep?ids:[...S.set.ids,...ids.filter(n=>!S.set.ids.includes(n))];
+  const merged=rep?uniq:[...S.set.ids,...uniq.filter(n=>!S.set.ids.includes(n))];
   S.set.ids=merged;if(rep||!S.set.ids.length)S.set.name=name;S.cur=merged[merged.length-1]||null;
   pushUndo("import d’un set",()=>{S.set.ids=old.ids;S.set.name=old.name;S.cur=old.cur;added.forEach(removeFromLib);save(true);});
   save(true);IMP=null;go("next");
-  toast(`Set « ${esc(name)} » : ${pl(ids.length,"son")}${added.length?`, dont ${added.length} à récupérer`:""}${lost?`, ${lost} introuvable${lost>1?"s":""} laissé${lost>1?"s":""} de côté`:""}.`,true);}
+  toast(`Set « ${esc(name)} » : ${pl(uniq.length,"son")}${added.length?`, dont ${added.length} à récupérer`:""}${lost?`, ${lost} introuvable${lost>1?"s":""} laissé${lost>1?"s":""} de côté`:""}.`,true);}
 
 /* ---------- Plus jamais de fichier d'export impossible à utiliser ---------- */
 function whyNoWrite(){if(S.demo)return "Tu es en mode démo : les sons sont des exemples, leurs fichiers n’existent pas.";if(!FSA)return "Ce navigateur ne peut pas écrire dans tes dossiers"+(/Safari/.test(navigator.userAgent)&&!/Chrome|Edg/.test(navigator.userAgent)?" (c’est le cas de Safari).":".");
@@ -2409,7 +2564,36 @@ function crateImpossible(){const raisons=whyNoWrite();
    ${S.demo?"":`<details class="mt"><summary class="hint clk">Avancé : le fichier .crate quand même</summary><p class="hint mt2">Il ne marche que si les fichiers sont aux mêmes endroits. À copier, Serato fermé, dans <code>Musique/_Serato_/Subcrates</code>, puis relance Serato (Serato 3 seulement).</p><button class="btn ghost sm" onclick="closeModal();downloadCrateAdvanced()">Télécharger le .crate</button></details>`}
    <div class="row mt" style="justify-content:flex-end"><button class="btn" onclick="closeModal()">Fermer</button></div>`);}
 function downloadCrateAdvanced(){const items=setFiles();if(!items.length)return;download(new Blob([buildCrate(items.map(x=>x.path))]),`SetMate%%${safeName(S.set.name)}.crate`);toast("Fichier téléchargé : chemins de cet ordinateur uniquement.",false,true);}
-function exportM3Uwarn(){toast(S.seratoVer==="5"?"Playlist téléchargée. Dans Serato 5.0 : onglet Files, trouve le fichier, glisse-le sur la zone Crates (testé sur Windows). Les morceaux doivent être au même endroit que sur l’ordinateur choisi.":"Playlist téléchargée. Elle contient les chemins des morceaux pour l’ordinateur choisi : ils doivent être au même endroit. Import testé seulement dans Serato 5.0 (Windows) ; Serato 3 et 4 : non testé.",false,false);}
+function exportM3Uwarn(n,fname,left){const c=m3uCfg(),v=S.seratoVer,pc=c.os==="win"?"Windows":"Mac";toast("Playlist téléchargée.",true);
+  const teste=v==="5"?"Importé avec succès dans Serato DJ Pro 5.0 sous Windows (testé).":"Cette méthode est testée seulement avec Serato DJ Pro 5.0 sous Windows. Serato 3 et 4 : non testé.";
+  const tel=(MOBILE||isIOS)?`<p class="hint mt2" style="color:var(--orange)"><b>Tu es sur ton téléphone.</b> Envoie d’abord ce fichier sur ton ordinateur (AirDrop, mail, ou l’app Fichiers), puis suis les étapes.</p>`:"";
+  modal(`<h2>Le fichier est prêt</h2><p class="hint mt2"><b>${esc(fname||"playlist.m3u8")}</b> · ${pl(n||0,"son")}${left?` · ${left} laissé${left>1?"s":""} de côté (pas encore récupéré${left>1?"s":""})`:""}. Il est dans ton dossier <b>Téléchargements</b>.</p>${tel}
+   <ol class="steps"><li>Ouvre <b>Serato DJ Pro</b> sur ton ordinateur ${pc}.</li><li>Clique sur l’onglet <b>Files</b>, puis retrouve le fichier dans ton dossier Téléchargements.</li><li><b>Glisse le fichier</b> sur la zone <b>Crates</b> (colonne de gauche). Une nouvelle crate apparaît avec ton set, dans l’ordre.</li></ol>
+   <p class="hint">${teste}</p>
+   <details class="mt2"><summary style="cursor:pointer;color:var(--blue);font-weight:700">Ça ne marche pas ?</summary><ul class="hint" style="margin:8px 0 0 18px;line-height:1.6">
+     <li>Serato dit « fichier introuvable » : les sons ne sont pas à l’endroit prévu. Disque choisi : <b>${c.os==="win"?(c.drive||"C").toUpperCase()+":":"Mac"}</b>. Si tes sons sont sur un autre disque, refais l’export et change la lettre.</li>
+     <li>La crate est vide : le fichier a été glissé ailleurs que sur « Crates », ou il se trouve sur un lecteur virtuel (Google Drive, G:). Copie-le dans un dossier normal de ton disque (Téléchargements) avant de le glisser.</li>
+     <li>Un son manque : il est encore « à récupérer » dans SetMate, il n’a pas de fichier.</li>
+     <li>Autre voie : « Crate Serato » dans le menu Exporter (Chrome ou Edge, Serato fermé).</li></ul></details>
+   <div class="row mt" style="justify-content:flex-end"><button class="btn" onclick="closeModal()">Terminé</button></div>`);}
+
+/* 1.12.2 · Export rekordbox XML. Structure conforme à la spécification officielle « rekordbox xml format list » (AlphaTheta). NON TESTÉ dans rekordbox : Sabri n'a pas rekordbox. */
+const CAMELOT_MUS={"1A":"Abm","2A":"Ebm","3A":"Bbm","4A":"Fm","5A":"Cm","6A":"Gm","7A":"Dm","8A":"Am","9A":"Em","10A":"Bm","11A":"F#m","12A":"C#m","1B":"B","2B":"F#","3B":"Db","4B":"Ab","5B":"Eb","6B":"Bb","7B":"F","8B":"C","9B":"G","10B":"D","11B":"A","12B":"E"};
+const xmlEsc=v=>String(v==null?"":v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&apos;"}[c])).replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g,"");
+function rbxLocation(path,cfg){const c=cfg||m3uCfg(),q=String(path).replace(/^\/+/,"").replace(/^[A-Za-z]:\/?/,"").split("/").filter(Boolean).map(encodeURIComponent).join("/");
+  return "file://localhost/"+(c.os==="win"?(c.drive||"C").toUpperCase()+":/":"")+q;}
+function rbxKind(path){const e=(String(path).match(/\.([A-Za-z0-9]+)$/)||[])[1];return ({mp3:"MP3 File",wav:"WAV File",aif:"AIFF File",aiff:"AIFF File",flac:"FLAC File",m4a:"M4A File",aac:"M4A File"})[(e||"").toLowerCase()]||"MP3 File";}
+function rbxText(items,name,cfg){const rows=items.map((x,i)=>{const mus=CAMELOT_MUS[String(x.k||"").toUpperCase()];
+    return `    <TRACK TrackID="${i+1}" Name="${xmlEsc(x.t)}" Artist="${xmlEsc(x.a)}" Kind="${rbxKind(x.path)}"${x.bpm?` AverageBpm="${(+x.bpm).toFixed(2)}"`:""}${mus?` Tonality="${mus}"`:""} Location="${xmlEsc(rbxLocation(x.path,cfg))}"/>`;});
+  return `<?xml version="1.0" encoding="UTF-8" ?>\n<DJ_PLAYLISTS Version="1.0.0">\n  <PRODUCT Name="SetMate" Version="${xmlEsc(VERSION)}" Company="SetMate"/>\n  <COLLECTION Entries="${items.length}">\n${rows.join("\n")}\n  </COLLECTION>\n  <PLAYLISTS>\n    <NODE Type="0" Name="ROOT" Count="1">\n      <NODE Name="${xmlEsc(name)}" Type="1" KeyType="0" Entries="${items.length}">\n${items.map((x,i)=>`        <TRACK Key="${i+1}"/>`).join("\n")}\n      </NODE>\n    </NODE>\n  </PLAYLISTS>\n</DJ_PLAYLISTS>\n`;}
+function exportRbx(){const items=setFiles();if(!items.length)return;const fname=safeName(S.set.name)+" (rekordbox).xml",left=S.set.ids.map(T).filter(t=>t&&t.wish).length;
+  download(new Blob([rbxText(items,S.set.name)],{type:"application/xml"}),fname);
+  modal(`<h2>Le fichier rekordbox est prêt</h2><p class="hint mt2"><b>${esc(fname)}</b> · ${pl(items.length,"son")}${left?` · ${left} laissé${left>1?"s":""} de côté (pas encore récupéré${left>1?"s":""})`:""}. Il est dans ton dossier <b>Téléchargements</b>.</p>
+   <p class="hint mt2" style="color:var(--orange)"><b>Non testé dans rekordbox</b> : le fichier suit la spécification officielle, mais je n’ai pas rekordbox pour l’essayer. Dis-moi ce que tu constates.</p>
+   <ol class="steps"><li>Dans rekordbox : <b>Préférences › Avancé › Base de données › Bibliothèque importée</b>, puis choisis ce fichier.</li><li>Dans l’arborescence à gauche, ouvre <b>rekordbox xml</b>, puis ta playlist.</li><li>Glisse la playlist (ou les morceaux) dans <b>Playlists</b> pour les ajouter à ta bibliothèque.</li></ol>
+   <details class="mt2"><summary style="cursor:pointer;color:var(--blue);font-weight:700">Ça ne marche pas ?</summary><ul class="hint" style="margin:8px 0 0 18px;line-height:1.6"><li>Les morceaux apparaissent introuvables : ils ne sont pas à l’endroit prévu (disque choisi : <b>${m3uCfg().os==="win"?(m3uCfg().drive||"C").toUpperCase()+":":"Mac"}</b>).</li><li>L’import XML ne met pas les morceaux directement dans la bibliothèque : il faut les glisser dans Playlists (étape 3).</li></ul></details>
+   <div class="row mt" style="justify-content:flex-end"><button class="btn" onclick="closeModal()">Terminé</button></div>`);}
+function exportRbxChoose(){if(!S.set.ids.length)return;m3uAsk(exportRbx);}
 
 /* ---------- Contrôle de compatibilité (Diagnostic) ---------- */
 function compatRows(add){const ua=navigator.userAgent,safari=/Safari/.test(ua)&&!/Chrome|Chromium|Edg|OPR/.test(ua);
@@ -2438,8 +2622,8 @@ document.addEventListener("visibilitychange",()=>{
   else if(hiddenAt){const s=Math.round((Date.now()-hiddenAt)/1000);ev("RETOUR",`après ${s} s, son ${AU.paused?"à l’arrêt (coupé pendant l’absence ?)":"toujours en lecture"}`);hiddenAt=0;}});
 
 /* ===================== FENÊTRES, RECHERCHE, CLAVIER ===================== */
-function modal(html){$("#layer").innerHTML=`<div class="ov" onclick="if(event.target===this)closeModal()"><div class="modal" role="dialog">${html}</div></div>`;}
-function closeModal(){$("#layer").innerHTML="";}
+function modal(html){if(CURARR){arrivals.unshift(CURARR);CURARR=null;}$("#layer").innerHTML=`<div class="ov" onclick="if(event.target===this)closeModal()"><div class="modal" role="dialog">${html}</div></div>`;}
+function closeModal(){if(CURARR){arrivals.unshift(CURARR);CURARR=null;}$("#layer").innerHTML="";}
 let palSel=0,palItems=[];
 function openPalette(){$("#layer").innerHTML=`<div class="ov" onclick="if(event.target===this)closeModal()"><div class="pal"><input id="palQ" placeholder="Un son, un artiste, une action…" oninput="palSel=0;palRender()" autocomplete="off"><div class="res" id="palR"></div></div></div>`;palRender();setTimeout(()=>{const q=$("#palQ");if(q)q.focus();},30);}
 function palRender(){const q=norm($("#palQ").value).trim();
@@ -2463,28 +2647,36 @@ window.addEventListener("focus",()=>{if(H.dl&&PERM.dl==="granted")scanDl();});
 /* ===================== 1.10 · Lot 1 · A-IP-01 Mode soirée =====================
    Écran toujours allumé (si l’appareil le permet), gros bouton « son suivant », « a marché / flop » en un geste,
    demande du public (texte ou dictée du clavier) qui va dans « File d’attente ». Cahier final §3.1. */
-let WL=null,WLst="",soirClock=0,soirMemo=null,soirAsk=false;const soirSkip=new Set(),soirDraft={q:"",req:""};
+let WL=null,WLst="",WLbusy=false,soirClock=0,soirMemo=null,soirAsk=false,soirLock=0;const soirSkip=new Set(),soirDraft={q:"",req:""};
 const soirDay=()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");};
 const soirGig=()=>S.gigs.find(x=>x.id===S.soir.gig)||null;
 async function soirWake(){
   if(!S.soir.on)return;
   if(!("wakeLock" in navigator)){WLst="absent";return soirDraw();}
-  if(WL&&!WL.released)return;
-  try{WL=await navigator.wakeLock.request("screen");WLst="ok";
-    WL.addEventListener("release",()=>{if(S.soir.on&&document.visibilityState==="visible"){WLst="perdu";soirDraw();}});}
+  if((WL&&!WL.released)||WLbusy)return;
+  WLbusy=true;
+  try{const w=await navigator.wakeLock.request("screen");
+    if(!S.soir.on){try{w.release();}catch(e){}WLbusy=false;return;}   // soirée terminée pendant la demande : on ne garde pas l'écran allumé
+    WL=w;WLst="ok";
+    w.addEventListener("release",()=>{if(S.soir.on&&document.visibilityState==="visible"){WLst="perdu";soirDraw();}});}
   catch(e){WLst="refus";}
-  soirDraw();}
+  WLbusy=false;soirDraw();}
 function soirUnwake(){const w=WL;WL=null;WLst="";try{w&&w.release();}catch(e){}}
 document.addEventListener("visibilitychange",()=>{if(S.soir.on&&document.visibilityState==="visible")soirWake();});
 function soirStart(){
   if(!S.soir.on){const d=soirDay();let g=S.gigs.find(x=>x.date===d&&x.type!=="Live / contenu");
-    if(!g){g={id:Date.now(),lieu:"Soirée en direct",date:d,type:"Club",theme:"",time:"",played:[],deb:null,check:{}};S.gigs.push(g);}
-    S.soir={on:true,gig:g.id,t0:Date.now(),log:[]};soirSkip.clear();soirMemo=null;soirAsk=false;save();}
+    let made=false;
+    if(!g){g={id:Date.now(),lieu:"Soirée en direct",date:d,type:"Club",theme:"",time:"",played:[],deb:null,check:{}};S.gigs.push(g);made=true;}
+    S.soir={on:true,gig:g.id,t0:Date.now(),log:[]};if(made)S.soir.made=true;
+    if(S.set.gig&&S.set.gig!==g.id){S.soir.setBak=snapSet();S.set={name:"Soirée en direct",ids:[],gig:g.id};}   // le set préparé d'une autre soirée ne reçoit pas les sons joués ce soir
+    soirSkip.clear();soirMemo=null;soirAsk=false;save();}
   soirOpen();}
 function soirOpen(){soirDraw();soirWake();clearInterval(soirClock);soirClock=setInterval(soirTick,1000);}
 function soirTick(){const e=$("#soirT");if(!e)return;const s=Math.max(0,Math.floor((Date.now()-S.soir.t0)/1000));
   e.textContent=`${Math.floor(s/3600)}:${String(Math.floor(s/60)%60).padStart(2,"0")}:${String(s%60).padStart(2,"0")}`;}
 function soirPick(){const key=S.cur+"|"+S.set.ids.length;
+  const okO=o=>{const t=T(o.n);return !!t&&!t.hidden;};
+  if(soirMemo&&soirMemo.list.some(o=>!okO(o)))soirMemo=null;   // un son proposé a disparu depuis : on recalcule
   if(!soirMemo||soirMemo.key!==key)soirMemo={key,list:S.cur?suggestions().filter(o=>!o.c.wish).map(o=>({n:o.c.n,s:o.s})):[]};
   let p=soirMemo.list.find(o=>!soirSkip.has(o.n));
   if(!p&&soirMemo.list.length&&soirSkip.size){soirSkip.clear();p=soirMemo.list[0];}   // toutes écartées : on reprend au début, pas d'impasse
@@ -2495,7 +2687,8 @@ function soirPlay(n){const x=T(n);if(!x)return;const g=soirGig(),o=snapSet(),had
   S.soir.log.push({k:"play",n,t:at});soirMemo=null;soirSkip.clear();soirDraft.q="";
   pushUndo("son suivant (soirée)",()=>{restoreSet(o);if(g&&had)g.played=had;S.soir.log=S.soir.log.filter(l=>!(l.k==="play"&&l.t===at));soirMemo=null;soirDraw();});
   save();soirDraw();}
-function soirNext(){const p=soirPick();if(!p)return toast("Aucun son compatible à proposer : choisis-en un à la main.",false,true);soirPlay(p.n);}
+function soirNext(){const p=soirPick();if(!p)return toast("Aucun son compatible à proposer : cherche-le dans « Jouer un autre son ».",false,true);soirPlay(p.n);}
+function soirTap(fn,arg){if(Date.now()-soirLock<800)return;soirLock=Date.now();fn(arg);}   // double appui sur l'écran : un seul son compté
 function soirOther(){const p=soirPick();if(p)soirSkip.add(p.n);soirDraw();}
 function soirMark(up){const c=T(S.cur);if(!c)return;const old=S.L[c.n];
   const same=old&&old.why&&old.why.indexOf(up?"▲ A marché (soirée)":"▼ Flop en soirée")===0;
@@ -2507,7 +2700,9 @@ function soirMark(up){const c=T(S.cur);if(!c)return;const old=S.L[c.n];
   save();soirDraw();}
 function soirReq(){const v=(soirDraft.req||"").replace(/\s+/g," ").trim();if(v.length<2)return toast("Écris ou dicte le son demandé.",false,true);
   const parts=v.split(/\s+[-–—]\s+/);const a=parts.length>1?parts[0]:"",title=parts.length>1?parts.slice(1).join(" - "):v;
-  const m=libMatch({t:title,a});let t,msg;
+  let m=libMatch({t:title,a});let t,msg;
+  if(!m&&parts.length>1)m=libMatch({t:parts[0],a:parts.slice(1).join(" - ")});
+  if(!m&&!a){const bt=baseTitle(title);if(bt.trim()){const c=S.tracks.filter(x=>!x.hidden&&baseTitle(x.t)===bt);if(c.length===1)m=c[0];}}
   if(m&&!m.wish){S.L[m.n]={v:.08,why:"▲ Demandé par le public (soirée)"};t=m;msg=`Tu l’as déjà : « ${esc(m.t)} ». Je le note comme demandé.`;}
   else if(m){t=m;msg=`Déjà dans ta file : « ${esc(m.t)} ».`;}
   else{t={n:S.nextN++,path:"wish/req-"+Date.now(),wish:true,req:true,dz:null,cover:null,t:title,a,src:"soiree",why:WHY.soiree,stage:"queue",bpm:null,bpmSrc:"est",k:null,kSrc:"est",e:null,
@@ -2515,13 +2710,17 @@ function soirReq(){const v=(soirDraft.req||"").replace(/\s+/g," ").trim();if(v.l
     S.tracks.push(t);reindex();msg=`Demande notée dans « File d’attente » : « ${esc(title)} ».`;
     pushUndo("demande du public",()=>{removeFromLib(t);S.soir.log=S.soir.log.filter(l=>l.n!==t.n);save(true);soirDraw();});}
   S.soir.log.push({k:"req",n:t.n,t:Date.now()});soirDraft.req="";save(true);soirDraw();toast(msg,true);}
-function soirEnd(){const L=S.soir.log,np=L.filter(l=>l.k==="play").length,nu=L.filter(l=>l.k==="up").length,nd=L.filter(l=>l.k==="down").length,nr=L.filter(l=>l.k==="req").length;
-  S.soir={on:false,gig:S.soir.gig,t0:0,log:[]};soirAsk=false;clearInterval(soirClock);soirUnwake();soirDraw();save();
+function soirEnd(){const g0=soirGig(),bak=S.soir.setBak,vide=!!(S.soir.made&&g0&&!g0.played.length&&!S.soir.log.length);const L=S.soir.log,np=L.filter(l=>l.k==="play").length,nu=L.filter(l=>l.k==="up").length,nd=L.filter(l=>l.k==="down").length,nr=L.filter(l=>l.k==="req").length;
+  S.soir={on:false,gig:vide?null:S.soir.gig,t0:0,log:[]};soirAsk=false;clearInterval(soirClock);soirUnwake();
+  if(bak)restoreSet(bak);   // le set préparé d'une autre soirée revient comme avant
+  if(vide)S.gigs=S.gigs.filter(x=>x!==g0);   // soirée lancée par erreur : pas de soirée fantôme ni de débrief vide
+  soirDraw();save();
+  if(vide){softRender();return toast("Soirée fermée : rien n'avait été joué, rien n'est gardé.");}
   notify(`Soirée terminée : ${pl(np,"son")}, ${nu} ▲, ${nd} ▼, ${pl(nr,"demande")}. Fais ton débrief demain.`,"debrief");softRender();
   toast(`Soirée terminée : ${pl(np,"son")} joué${np>1?"s":""}, ${pl(nr,"demande")} du public.`);}
 let soirQt=0;
 function soirResHtml(){const q=soirDraft.q.trim().toLowerCase();const res=q.length<2?[]:visible().filter(x=>!x.wish&&!x.missing&&((x.t||"")+" "+(x.a||"")).toLowerCase().includes(q)).slice(0,6);
-  return res.map(x=>`<button onclick="soirPlay(${x.n})"><b>${esc(x.t)}</b> <span class="hint">${esc(x.a)}</span></button>`).join("")||(q.length>=2?'<span class="hint">Aucun résultat.</span>':'<span class="hint">Tape au moins 2 lettres.</span>');}
+  return res.map(x=>`<button onclick="soirTap(soirPlay,${x.n})"><b>${esc(x.t)}</b> <span class="hint">${esc(x.a)}</span></button>`).join("")||(q.length>=2?'<span class="hint">Aucun résultat.</span>':'<span class="hint">Tape au moins 2 lettres.</span>');}
 function soirFind(){clearTimeout(soirQt);const e=$("#soirRes");if(e)e.innerHTML=soirResHtml();}   // ne redessine que la liste : le clavier reste ouvert
 function soirQin(e){soirDraft.q=e.target.value;if(e.isComposing)return;clearTimeout(soirQt);soirQt=setTimeout(soirFind,120);}
 function soirDraw(){let el=$("#soir");
@@ -2533,23 +2732,57 @@ function soirDraw(){let el=$("#soir");
   const reqs=L.filter(l=>l.k==="req").slice(-3).reverse().map(l=>T(l.n)).filter(Boolean);
   const wl=WLst==="ok"?`<div class="sw ok" id="soirWL">● Écran gardé allumé</div>`:WLst===""?`<div class="sw" id="soirWL">Écran : vérification…</div>`:
     `<div class="sw warn" id="soirWL">L’écran peut s’éteindre tout seul (${WLst==="absent"?"ton appareil ne le permet pas":WLst==="perdu"?"le verrou a été perdu":"le téléphone a refusé"}). Réglages › Luminosité › Verrouillage auto › Jamais, pendant la soirée.</div>`;
-  let mid;
-  if(!c){
-    mid=`<div class="sreq"><b>Quel est le premier son ?</b><div class="row2"><input id="soirQ" type="search" placeholder="Tape le début du titre ou de l’artiste" value="${esc(soirDraft.q)}" oninput="soirQin(event)" oncompositionend="soirDraft.q=this.value;soirFind()" onkeydown="if(event.key==='Enter'){soirFind()}" aria-label="Chercher le premier son"><button class="sm2" onclick="soirFind()">Chercher</button></div>
-      <div class="sres" id="soirRes">${soirResHtml()}</div></div>`;}
-  else{const p=soirPick();
-    mid=`<div class="scur">${cover(c)}<div class="t"><span class="hint">En cours</span><b>${esc(c.t)}</b><span class="hint">${esc(c.a)}${c.bpm?" · "+Math.round(c.bpm)+" BPM":""}${c.k?" · "+esc(c.k):""}</span></div></div>
-      <button class="sbtn sbig" id="soirNextB" onclick="soirNext()" aria-label="Son suivant">${p?`SON SUIVANT<small>${esc(p.c.t)} · ${esc(p.c.a)}</small>`:`PAS DE PROPOSITION<small>Choisis le son à la main dans l’appli</small>`}</button>
+  const started=L.some(l=>l.k==="play");   // le son resté « en cours » de la préparation n'est pas un son joué
+  const first=`<div class="sreq"><b>${started?"Jouer un autre son":"Quel est le premier son ?"}</b><div class="row2"><input id="soirQ" type="search" placeholder="Tape le début du titre ou de l’artiste" value="${esc(soirDraft.q)}" oninput="soirQin(event)" oncompositionend="soirDraft.q=this.value;soirFind()" onkeydown="if(event.key==='Enter'){soirFind()}" aria-label="${started?"Chercher le son joué":"Chercher le premier son"}"><button class="sm2" onclick="soirFind()">Chercher</button></div>
+      <div class="sres" id="soirRes">${soirResHtml()}</div></div>`;
+  let mid=first,cur="";
+  if(c){const p=soirPick();
+    cur=`<div class="scur">${cover(c)}<div class="t"><span class="hint">${started?"En cours":"Prévu au départ"}</span><b>${esc(c.t)}</b><span class="hint">${esc(c.a)}${c.bpm?" · "+Math.round(c.bpm)+" BPM":""}${c.k?" · "+esc(c.k):""}</span></div></div>
+      ${started?"":`<button class="sm2 ghost" id="soirStartCur" onclick="soirTap(soirPlay,${c.n})">Commencer par celui-ci</button>`}
+      <button class="sbtn sbig" id="soirNextB" onclick="soirTap(soirNext)" aria-label="Son suivant">${p?`SON SUIVANT<small>${esc(p.c.t)} · ${esc(p.c.a)}</small>`:`PAS DE PROPOSITION<small>Cherche le son ci-dessous</small>`}</button>
       ${p?`<button class="sm2 ghost" onclick="soirOther()">Autre proposition</button>`:""}
-      <div class="s2"><button class="sbtn sok ${up?"on":""}" id="soirOk" onclick="soirMark(true)" aria-pressed="${up}">▲ A marché</button><button class="sbtn sko ${dn?"on":""}" id="soirKo" onclick="soirMark(false)" aria-pressed="${dn}">▼ Flop</button></div>`;}
+      <div class="s2"><button class="sbtn sok ${up?"on":""}" id="soirOk" onclick="soirMark(true)" aria-pressed="${up}" ${started?"":"disabled"}>▲ A marché</button><button class="sbtn sko ${dn?"on":""}" id="soirKo" onclick="soirMark(false)" aria-pressed="${dn}" ${started?"":"disabled"}>▼ Flop</button></div>`;
+    mid=started?cur+first:first+cur;}
   el.innerHTML=`<div class="sh"><span><b>Mode soirée</b> · <span id="soirT">0:00:00</span></span><span id="soirN">${pl(np,"son")} joué${np>1?"s":""}</span></div>${wl}${mid}
     <div class="sreq"><b>Demande du public</b><div class="row2"><input id="soirR" type="text" enterkeyhint="done" placeholder="Artiste - Titre" value="${esc(soirDraft.req)}" oninput="soirDraft.req=this.value" onkeydown="if(event.key==='Enter'){soirReq()}" aria-label="Son demandé par le public"><button class="sm2" id="soirReqB" onclick="soirReq()">Noter</button></div>
       ${reqs.map(t=>`<span class="hint">✓ ${esc(t.a?t.a+" - ":"")}${esc(t.t)}</span>`).join("")}<span class="hint">Pour dicter : touche le micro du clavier de ton iPhone.</span></div>
     <div class="sfoot">${soirAsk?`<span>Terminer la soirée ?</span><span style="display:flex;gap:8px"><button class="sm2 ghost" onclick="soirAsk=false;soirDraw()">Non</button><button class="sm2 red" id="soirEndB" onclick="soirEnd()">Oui, terminer</button></span>`:`<span class="hint">Tout est enregistré tout seul.</span><button class="sm2 ghost" id="soirAskB" onclick="soirAsk=true;soirDraw()">Terminer</button>`}</div>`;
   soirTick();}
 
+/* ===================== 1.12 REFONTE INTUITIVE : écrans réécrits (reprennent la logique existante, changent seulement ce qu'on voit) ===================== */
+VIEWS.home=()=>{
+  if(!S.tracks.length)return welcome();
+  const up=upGigs()[0],pd=pendingDeb(),vq=valQueue().length,h=new Date().getHours(),wl=wishes().length,a=qList().length+tList().length;
+  let carte;
+  if(up){const c=gigCheck(up),done=c.filter(x=>x[0]).length,dd=daysUntil(up.date),mine=S.set.gig===up.id,pret=mine&&S.set.ids.length>1,usb=!!(up.check&&up.check.usb);
+    const bouton=!pret?"Préparer mon set":!usb?"Copier sur ma clé USB":"Voir mon set";
+    carte=`<div class="card2"><span class="tag info">${dd===0?"CE SOIR":dd===1?"DEMAIN":"DANS "+dd+" JOURS"}</span><h2 class="c2t">${esc(up.theme&&up.theme!=="Prochaine soirée"?up.theme:up.lieu||up.type)}</h2><div class="hint">${fmtDate(up.date)} · ${esc(up.lieu)}</div>
+      <div class="prog" aria-label="Préparation ${done} sur ${c.length}"><i style="width:${Math.round(done/c.length*100)}%"></i></div><div class="hint" style="margin-bottom:14px">Préparation ${done} sur ${c.length}</div>
+      <button class="cta" onclick="linkSet(${up.id})">${bouton}</button></div>`;}
+  else carte=`<div class="card2"><h2 class="c2t">Ajoute ta première soirée</h2><p class="hint" style="margin:0 0 14px">Donne une date et un lieu : je te guide pour préparer ton set.</p><button class="cta" onclick="go('gigs');newGig()">Nouvelle soirée</button></div>`;
+  const tuile=(ic,t,s,on)=>`<button class="tile2" onclick="${on}"><span class="ti2">${svg(ic,24)}</span><b>${t}</b><span>${s}</span></button>`;
+  const ligne=(t,on,cl)=>`<button class="lrow ${cl||""}" onclick="${on}"><span>${t}</span><span>›</span></button>`;
+  return `<div class="hero"><div><h1>${h>=18||h<5?"Bonsoir":"Salut"}${S.name?", "+esc(S.name):""}</h1><p class="sub" style="margin:4px 0 0">Voilà ce qui t’attend.</p></div></div>
+  ${carte}
+  <div class="tiles2">${tuile("trend","Trouver du son","Les sons du moment","go('trend')")}${pd.length?tuile("debrief","Raconter ma soirée",`Soirée du ${fmtDate(pd[0].date)}`,`S.dGig=${pd[0].id};go('debrief')`):tuile("lib","Ma musique",pl(visible().length,"son"),"go('lib')")}</div>
+  ${vq?ligne(`${pl(vq,"son")} à contrôler`,"S.libView='check';go('lib')","or"):""}
+  ${a||wl?ligne(`${pl(a||wl,"son")} à récupérer`,"S.trTab='liste';go('trend')"):""}
+  ${S.demo?`<div class="card2" style="margin-top:14px"><b>Tu fais un essai.</b><p class="hint" style="margin:4px 0 12px">Ces sons sont des exemples. Rien n’est écrit dans Serato.</p><button class="cta sec" onclick="leaveDemo()">${MOBILE&&!FSA?"Quitter l’essai":"Ajouter ma musique"}</button></div>`:""}`;};
+
+VIEWS.gigs=()=>{const up=upGigs(),past=pastGigs();
+  const statut=g=>{const pret=S.set.gig===g.id&&S.set.ids.length>1;return !pret?"Set à préparer":(g.check&&g.check.usb)?"Set prêt, copié sur la clé":"Clé USB à faire";};
+  const nom=g=>esc(g.theme&&g.theme!=="Prochaine soirée"?g.theme:(g.lieu||g.type));
+  return `<button class="cta" onclick="newGig()">${svg("plus",18)}Nouvelle soirée</button>
+  <h3 class="sect">À venir</h3>${up.length?up.map(g=>{const dd=daysUntil(g.date);
+    return `<div class="gcard" role="button" tabindex="0" onclick="linkSet(${g.id})"><div class="row between" style="flex-wrap:nowrap"><span class="tag info">${dd===0?"CE SOIR":dd===1?"DEMAIN":"DANS "+dd+" JOURS"}</span><button class="lnk2 sm" onclick="event.stopPropagation();editGig(${g.id})">Modifier</button></div>
+      <b class="gct">${nom(g)}</b><div class="hint">${fmtDate(g.date)} · ${esc(g.lieu)}${g.time?" · "+esc(g.time):""}</div><div class="gst">${statut(g)} ›</div></div>`;}).join(""):`<div class="empty">Aucune soirée prévue. Ajoutes-en une.</div>`}
+  <h3 class="sect">Passées</h3>${past.length?past.map(g=>`<div class="gcard slim" role="button" tabindex="0" onclick="gigDetail(${g.id})"><div style="min-width:0"><b>${fmtDate(g.date)}</b><div class="hint">${esc(g.lieu)} · ${pl(g.played.length,"son")}</div></div>
+      ${g.deb?`<span class="tag ok">Bilan fait</span>`:g.type==="Live / contenu"?"":`<button class="pillo" onclick="event.stopPropagation();S.dGig=${g.id};go('debrief')">Raconte ta soirée</button>`}</div>`).join(""):`<div class="empty">Aucune soirée passée.</div>`}
+  <button class="lnk2" onclick="importHistory()">Importer mon historique Serato</button>`;};
+
 /* ===================== DÉMARRAGE ===================== */
-(async()=>{await load();await loadLog();migrateStages();
+(async()=>{try{await load();await loadLog();migrateStages();}catch(e){DB.ok=false;try{logErr("demarrage",e.message)}catch(_){}}
+  render();
   if(H.serato&&PERM.serato==="granted"&&!S.demo)await loadSerato(false);
   render();startWatch();checkNews();
   if(S.soir&&S.soir.on)soirOpen();   // soirée en cours avant un rechargement : on la reprend
