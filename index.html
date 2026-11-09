@@ -135,7 +135,7 @@ textarea.f{width:100%;min-height:110px;resize:vertical;line-height:1.55}
 .mi:hover{background:var(--panel3);color:var(--txt)}
 .wheel text{font-size:9px;font-weight:700;pointer-events:none}.wheel path{cursor:pointer}
 .drop{position:absolute;left:0;right:0;top:calc(100% + 4px);background:var(--panel2);border:1px solid var(--line2);border-radius:10px;max-height:300px;overflow:auto;z-index:20;box-shadow:0 20px 50px rgba(0,0,0,.5)}
-.drop div{padding:8px 10px;cursor:pointer;display:flex;align-items:center;gap:10px}.drop div:hover{background:var(--panel3)}
+.drop div{padding:8px 10px;cursor:pointer;display:flex;align-items:center;gap:10px}.drop div:hover,.drop div.on{background:var(--panel3)}
 .trend{display:grid;grid-template-columns:34px 40px 1fr auto auto;gap:12px;align-items:center;padding:10px 4px;border-bottom:1px solid #20202a}
 .rank{font-weight:800;font-size:18px;color:var(--txt2);text-align:center;line-height:1}.rank small{display:block;font-size:10px;margin-top:3px}
 .place{font-size:11px;color:var(--muted);margin-top:3px}.place b{color:var(--txt2);font-weight:600}
@@ -322,11 +322,15 @@ select.f{color-scheme:dark;-webkit-appearance:none;appearance:none;padding-right
    SETMATE · assistant DJ pour Serato
    Tout reste dans ce navigateur (IndexedDB) et dans les dossiers que tu autorises.
    ===================================================================== */
-const VERSION="1.10.0";
+const VERSION="1.10.6";
 const $=s=>document.querySelector(s);
 const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const norm=s=>" "+String(s||"").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9]+/g," ").trim()+" ";
-const baseTitle=s=>norm(String(s||"").replace(/\((feat|ft|with|prod)[^)]*\)|\[[^\]]*\]|\b(feat|ft)\.? .*$/gi,"").replace(/\((extended|clean|dirty|explicit|radio edit|original mix|intro|edit|remaster(ed)?[^)]*)\)/gi,""));
+const _btC=new Map();   // 1.10.6 : baseTitle est une fonction pure, appelée sur toute la bibliothèque par libMatch : on garde le résultat
+const baseTitle=s=>{const k=String(s||"");let v=_btC.get(k);if(v===undefined){v=_baseTitle(k);if(_btC.size>20000)_btC.clear();_btC.set(k,v);}return v;};
+const _baseTitle=s=>norm(String(s||"").replace(/\((feat|ft|with|prod)[^)]*\)|\[[^\]]*\]|\b(feat|ft)\.? .*$/gi,"").replace(/\((extended|clean|dirty|explicit|radio edit|original mix|intro|edit|remaster(ed)?[^)]*)\)/gi,""));
+/* artiste principal complet (avant feat, virgule, &), sans article : sert aux doublons et au lien avec sa musique */
+const mainArtist=a=>norm(String(a||"").split(/\s*(?:,|&|;|\/|\+|\bfeat\b|\bft\b|\bfeaturing\b)\s*/i)[0]).trim().replace(/^(the|le|la|les) /,"");
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 const FSA=typeof window.showDirectoryPicker==="function";
 const MOBILE=/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)||(navigator.maxTouchPoints>1&&matchMedia("(pointer:coarse)").matches);
@@ -354,10 +358,14 @@ const PERM={serato:"none",music:"none",dl:"none"};
 let byN=new Map(),byPath=new Map();
 function reindex(){byN=new Map();byPath=new Map();S.tracks.forEach(t=>{byN.set(t.n,t);byPath.set(t.path,t)});}
 const T=n=>byN.get(n);
-let saveT=null,tracksDirty=false;
-function save(tracksToo=false){if(tracksToo)tracksDirty=true;clearTimeout(saveT);saveT=setTimeout(async()=>{
+let saveT=null,tracksDirty=false,saving=null,saveAgain=false;
+/* 1.10.6 : une seule écriture à la fois ; si une demande arrive pendant l'écriture, on repasse derrière (sinon une modification de piste faite pendant l'écriture n'était jamais enregistrée) */
+function save(tracksToo=false){if(tracksToo)tracksDirty=true;clearTimeout(saveT);saveT=setTimeout(saveNow,400);}
+async function saveNow(){if(saving){saveAgain=true;return saving;}
+  saving=(async()=>{try{do{saveAgain=false;
   const st={};for(const k of ["name","demo","realSnap","nextN","userRoot","musicPrefix","set","cur","dir","crates","L","P","rules","genreFix","todo","notifs","gigs","created","trends","trendCache","genres","dlLast","onboarded","disc","found","styles","tips","trTab","flags","reco","seratoVer","seratoDbAge","pls","own","lsTab","seenV","am","recTab","soir","m3u"])st[k]=S[k];
-  await DB.set("state",st);if(tracksDirty){await DB.set("tracks",S.tracks);tracksDirty=false;}},400);}
+  await DB.set("state",st);if(tracksDirty){tracksDirty=false;await DB.set("tracks",S.tracks);}
+  }while(saveAgain);}finally{saving=null;}})();return saving;}
 /* 1.10 · Un état sauvegardé abîmé ou ancien ne doit jamais empêcher l'appli de démarrer (mesuré : gigs, notifs, trends mal formés ou pistes vides = écran vide).
    Chaque champ lu doit avoir le même genre que sa valeur par défaut (liste, objet, texte, nombre) ; sinon on garde la valeur par défaut. */
 const sameKind=(d,v)=>{if(d===undefined||d===null)return true;const a=x=>Array.isArray(x)?"a":x===null?"n":typeof x;return a(d)===a(v);};
@@ -601,7 +609,10 @@ function subNav(){const g=groupOf(S.screen);if(g.subs.length<2)return "";
 function go(s){S.screen=s;grpLast[groupOf(s).k]=s;closeNotif();render();$("#main").scrollTop=0;}
 const VIEWS={};
 function render(){renderNav();renderTop();renderBanner();$("#main").innerHTML=`${subNav()}<div class="screen">${VIEWS[S.screen]()}</div>`;if(S.screen==="lib")libTable();if(S.screen==="listen")listenAfter();renderPlayer();}
-function softRender(){const m=$("#main"),st=m.scrollTop,ws=window.scrollY;render();m.scrollTop=st;window.scrollTo(0,ws);}
+/* 1.10.5 : si l'utilisateur est en train de taper, on remet le curseur dans le même champ (même id) après la reconstruction de l'écran */
+function softRender(){const m=$("#main"),st=m.scrollTop,ws=window.scrollY,a=document.activeElement,id=a&&a.id,typing=!!(id&&m.contains(a)&&(a.tagName==="INPUT"||a.tagName==="TEXTAREA")),ss=typing?a.selectionStart:null,se=typing?a.selectionEnd:null;
+  render();m.scrollTop=st;window.scrollTo(0,ws);
+  if(typing){const n=document.getElementById(id);if(n&&n!==a){try{n.focus({preventScroll:true});if(ss!=null)n.setSelectionRange(ss,se);}catch(e){}}}}
 /** Astuce d’une ligne, affichée une seule fois par écran. */
 function tip(id,html){return S.tips[id]?"":`<div class="tipbox"><span><b>Astuce</b> · ${html}</span><button class="btn sm ghost" onclick="S.tips['${id}']=1;save();softRender()">Compris</button></div>`;}
 function renderTop(){
@@ -651,7 +662,7 @@ async function loadSerato(announce){
         bpm:parseFloat(fld(f,"tbpm"))||o.bpmEst||null,bpmSrc:parseFloat(fld(f,"tbpm"))?"serato":o.bpmEst?"est":null,
         k:toCamelot(fld(f,"tkey"))||o.kEst||null,kSrc:toCamelot(fld(f,"tkey"))?"serato":o.kEst?"est":null,
         year:parseInt(fld(f,"ttyr"))||null,kbps:parseFloat(fld(f,"tbit"))||null,added:fld(f,"uadd")||parseInt(fld(f,"tadd"))||0,
-        missing:!!fld(f,"bmis"),inSerato:true,e:o.e||null,bpmEst:o.bpmEst,kEst:o.kEst,hidden:o.hidden||false,lastPlayed:o.lastPlayed||null,conf:0,notDup:o.notDup||false,cover:o.cover};
+        missing:!!fld(f,"bmis"),inSerato:true,e:o.e||null,bpmEst:o.bpmEst,kEst:o.kEst,hidden:o.hidden||false,lastPlayed:o.lastPlayed||null,conf:0,notDup:o.notDup||false,cover:o.cover,upgrade:o.upgrade,stage:o.stage,doneAt:o.doneAt,doneVia:o.doneVia};
       if(o.manual){t.g=o.g;t.sg=o.sg;t.conf=100;t.manual=true;}else{const c=classify(genre,artist);t.g=c[0];t.sg=c[1];t.conf=c[2];t.gSrc=c[3];}
       t.era=eraOf(t.year);out.push(t);const m=path.match(/^(Users\/[^/]+\/)/);if(m)roots[m[1]]=(roots[m[1]]||0)+1;}
     let linked=0;
@@ -661,7 +672,10 @@ async function loadSerato(announce){
       if(s&&(t.wish||t.local)){mergeInto(t,s);linked++;continue;}out.push(t);}
     if(linked&&announce!==false)setTimeout(()=>toast(`${pl(linked,"son")} « à récupérer » retrouvé${linked>1?"s":""} dans Serato et relié${linked>1?"s":""}.`),300);
     S.tracks=out;S.userRoot=Object.entries(roots).sort((a,b)=>b[1]-a[1])[0]?.[0]||S.userRoot;
-    findDups();reindex();save(true);
+    findDups();reindex();
+    /* 1.10.6 : un son disparu de Serato ne doit pas rester dans le set ni comme son courant (comme au chargement) */
+    S.set.ids=S.set.ids.filter(n=>T(n));if(S.cur!=null&&!T(S.cur))S.cur=S.set.ids.length?S.set.ids[S.set.ids.length-1]:null;
+    save(true);
     if(announce)toast(`${out.filter(t=>t.inSerato).length} sons lus dans ta base Serato.`);
     return true;
   }catch(e){toast("Lecture de la base Serato impossible : "+esc(e.message),false,true);return false;}
@@ -674,8 +688,8 @@ function mergeInto(from,to){const a=from.n,b=to.n;
   S.gigs.forEach(g=>{g.played=(g.played||[]).map(n=>n===a?b:n);});
   if(!to.e&&from.e)to.e=from.e;if(!to.cover&&from.cover)to.cover=from.cover;if(from.manual&&!to.manual){to.g=from.g;to.sg=from.sg;to.conf=100;to.manual=true;}
   if(from.lastPlayed&&(!to.lastPlayed||to.lastPlayed<from.lastPlayed))to.lastPlayed=from.lastPlayed;}
-function findDups(){const g={};S.tracks.forEach(t=>{t.dupOf=null;if(t.notDup||t.wish)return;const k=baseTitle(t.t)+"|"+norm(t.a).split(" ")[1];(g[k]=g[k]||[]).push(t);});
-  for(const arr of Object.values(g))if(arr.length>1){arr.sort((a,b)=>(b.kbps||0)-(a.kbps||0));for(const t of arr.slice(1))t.dupOf=arr[0].n;}}
+function findDups(){const g={};S.tracks.forEach(t=>{t.dupOf=null;if(t.notDup||t.wish||t.hidden)return;const ar=mainArtist(t.a);if(!ar)return;const k=baseTitle(t.t)+"|"+ar;(g[k]=g[k]||[]).push(t);});
+  for(const arr of Object.values(g))if(arr.length>1){const kb=t=>t.kbps||192;arr.sort((a,b)=>kb(b)-kb(a));for(const t of arr.slice(1))t.dupOf=arr[0].n;}}
 async function mapMusic(){
   const name=H.music.name;const sample=S.tracks.filter(t=>t.inSerato).slice(0,400);const counts={};
   for(const t of sample){const i=("/"+t.path).indexOf("/"+name+"/");if(i>=0){const pre=t.path.slice(0,i-1+name.length+2);counts[pre]=(counts[pre]||0)+1;}}
@@ -766,17 +780,20 @@ function importDbFile(){const i=$("#fileIn");i.accept="";i.onchange=async()=>{co
 const RULES=[["Amapiano 110-118",x=>x.sg==="Amapiano"&&x.bpm>=110&&x.bpm<=118],["Afrobeats warm-up",x=>x.sg==="Afrobeats"&&(x.e?x.e<=6:!flag("nrjbpm")&&x.bpm<108)],["Afro peak time",x=>x.g==="Afro"&&(x.e?x.e>=8:!flag("nrjbpm")&&x.bpm>=110)],
  ["Rap FR",x=>x.sg==="Rap FR"],["Rap US",x=>x.sg==="Rap US"||x.sg==="Trap"],["Drill",x=>x.sg==="Drill"],["R&B",x=>x.g==="R&B"],["Dancehall · Shatta",x=>x.sg==="Dancehall"||x.sg==="Shatta"],["Kompa · Zouk",x=>x.sg==="Kompa"||x.sg==="Zouk"],
  ["Throwback 90s",x=>x.era==="90s"],["Throwback 2000s",x=>x.era==="2000s"],["Hits open format",x=>x.g==="Open format"],["Nouveautés (30 jours)",x=>x.added&&(Date.now()/1000-x.added)<30*86400]];
-function libRows(){const q=norm(S.libQ).trim();
+const FRC=new Intl.Collator("fr");   // 1.10.6 : un seul collator réutilisé (même ordre que localeCompare avec "fr")
+const _TRANSLIT={"ł":"l","ø":"o","đ":"d","æ":"ae","œ":"oe","ß":"ss","ð":"d","þ":"th","ħ":"h","ı":"i"};
+function normSearch(s){return " "+String(s||"").toLowerCase().replace(/[łøđæœßðþħı]/g,c=>_TRANSLIT[c]).normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^\p{L}\p{N}]+/gu," ").trim()+" ";}
+function libRows(){const words=normSearch(S.libQ).trim().split(" ").filter(Boolean);const qVide=String(S.libQ||"").trim()&&!words.length;
   let r=(S.libView==="check"?valQueue():S.libView==="wish"?wishes():visible()).filter(x=>S.libG==="Tous"||x.g===S.libG)
     .filter(x=>S.libB==="all"||(x.bpm&&({a:x.bpm<95,b:x.bpm>=95&&x.bpm<108,c:x.bpm>=108&&x.bpm<120,d:x.bpm>=120})[S.libB])||(S.libB==="none"&&!x.bpm))
-    .filter(x=>!q||norm(x.t+" "+x.a+" "+x.sg+" "+x.al).includes(q));
-  const [k,d]=S.sort;r.sort((a,b)=>{let A=a[k],B=b[k];if(k==="k"){A=a.k?kn(a.k)*2+(kl(a.k)==="B"):99;B=b.k?kn(b.k)*2+(kl(b.k)==="B"):99;}if(A==null)A=d>0?"￿":"";if(B==null)B=d>0?"￿":"";if(typeof A==="string")return A.localeCompare(B,"fr")*d;return (A-B)*d;});
+    .filter(x=>{if(qVide)return false;if(!words.length)return true;const h=normSearch([x.t,x.a,x.sg,x.al].filter(Boolean).join(" "));return words.every(w=>h.includes(w));});
+  const [k,d]=S.sort;r.sort((a,b)=>{let A=a[k],B=b[k];if(k==="k"){A=a.k?kn(a.k)*2+(kl(a.k)==="B"):99;B=b.k?kn(b.k)*2+(kl(b.k)==="B"):99;}if(A==null)A=d>0?"￿":"";if(B==null)B=d>0?"￿":"";if(typeof A==="string")return FRC.compare(A,B)*d;return (A-B)*d;});
   return r;}
 VIEWS.lib=()=>{if(!S.tracks.length)return welcome();const vq=valQueue().length,wq=wishes().length;const gs=["Tous",...new Set(visible().map(x=>x.g))];
   return `<div class="row between"><div><h1>Ma musique</h1><p class="sub">${pl(visible().length-wq,"son")}${wq?` + ${wq} à récupérer`:""} · touche un son pour le voir en détail.</p>${S.seratoVer==="4"||S.seratoVer==="5"?`<p class="hint" style="color:var(--orange);margin-top:-12px;margin-bottom:14px">Tu es en ${esc(SV_LABEL[S.seratoVer])} : cette liste vient de ton ancienne base Serato 3. Les sons ajoutés depuis peuvent manquer.</p>`:""}</div>
     <div class="row">${H.music&&PERM.music==="granted"?`<button class="btn ghost sm" onclick="analyzeMissing()">${svg("refresh",14)}Analyser l’énergie</button>`:""}
     <div class="seg"><button class="${S.libView==="all"?"on":""}" onclick="S.libView='all';S.sel=null;render()">Tous</button><button class="${S.libView==="check"?"on":""}" onclick="S.libView='check';S.sel=null;render()">À vérifier (${vq})</button><button class="${S.libView==="wish"?"on":""}" onclick="S.libView='wish';S.sel=null;render()">À récupérer (${wq})</button></div></div></div>
-  <div class="row" style="margin-bottom:12px"><input class="f" placeholder="Titre, artiste, style…" value="${esc(S.libQ)}" oninput="S.libQ=this.value;S.libLimit=200;libTable()" style="flex:1;min-width:180px;max-width:300px">
+  <div class="row" style="margin-bottom:12px"><input class="f" id="libQ" placeholder="Titre, artiste, style…" value="${esc(S.libQ)}" oninput="S.libQ=this.value;S.libLimit=200;libTable()" style="flex:1;min-width:180px;max-width:300px">
     ${gs.slice(0,8).map(g=>`<button class="chip ${S.libG===g?"on":""}" data-g="${esc(g)}" onclick="S.libG=this.dataset.g;render()">${esc(g==="?"?"Non classé":g)}</button>`).join("")}
     <select class="f" onchange="S.libB=this.value;libTable()">${[["all","Tous les BPM"],["a","< 95"],["b","95 à 107"],["c","108 à 119"],["d","120 +"],["none","Sans BPM"]].map(([v,l])=>`<option value="${v}" ${S.libB===v?"selected":""}>${l}</option>`).join("")}</select></div>
   <div class="grid g-lib"><div class="card" style="padding:0"><div class="tw" id="libT"></div></div><div id="libSide">${libSide()}</div></div>`;};
@@ -823,7 +840,7 @@ function setGenre(n,v){if(!v)return;const x=T(n),[g,sg]=v.split("|");const ak=no
   const oldFix=S.genreFix[ak];if(ak)S.genreFix[ak]=[g,sg];
   pushUndo("correction du genre",()=>{changed.forEach(([t,a,b,c,d,e])=>{t.g=a;t.sg=b;t.conf=c;t.manual=d;t.gSrc=e;});if(oldFix)S.genreFix[ak]=oldFix;else delete S.genreFix[ak];});
   save(true);toast(`Corrigé : ${g} › ${sg}${changed.length>1?` (+${changed.length-1} sons du même artiste)`:""}.`,true);afterLib();}
-function hideTrack(n){const x=T(n);x.hidden=true;pushUndo("masquage",()=>{x.hidden=false});S.sel=null;save(true);toast("Masqué dans SetMate. Le fichier reste sur ton disque.",true);afterLib();}
+function hideTrack(n){const x=T(n);x.hidden=true;findDups();pushUndo("masquage",()=>{x.hidden=false;findDups();});S.sel=null;save(true);toast("Masqué dans SetMate. Le fichier reste sur ton disque.",true);afterLib();}
 function notDup(n){const x=T(n),o=x.dupOf;x.dupOf=null;x.notDup=true;pushUndo("doublon",()=>{x.dupOf=o});save(true);afterLib();}
 function toTodo(n){const x=T(n);x.upgrade=true;pushUndo("à remplacer",()=>{x.upgrade=false;});save(true);toast(`« ${esc(x.t)} » noté « à remplacer » (Tendances › À récupérer).`,true);renderNav();}
 function afterLib(){renderNav();if(S.screen==="lib"){libTable();$("#libSide").innerHTML=libSide();}}
@@ -847,8 +864,9 @@ function keyS(a,b){if(!a||!b)return [.5,"Tonalité inconnue"];const d=(kn(b)-kn(
   if(a===b)return [1,"Même tonalité"];if(kn(a)===kn(b))return [.85,"Tonalité relative"];if((d===1||d===11)&&kl(a)===kl(b))return [.9,"Tonalité voisine"];
   if(d===2&&kl(a)===kl(b))return [.6,"+2 · boost d’énergie"];if(d===7&&kl(a)===kl(b))return [.5,"+7 · changement marqué"];return [.15,"Tonalité éloignée"];}
 const GW=[["amapiano",x=>x.sg==="Amapiano","amapiano"],["afrobeat",x=>x.sg==="Afrobeats","afrobeats"],["afro",x=>x.g==="Afro","afro"],["rap",x=>x.g==="Hip-hop","rap"],["drill",x=>x.sg==="Drill","drill"],[" r b ",x=>x.g==="R&B","R&B"],["rnb",x=>x.g==="R&B","R&B"],["dancehall",x=>x.sg==="Dancehall","dancehall"],["shatta",x=>x.sg==="Shatta","shatta"],["kompa",x=>x.sg==="Kompa","kompa"],["zouk",x=>x.sg==="Zouk","zouk"],["hits",x=>x.g==="Open format","hits"],["house",x=>x.sg==="House / Dance","house"]];
-function ruleEffects(rules=S.rules){const ef=[];rules.forEach(r=>{const n=norm(r);GW.forEach(([w,f,l])=>{const i=n.indexOf(w.startsWith(" ")?w:" "+w);if(i<0)return;const pre=n.slice(Math.max(0,i-24),i);
-  let sgn=0;if(/trop|moins/.test(pre))sgn=-1;else if(/plus|voulai|reclam|demand|assez|manqu|envie/.test(pre))sgn=1;if(sgn&&!ef.some(e=>e.l===l))ef.push({f,sgn,l});});});return ef;}
+let _reC={k:null,v:null};   // 1.10.6 : appelée pour chaque son dans compat() ; le résultat ne dépend que du texte des règles
+function ruleEffects(rules=S.rules){const key=rules.join("\u0001");if(_reC.k===key)return _reC.v;const ef=[];rules.forEach(r=>{const n=norm(r);GW.forEach(([w,f,l])=>{const i=w.startsWith(" ")?n.indexOf(w):n.search(new RegExp(" "+w+"s?(?= )"));if(i<0)return;const pre=n.slice(Math.max(0,i-24),i);
+  let sgn=0;if(/trop|moins/.test(pre))sgn=-1;else if(/plus|voulai|reclam|demand|assez|manqu|envie/.test(pre))sgn=1;if(sgn&&!ef.some(e=>e.l===l))ef.push({f,sgn,l});});});_reC={k:key,v:ef};return ef;}
 function compat(cur,c,full=true){
   let s,why=[];
   if(cur.bpm&&c.bpm){const p=pitch(cur.bpm,c.bpm);s=.4*p.s;why.push([p.s>.75?"ok":p.s>.3?"warn":"bad",p.lab+(Math.abs(p.pct)>=.5&&Math.abs(p.pct)<=12&&!p.m?` · pitch ${p.pct>0?"+":""}${p.pct.toFixed(1).replace(".",",")} %`:"")]);}
@@ -872,9 +890,10 @@ const sessTTL=()=>((S.reco&&S.reco.ttl)||30)*60e3;
 const akey=a=>norm(a).trim().split(" ").slice(0,2).join(" ");
 function slog(id,t,reason){SESS.log.push({at:Date.now(),id,t,reason});if(SESS.log.length>300)SESS.log.shift();}
 function sessExcluded(id){const now=Date.now(),d=SESS.dismissed[id],c=SESS.cool[id];
-  if(d&&now-d.at<sessTTL())return "refusé par toi";if(c&&now-c.at<sessTTL())return c.why;return null;}
-function markShown(list,ctx,idOf,titleOf){list.forEach(o=>{const id=idOf(o);const sh=SESS.shown[id]=SESS.shown[id]||new Set();
-  if(sh.has(ctx))return;sh.add(ctx);if(sh.size>=COOL_AFTER&&!SESS.cool[id]){SESS.cool[id]={at:Date.now(),why:`proposé ${COOL_AFTER} fois sans être choisi`};slog(id,titleOf(o),SESS.cool[id].why);}});}
+  if(d&&now-d.at<sessTTL())return "refusé par toi";if(c&&c.ctx!==SESS.ctx&&now-c.at<sessTTL())return c.why;return null;}
+/* 1.10.5 : une pause posée « à cause de cette situation » ne retire pas le son tant qu'on reste dans la même situation (sinon il disparaît au simple clic sur « pourquoi ? ») */
+function markShown(list,ctx,idOf,titleOf){SESS.ctx=ctx;list.forEach(o=>{const id=idOf(o);const sh=SESS.shown[id]=SESS.shown[id]||new Set();
+  if(sh.has(ctx))return;sh.add(ctx);if(sh.size>=COOL_AFTER&&!SESS.cool[id]){SESS.cool[id]={at:Date.now(),why:`proposé ${COOL_AFTER} fois sans être choisi`,ctx};slog(id,titleOf(o),SESS.cool[id].why);}});}
 function dismissSugg(id,title){SESS.dismissed[id]={at:Date.now()};slog(id,title,"refusé par toi");
   pushUndo("refus de la suggestion",()=>{delete SESS.dismissed[id];});toast(`« ${esc(title)} » écarté pour cette session`,true,false,"refus");softRender();}
 function otherIdeas(ids){ids.forEach(([id,t])=>{SESS.cool[id]={at:Date.now(),why:"« autres propositions » demandé"};slog(id,t,"autres propositions");});softRender();}
@@ -882,16 +901,18 @@ function resetExclusions(silent){const n=Object.keys(SESS.dismissed).length+Obje
   if(!silent){toast(n?`${pl(n,"son")} remis dans les propositions`:"Rien à remettre");softRender();}}
 const excludedCount=()=>Object.keys(SESS.dismissed).filter(k=>sessExcluded(k)).length+Object.keys(SESS.cool).filter(k=>sessExcluded(k)).length;
 function suggestions(){const cur=T(S.cur);if(!cur)return [];
+  SESS.ctx=cur.n+"|"+S.set.ids.join(",");
   const inSet=new Set(S.set.ids);
-  const base=visible().filter(x=>x.n!==cur.n&&!inSet.has(x.n)&&!x.missing&&!(x.dupOf&&inSet.has(x.dupOf))).filter(x=>!S.sameGenre||x.g===cur.g).filter(x=>!S.keyF||x.k===S.keyF);
+  const inGrp=new Set([...S.set.ids,cur.n].map(n=>{const t=T(n);return t?(t.dupOf||t.n):n;}));   // un son et ses copies comptent pour un seul
+  const base=visible().filter(x=>x.n!==cur.n&&!inSet.has(x.n)&&!x.missing&&!inGrp.has(x.dupOf||x.n)).filter(x=>!S.sameGenre||x.g===cur.g).filter(x=>!S.keyF||x.k===S.keyF);
   if(!flag("reco2"))return base.map(x=>compat(cur,x)).sort((a,b)=>b.s-a.s).slice(0,5);
   const setArtists=new Set(S.set.ids.map(T).filter(Boolean).map(t=>akey(t.a)));
   const pool=[];for(const x of base){if(sessExcluded("t"+x.n))continue;const r=compat(cur,x);
     if(setArtists.has(akey(x.a))){r.s-=.1;r.why.push(["warn","Artiste déjà dans ton set"]);}pool.push(r);}
   pool.sort((a,b)=>b.s-a.s);const out=[];
   while(out.length<5&&pool.length){let bi=0,bv=-9;
-    for(let i=0;i<Math.min(pool.length,60);i++){const p=pool[i];let v=p.s;if(out.some(o=>akey(o.c.a)===akey(p.c.a)))v-=.3;v-=.04*out.filter(o=>o.c.sg===p.c.sg).length;if(v>bv){bv=v;bi=i;}}
-    const pick=pool.splice(bi,1)[0];if(pick.s<MIN_PERTINENT)break;out.push(pick);}
+    for(let i=0;i<Math.min(pool.length,60);i++){const p=pool[i];if(p.s<MIN_PERTINENT)continue;let v=p.s;if(out.some(o=>akey(o.c.a)===akey(p.c.a)))v-=.3;v-=.04*out.filter(o=>o.c.sg===p.c.sg).length;if(v>bv){bv=v;bi=i;}}
+    if(bv===-9)break;const pick=pool.splice(bi,1)[0];out.push(pick);}
   markShown(out,cur.n+"|"+S.set.ids.join(","),o=>"t"+o.c.n,o=>o.c.t);
   return out;}
 const scol=s=>s>=.75?"var(--green)":s>=.5?"var(--orange)":"var(--red)";
@@ -899,7 +920,7 @@ const verdict=s=>s>=.85?["Parfait","ok"]:s>=.7?["Très bien","ok"]:s>=.5?["Possi
 const ALLKEYS=[];for(let n=1;n<=12;n++)for(const L of ["A","B"])ALLKEYS.push(n+L);
 function coverage(){const cnt={};visible().forEach(x=>{if(x.k)cnt[x.k]=(cnt[x.k]||0)+1;});return {cnt,n:ALLKEYS.filter(k=>cnt[k]).length,empty:ALLKEYS.filter(k=>!cnt[k])};}
 function onlinePool(){const seen=new Set(),out=[];
-  for(const x of [...S.trends.items,...(S.disc.items||[]),...Object.values(S.found||{}),...(S.search.items||[])]){if(!x||seen.has(x.dz))continue;seen.add(x.dz);const c=S.trendCache[x.dz];if(c&&!libMatch(x))out.push({...x,bpm:c.bpm,k:c.k,e:c.e,kSrc:"est"});}
+  for(const x of [...S.trends.items.map(y=>y&&{...y,from:"trend"}),...(S.disc.items||[]).map(y=>y&&{...y,from:"trend"}),...Object.values(S.found||{}).map(y=>y&&{...y,from:"found"}),...(S.search.items||[]).map(y=>y&&{...y,from:"found"})]){if(!x||seen.has(x.dz))continue;seen.add(x.dz);const c=S.trendCache[x.dz];if(c&&!libMatch(x))out.push({...x,bpm:c.bpm,k:c.k,e:c.e,kSrc:"est"});}
   return out;}
 function discoverSugg(){const cur=T(S.cur);if(!cur)return [];
   let l=onlinePool();if(flag("reco2"))l=l.filter(x=>!sessExcluded("dz"+x.dz));
@@ -911,14 +932,14 @@ function sugRow({c,s,why}){const [w,cl]=verdict(s);const main=[why[0][1],why[1][
     <div class="sgm" onclick="S.openWhy=${open?"null":c.n};softRender()"><div class="sgt"><b>${esc(c.t)}</b> <span class="hint">· ${esc(c.a)}</span></div>${c.wish?'<span class="tag info">à récupérer</span> ':""}<div class="hint sgw">${esc(main)} · <u>${open?"moins":"pourquoi ?"}</u></div>${open?`<div class="why">${why.map(([t,l])=>`<span class="tag ${t}">${esc(l)}</span>`).join("")}</div>`:""}</div>
     <button class="play" onclick="playTrack(${c.n})" aria-label="Écouter">${svg(isPlaying(c)?"pause":"play",12)}</button>${flag("reco2")?`<button class="mi" onclick="dismissSugg('t${c.n}','${jsq(c.t)}')" aria-label="Pas pour ce set" title="Pas pour ce set">${svg("x",14)}</button>`:""}<button class="btn sm add" onclick="addSet(${c.n})" aria-label="Ajouter au set">${svg("plus",15)}</button></div>`;}
 function discRow({c,s}){const [w,cl]=verdict(s);const inL=inWish(c);const on=PL&&PL.u==="dz"+c.dz;
-  return `<div class="sg sgd"><div class="sc"><span class="tag ${cl}">${w}</span></div>${cover(c)}<div class="sgm"><div class="sgt"><b>${esc(c.t)}</b> <span class="hint">· ${esc(c.a)}</span></div><div class="hint sgw">${Math.round(c.bpm)} BPM · ${c.k} · ${c.peu?"pépite peu connue":"en tendance"}</div></div>
+  return `<div class="sg sgd"><div class="sc"><span class="tag ${cl}">${w}</span></div>${cover(c)}<div class="sgm"><div class="sgt"><b>${esc(c.t)}</b> <span class="hint">· ${esc(c.a)}</span></div><div class="hint sgw">${Math.round(c.bpm)} BPM · ${c.k} · ${c.peu?"pépite peu connue":c.from==="found"?"trouvé en ligne":"en tendance"}</div></div>
     <button class="play ${on?"on":""}" onclick="playDz(${c.dz})" aria-label="Écouter">${svg(on?"pause":"play",12)}</button>${flag("reco2")&&!inL?`<button class="mi" onclick="dismissSugg('dz${c.dz}','${jsq(c.t)}')" aria-label="Pas pour ce set" title="Pas pour ce set">${svg("x",14)}</button>`:""}<button class="btn sm ${inL?"ghost":"violet"}" onclick="addIdea(${c.dz})" ${inL?"disabled":""}>${inL?"✓ Ajouté":"+ Musique"}</button></div>`;}
 VIEWS.next=()=>{
   if(!S.tracks.length||!visible().length)return welcome();
   if(!T(S.cur)||T(S.cur).hidden){S.cur=visible()[0].n;if(!S.set.ids.length)S.set.ids=[S.cur];}
   const cur=T(S.cur),sg=suggestions(),ds=discoverSugg(),cov=coverage(),rules=ruleEffects(),opts=S.dir!=="any"||S.sameGenre||S.keyF;
   return `<div class="row between"><div><h1>Préparer un set</h1><p class="sub">Choisis un son : je te dis lesquels enchaîner derrière.</p></div>
-    <div style="position:relative;flex:1;min-width:220px;max-width:340px"><input class="f" id="pickQ" placeholder="Partir d’un autre son…" style="width:100%" oninput="pickDrop()" onfocus="pickDrop()" autocomplete="off"><div id="pickD"></div></div></div>
+    <div style="position:relative;flex:1;min-width:220px;max-width:340px"><input class="f" id="pickQ" placeholder="Partir d’un autre son…" style="width:100%" oninput="pickDrop()" onfocus="pickDrop()" onkeydown="pickKey(event)" autocomplete="off"><div id="pickD"></div></div></div>
   ${tip("next","Appuie sur <b>+</b> pour ajouter un son à ton set. Les propositions se recalculent à partir de lui.")}
   <div class="card hi now">${cover(cur,"lg")}<div style="flex:1;min-width:0"><span class="tag info">Tu joues</span><div class="big mt2" style="overflow:hidden;text-overflow:ellipsis">${esc(cur.t)}</div><div class="hint">${esc(cur.a)}</div></div>
     <div style="text-align:center"><div class="big">${cur.bpm?Math.round(cur.bpm):"?"}</div><div class="hint">BPM</div></div>${keyTag(cur.k,cur.kSrc==="est")}
@@ -964,16 +985,21 @@ function setPanel(){const items=S.set.ids.map(T).filter(Boolean);const W=280,H2=
   const gig=S.gigs.find(g=>g.id===S.set.gig);
   return `<div class="card mt"><div class="row between"><div class="row" style="gap:8px"><h3>Set en cours</h3><input class="f" value="${esc(S.set.name)}" onchange="S.set.name=this.value;save()" style="padding:4px 8px;font-size:12px;width:200px">
       <select class="f" style="padding:4px 8px;font-size:12px" onchange="S.set.gig=+this.value||null;save();render()"><option value="">Lier à une soirée…</option>${S.gigs.map(g=>`<option value="${g.id}" ${g.id===S.set.gig?"selected":""}>${fmtDate(g.date)} · ${esc(g.lieu)}</option>`).join("")}</select></div>
-    <div class="row" style="gap:8px"><button class="btn ghost sm" onclick="clearSet()">Vider</button><button class="btn ghost sm" onclick="importSet()">${svg("imp",13)}Importer un set</button><button class="btn ghost sm" onclick="playSet()">${svg("play",13)}Écouter le set</button><button class="btn ghost sm" onclick="saveList('set')">${svg("plplus",13)}Playlist</button><button class="btn ghost sm" onclick="shareSet()">${svg("share",13)}Partager</button><button class="btn ghost sm" onclick="exportM3Uchoose()">${svg("dl",13)}Playlist M3U</button><button class="btn sm" onclick="exportSetCrate()">Crate Serato</button><button class="btn orange sm" onclick="exportUsb()">${svg("usb",14)}Copier sur clé USB</button></div></div>
+    <div class="row" style="gap:8px"><button class="btn ghost sm" onclick="clearSet()">Vider</button><button class="btn ghost sm" onclick="importSet()">${svg("imp",13)}Importer un set</button><button class="btn ghost sm" onclick="playSet()">${svg("play",13)}Écouter le set</button><button class="btn sm" id="sendBtn" onclick="sendMenu()">${svg("share",13)}Envoyer…</button></div></div>
     <div class="row mt2" style="gap:18px"><span class="hint"><b style="color:var(--txt)">${items.length}</b> sons · ≈ <b style="color:var(--txt)">${Math.round(items.length*3.4)} min</b>${items.some(x=>x.bpm)?` · BPM ${Math.round(Math.min(...items.filter(x=>x.bpm).map(x=>x.bpm)))} à ${Math.round(Math.max(...items.filter(x=>x.bpm).map(x=>x.bpm)))}`:""}${gig?` · pour ${esc(gig.lieu)} (${fmtDate(gig.date)})`:""}</span></div>
     ${items.some(x=>x.wish)?`<p class="mt2 clk" style="color:var(--orange);font-size:13px" onclick="S.trTab='liste';go('trend')">${pl(items.filter(x=>x.wish).length,"son")} du set à récupérer avant la soirée →</p>`:""}
     ${items.length>1&&items.some(x=>x.e)?`<svg viewBox="0 0 ${W} ${H2}" style="width:100%;max-width:340px;height:${H2}px"><polyline points="${pts.map(p=>p.join(",")).join(" ")}" fill="none" stroke="var(--orange)" stroke-width="2"/>${pts.map((p,i)=>`<circle cx="${p[0]}" cy="${p[1]}" r="5" fill="var(--orange)" stroke="var(--panel)" stroke-width="2" data-tip="${i+1}. ${esc(items[i].t)} · énergie ${items[i].e||"?"}"/>`).join("")}</svg>`:""}
     <div>${items.map((x,i)=>{let tr="";if(i>0){const c=compat(items[i-1],x,false);tr=`<div class="trn"><span class="tag ${c.s>=.75?"ok":c.s>=.5?"warn":"bad"}" data-tip="${esc(c.why.map(w=>w[1]).join(" · "))}">${c.s>=.5?"✓":"⚠"} transition ${Math.round(c.s*100)}</span></div>`;}
       return tr+`<div class="setrow${S.flash===x.n?" flash":""}"><span class="n">${i+1}</span>${cover(x)}<div style="flex:1;min-width:0"><b>${esc(x.t)}</b> <span class="hint">· ${esc(x.a)}</span></div><span class="hint hm">${x.bpm?Math.round(x.bpm):"?"}</span>${keyTag(x.k,x.kSrc==="est")}
-      <button class="mi" onclick="mv(${i},-1)">${svg("up",14)}</button><button class="mi" onclick="mv(${i},1)">${svg("down",14)}</button><button class="mi" onclick="rmSet(${i})">${svg("x",14)}</button></div>`}).join("")}</div></div>`;}
-function pickDrop(){const q=norm($("#pickQ").value).trim();const r=visible().filter(x=>!q||norm(x.t+" "+x.a).includes(q)).slice(0,10);
+      <button class="mi" onclick="mv(${x.n},-1)">${svg("up",14)}</button><button class="mi" onclick="mv(${x.n},1)">${svg("down",14)}</button><button class="mi" onclick="rmSet(${x.n})">${svg("x",14)}</button></div>`}).join("")}</div></div>`;}
+let pickTimer=0,pickSel=-1,pickRes=[];
+function pickHi(){[...document.querySelectorAll("#pickD .drop>div")].forEach((e,i)=>{e.classList.toggle("on",i===pickSel);if(i===pickSel)e.scrollIntoView({block:"nearest"});});}
+function pickKey(e){if(e.key==="ArrowDown"||e.key==="ArrowUp"){if(!pickRes.length)pickDrop();if(!pickRes.length)return;pickSel=e.key==="ArrowDown"?Math.min(pickSel+1,pickRes.length-1):Math.max(pickSel-1,0);pickHi();e.preventDefault();}
+  else if(e.key==="Enter"){const x=pickRes[pickSel>=0?pickSel:0];if(x){e.preventDefault();startFrom(x.n);}}
+  else if(e.key==="Escape"){clearTimeout(pickTimer);const d=$("#pickD");if(d)d.innerHTML="";pickRes=[];pickSel=-1;}}
+function pickDrop(){clearTimeout(pickTimer);const q=norm($("#pickQ").value).trim();const r=visible().filter(x=>!q||norm(x.t+" "+x.a).includes(q)).slice(0,10);pickRes=r;pickSel=-1;
   $("#pickD").innerHTML=`<div class="drop">${r.map(x=>`<div onmousedown="startFrom(${x.n})">${cover(x)}<span style="flex:1;min-width:0"><b>${esc(x.t)}</b><br><span class="hint">${esc(x.a)}</span></span><span class="hint">${x.bpm?Math.round(x.bpm):"?"}</span>${keyTag(x.k)}</div>`).join("")||'<div class="hint">Aucun résultat</div>'}</div>`;
-  $("#pickQ").onblur=()=>setTimeout(()=>{const d=$("#pickD");if(d)d.innerHTML="";},150);}
+  $("#pickQ").onblur=()=>{clearTimeout(pickTimer);pickTimer=setTimeout(()=>{const d=$("#pickD");if(d)d.innerHTML="";pickRes=[];pickSel=-1;},150);};}
 function snapSet(){return [S.cur,JSON.parse(JSON.stringify(S.set))];}
 function restoreSet(o){[S.cur,S.set]=o;}
 function startFrom(n){const o=snapSet();S.cur=n;S.set.ids=[n];S.keyF=null;pushUndo("changement du son de départ",()=>restoreSet(o));save();go("next");}
@@ -981,8 +1007,8 @@ function addSet(n){if(S.set.ids.includes(n))return;   // un double clic n’ajou
   const o=snapSet();S.set.ids.push(n);S.cur=n;S.keyF=null;S.flash=n;pushUndo("ajout au set",()=>restoreSet(o));save();softRender();
   if(flag("toast2"))toast(`« ${esc(T(n).t)} » ajouté au set`,true,false,"ajout");else toast(`« ${esc(T(n).t)} » ajouté. Suggestions recalculées.`,true);
   setTimeout(()=>{if(S.flash===n)S.flash=null;},1200);}
-function mv(i,d){const j=i+d;if(j<0||j>=S.set.ids.length)return;const a=S.set.ids;[a[i],a[j]]=[a[j],a[i]];save();render();}
-function rmSet(i){const o=snapSet();S.set.ids.splice(i,1);if(!S.set.ids.length)S.set.ids=[o[0]];S.cur=S.set.ids[S.set.ids.length-1];pushUndo("retrait du set",()=>restoreSet(o));save();render();}
+function mv(n,d){const a=S.set.ids,i=a.indexOf(n);if(i<0)return;const j=i+d;if(j<0||j>=a.length)return;[a[i],a[j]]=[a[j],a[i]];save();render();}
+function rmSet(n){const i=S.set.ids.indexOf(n);if(i<0)return;const o=snapSet();S.set.ids.splice(i,1);if(!S.set.ids.length)S.set.ids=[o[0]];S.cur=S.set.ids[S.set.ids.length-1];pushUndo("retrait du set",()=>restoreSet(o));save();render();}
 function clearSet(){const o=snapSet();S.set.ids=[S.cur];pushUndo("vidage du set",()=>restoreSet(o));save();render();toast("Set vidé.",true);}
 /** Sons du set qui ont un fichier (les « à récupérer » sont mis de côté, avec un message). */
 function setFiles(){const all=S.set.ids.map(T).filter(Boolean),ok=all.filter(t=>!t.wish),miss=all.length-ok.length;
@@ -1220,8 +1246,8 @@ function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random
 
 /* ---------- Lien avec sa musique ---------- */
 const WHY={moi:"Ajouté par toi",decouverte:"Pépite ajoutée",tendance:"Tendance ajoutée",soiree:"Demandé en soirée"};
-function libMatch(x){if(!x)return null;const bt=baseTitle(x.t),a=norm(x.a).split(" ")[1]||"";
-  return S.tracks.find(t=>!t.hidden&&((x.dz&&t.dz===x.dz)||(bt.trim()&&baseTitle(t.t)===bt&&(!a||norm(t.a).includes(" "+a)))))||null;}
+function libMatch(x){if(!x)return null;const bt=baseTitle(x.t),a=mainArtist(x.a);
+  return S.tracks.find(t=>!t.hidden&&((x.dz&&t.dz===x.dz)||(bt.trim()&&a&&baseTitle(t.t)===bt&&mainArtist(t.a)===a)))||null;}
 function ownedTrend(x){const m=libMatch(x);return !!m&&!m.wish;}          // elle a le fichier
 const inWish=x=>{const m=libMatch(x);return !!m&&!!m.wish;};               // dans sa musique, à récupérer
 const wishes=()=>S.tracks.filter(t=>t.wish&&!t.hidden&&t.stage!=="done");
@@ -1289,9 +1315,9 @@ async function fetchDiscBatch(style,label){
 let discBusy=false,topUpP=null;
 /** Remplit la réserve de pépites. Si un remplissage tourne déjà, on attend le même (pas de double appel). */
 function topUpExtra(min=40){if(topUpP)return topUpP;const styles=STYLES.filter(([k])=>S.styles[k]);if(!styles.length)return Promise.resolve();
-  discBusy=true;topUpP=(async()=>{try{const per=Math.max(8,Math.ceil(min/styles.length));   // chaque style a sa part de la réserve
+  const sig=styles.map(s=>s[0]).join();discBusy=true;topUpP=(async()=>{try{const per=Math.max(8,Math.ceil(min/styles.length));   // chaque style a sa part de la réserve
     for(const [k,l] of shuffle([...styles])){let tries=0;while((S.disc.extra||[]).filter(x=>x.style===l&&!libMatch(x)).length<per&&tries<4){tries++;try{S.disc.extra=[...(S.disc.extra||[]),...shuffle(await fetchDiscBatch(k,l))];}catch(e){}}}}
-    finally{discBusy=false;topUpP=null;save();}})();return topUpP;}
+    finally{discBusy=false;topUpP=null;save();if(STYLES.filter(([k])=>S.styles[k]).map(s=>s[0]).join()!==sig)topUpExtra(min);}})();return topUpP;}   // 1.10.6 : si les styles cochés ont changé pendant le chargement, un second passage complète
 function pickDisc(){const ex=S.disc.extra||[];const on=new Set(STYLES.filter(([k])=>S.styles[k]).map(x=>x[1]));
   let pool=ex.filter(x=>on.has(x.style)&&!libMatch(x)&&!(S.disc.items||[]).some(y=>y.dz===x.dz));if(!pool.length){topUpExtra();return null;}
   const peu=pool.filter(x=>x.peu);if(peu.length&&Math.random()<.7)pool=peu;                       // 7 fois sur 10 : un son peu connu
@@ -1309,18 +1335,25 @@ async function moreDisc(){let n=refillDisc(15);
 function toggleStyle(k){S.styles[k]=S.styles[k]?0:1;save();loadDiscovery();}
 
 /* ---------- Analyse des extraits ---------- */
+let anaSince=0;
 async function analyzeDz(x){if(S.trendCache[x.dz])return S.trendCache[x.dz];
   try{const d=await jsonp(`https://api.deezer.com/track/${x.dz}`,8000,"low");if(!d.preview)return null;
-    const buf=await (await fetch(d.preview)).arrayBuffer();const r=await analyzeOff(await decodeBytes(buf),30);
-    if(r){S.trendCache[x.dz]={bpm:r.bpm,k:r.key,e:r.energy,kc:r.keyConf};const keys=Object.keys(S.trendCache);if(keys.length>3000)keys.slice(0,500).forEach(k=>delete S.trendCache[k]);save();return S.trendCache[x.dz];}}catch(e){}return null;}
+    const ac=new AbortController(),tm=setTimeout(()=>ac.abort(),10000);/* 1.10.5 : un extrait qui ne répond pas est abandonné au bout de 10 s au lieu de bloquer toute l'analyse */
+    const buf=await (await fetch(d.preview,{signal:ac.signal})).arrayBuffer();clearTimeout(tm);const r=await analyzeOff(await decodeBytes(buf),30);
+    if(r){S.trendCache[x.dz]={bpm:r.bpm,k:r.key,e:r.energy,kc:r.keyConf};anaFail.delete(x.dz);const keys=Object.keys(S.trendCache);if(keys.length>3000)keys.slice(0,500).forEach(k=>delete S.trendCache[k]);anaSince++;if(anaSince>=5||!anaQ.length){anaSince=0;save();}return S.trendCache[x.dz];}}catch(e){}anaFail.set(x.dz,Date.now());return null;}   // 1.10.6 : une sauvegarde complète toutes les 5 analyses (ou en fin de file), pas à chaque son
 const anaQ=[];let anaQRun=false;
-function analyzeQueue(list){list.forEach(x=>{if(x&&!S.trendCache[x.dz]&&!anaQ.some(y=>y.dz===x.dz))anaQ.push(x);});if(!anaQRun)runAnaQ();}
-async function runAnaQ(){anaQRun=true;let n=0;while(anaQ.length){while(!calm())await sleep(250);const x=anaQ.shift();try{await analyzeDz(x);}catch(e){}n++;if(n%6===0)liveRefresh();await sleep(250);}anaQRun=false;liveRefresh();}
+/* 1.10.6 : les échecs sont gardés en mémoire seulement (pas dans la sauvegarde) et expirent au bout de 5 min ; hors-ligne on ne relance rien */
+const anaFail=new Map(),anaPrio=new Set();
+const anaSkip=dz=>{const t=anaFail.get(dz);if(t===undefined)return false;if(Date.now()-t>300000){anaFail.delete(dz);return false;}return true;};
+function analyzeQueue(list,prio){if(typeof navigator!=="undefined"&&navigator.onLine===false)return;const add=[];list.forEach(x=>{if(!x||S.trendCache[x.dz]||anaSkip(x.dz))return;const i=anaQ.findIndex(y=>y.dz===x.dz);if(i>=0){if(!prio)return;anaQ.splice(i,1);}add.push(x);});
+  if(prio){add.forEach(x=>anaPrio.add(x.dz));anaQ.unshift(...add);}else anaQ.push(...add);if(!anaQRun)runAnaQ();}
+async function runAnaQ(){anaQRun=true;let n=0;try{while(anaQ.length){while(!calm())await sleep(250);const x=anaQ.shift();anaPrio.delete(x.dz);try{await analyzeDz(x);}catch(e){}n++;if(n%6===0)liveRefresh();await sleep(250);}}finally{anaQRun=false;}liveRefresh();}
 
 /* ---------- Recherche libre ---------- */
-async function doSearch(q){q=(q||"").trim();S.search={q,items:[],busy:!!q};softRender();if(!q)return;
-  try{const d=await jsonp(`https://api.deezer.com/search?q=${encodeURIComponent(q)}&limit=25`);S.search={q,items:(d.data||[]).filter(t=>t.preview).map(t=>({...dzItem(t),peu:(t.rank||0)<PEU_CONNU})),busy:false};analyzeQueue(S.search.items.slice(0,12));}
-  catch(e){S.search={q,items:[],busy:false,err:e.message};}
+let searchSeq=0;/* 1.10.5 : une réponse plus ancienne ne doit jamais écraser une recherche plus récente */
+async function doSearch(q){q=(q||"").trim();const my=++searchSeq;S.search={q,items:[],busy:!!q};softRender();if(!q)return;
+  try{const d=await jsonp(`https://api.deezer.com/search?q=${encodeURIComponent(q)}&limit=25`);if(my!==searchSeq)return;S.search={q,items:(d.data||[]).filter(t=>t.preview).map(t=>({...dzItem(t),peu:(t.rank||0)<PEU_CONNU})),busy:false};analyzeQueue(S.search.items.slice(0,12),true);}
+  catch(e){if(my!==searchSeq)return;S.search={q,items:[],busy:false,err:e.message};}
   softRender();}
 
 /* ---------- Affichage ---------- */
@@ -1984,7 +2017,10 @@ function amScore(x,it){const T0=norm(baseTitle(x.t)).trim(),tt=norm(baseTitle(it
 function amMatch(x){const k=amKey(x);if(!k)return Promise.resolve(null);if(S.am[k]!==undefined)return Promise.resolve(S.am[k]);
   const run=amChain.then(async()=>{if(S.am[k]!==undefined)return S.am[k];const wait=3200-(Date.now()-amLast);if(wait>0)await sleep(wait);amLast=Date.now();
     const q=encodeURIComponent((String(x.a||"").split(/,|&| feat/i)[0]+" "+String(x.t||"").replace(/\(.*?\)|\[.*?\]/g,"")).trim());
-    const r=await fetch(`https://itunes.apple.com/search?term=${q}&entity=song&limit=6&country=${AMC}`);if(!r.ok)throw new Error("Apple a répondu "+r.status+" (trop de recherches ? attends une minute)");
+    const ac=new AbortController(),tm=setTimeout(()=>ac.abort(),8000);   /* 1.10.6 : sans délai, une réponse qui ne vient pas bloquait toute la chaîne derrière */
+    let r;try{r=await fetch(`https://itunes.apple.com/search?term=${q}&entity=song&limit=6&country=${AMC}`,{signal:ac.signal});}finally{clearTimeout(tm);}
+    if(r.status===429)amLast=Date.now()+27000;   // trop de requêtes : la suivante part dans 30 s au lieu de 3,2 s
+    if(!r.ok)throw new Error("Apple a répondu "+r.status+" (trop de recherches ? attends une minute)");
     const d=await r.json();let best=null,bs=0;for(const it of d.results||[]){const s=amScore(x,it);if(s>bs){bs=s;best=it;}}
     const m=best&&bs>=(x.a?4:3)?{id:best.trackId,coll:best.collectionId,url:best.trackViewUrl,t:best.trackName,a:best.artistName}:null;
     S.am[k]=m;if(Object.keys(S.am).length>600){for(const kk of Object.keys(S.am).slice(0,100))delete S.am[kk];}save();return m;});
@@ -2012,14 +2048,51 @@ async function embedAM(){if(!TM)return;toast("Je cherche dans Apple Music…");
 
 /* ---------- Envoyer une playlist vers Apple Music (raccourci iPhone) ---------- */
 const SC_NAME="SetMate Apple Music";
-async function sendToApple(id){const p=plGet(id);if(!p||!p.items.length)return;const txt=p.items.map(x=>(x.a?x.a+" - ":"")+x.t).join("\n");let ok=false;
-  try{await navigator.clipboard.writeText(txt);ok=true;}catch(e){}
-  modal(`<h2>Envoyer vers Apple Music</h2><p class="hint mt2">« ${esc(p.name)} » · ${pl(p.items.length,"son")}. ${ok?"<b style='color:var(--green)'>La liste est copiée.</b>":"Copie automatique impossible : touche « Copier la liste »."}</p>
-   <div class="row mt" style="gap:8px;flex-wrap:wrap"><button class="btn" onclick="location.href='shortcuts://run-shortcut?name=${encodeURIComponent(SC_NAME)}&input=clipboard'">Lancer mon raccourci</button><button class="btn ghost" onclick="plExport('${p.id}','copy')">Copier la liste</button></div>
-   <p class="hint mt2">Le bouton lance le raccourci « ${SC_NAME} » de ton iPhone avec la liste copiée. Il n’existe pas encore : on le construit ensemble (une seule fois).</p>
-   <details class="mt"><summary class="hint clk">Recette du raccourci (non testée)</summary><div class="banner mt2"><b>Non testée.</b> Je l’ai écrite sans pouvoir l’essayer. Les actions de Raccourcis peuvent se comporter autrement. Dis-moi ce qui coince, on corrige.</div>
-   <ol class="mt2" style="padding-left:20px;line-height:1.7"><li>Dans <b>Musique</b>, crée une playlist vide nommée <b>SetMate</b> (certains rapports disent que l’action d’ajout ne marche que sur une playlist qui existe déjà).</li><li>Dans <b>Raccourcis</b>, nouveau raccourci nommé <b>${SC_NAME}</b>.</li><li>Actions : <b>Obtenir le presse-papiers</b>, puis <b>Diviser le texte</b> (par nouvelles lignes), puis <b>Répéter avec chaque élément</b>.</li><li>Dans la répétition : <b>Rechercher dans l’iTunes Store</b> (ou <b>Rechercher de la musique</b>) avec l’élément répété, limite 1, puis <b>Ajouter à la playlist SetMate</b>.</li></ol></details>`);}
+/* 1.10 · Envoyer une liste vers Apple Music par le raccourci iPhone. Serato DJ sur iPhone affiche tes playlists Apple Music
+   (page officielle Serato « Serato DJ & Apple Music »), donc c'est aussi le chemin vers Serato mobile. Non testé de bout en bout sur iPhone. */
+let AMTXT="";
+const amText=items=>items.map(x=>(x.a?x.a+" - ":"")+x.t).join("\n");
+/** Le raccourci retrouve chaque son par son TITRE dans la bibliothèque Apple Music (filtre « Nom contient ») : on lui envoie les titres seuls. */
+const amTitles=items=>items.map(x=>x.t).join("\n");
+/** Texte passé directement au raccourci si la liste est courte ; sinon via le presse-papiers (limite d'une adresse). */
+function amRunUrl(txt){const e=encodeURIComponent(txt);return "shortcuts://run-shortcut?name="+encodeURIComponent(SC_NAME)+(e.length<3500?"&input=text&text="+e:"&input=clipboard");}
+async function sendToApple(id){const p=plGet(id);if(!p||!p.items.length)return;return sendListToApple(p.name,p.items);}
+function sendSetToApple(){const items=S.set.ids.map(T).filter(Boolean).map(t=>({t:t.t,a:t.a}));if(!items.length)return toast("Ton set est vide.",false,true);sendListToApple(S.set.name,items);}
+/* Plan B (mesuré le 07/11/2026 sur l'iPhone de Sabri : le raccourci trouve les sons mais « Ajouter à la playlist » n'ajoute rien, échec silencieux
+   aussi signalé par d'autres utilisateurs). SetMate retrouve chaque son dans Apple Music (recherche gratuite) ; l'ajout à la playlist se fait dans Apple Music. */
+let AMLIST=[],AMDONE=new Set(),AMSESS=0;
+let amGo=url=>{location.assign(url);};
+function amRow(i){const x=AMLIST[i],h=`<b>${esc(x.t)}</b> <span class="hint">${esc(x.a||"")}</span>`;
+  if(x.m===undefined)return `<div class="conn" id="amr${i}"><div style="flex:1;min-width:0">${h}<div class="hint">Je cherche dans Apple Music…</div></div></div>`;
+  if(x.m===null)return `<div class="conn" id="amr${i}"><div style="flex:1;min-width:0">${h}<div class="hint" style="color:var(--orange)">Introuvable dans Apple Music : ajoute-le à la main.</div></div></div>`;
+  return `<div class="conn" id="amr${i}"><div style="flex:1;min-width:0">${h}<div class="hint">${AMDONE.has(i)?"<span style='color:var(--green)'>Ouvert ✓</span>":esc((x.m.t||"")+" · "+(x.m.a||""))}</div></div><button class="btn sm ${AMDONE.has(i)?"ghost":""}" onclick="amOpen(${i})">${AMDONE.has(i)?"Rouvrir":"Ouvrir"}</button></div>`;}
+function amOpen(i){const x=AMLIST[i];if(!x||!x.m)return;AMDONE.add(i);const e=$("#amr"+i);if(e)e.outerHTML=amRow(i);amGo(x.m.url);}
+async function sendListToApple(name,items){const txt=amTitles(items);AMTXT=txt;const sess=++AMSESS;AMDONE=new Set();AMLIST=items.map(x=>({t:x.t,a:x.a,m:undefined}));
+  modal(`<h2>Envoyer vers Apple Music</h2><p class="hint mt2">« ${esc(name)} » · ${pl(items.length,"son")}. Je retrouve chaque son dans Apple Music, puis tu l’ajoutes à ta playlist.</p>
+   <ol class="mt2" style="padding-left:20px;line-height:1.7;font-size:14px"><li>Touche <b>Ouvrir</b> : Apple Music s’ouvre sur le son.</li><li>Touche <b>•••</b> puis <b>Ajouter à une playlist</b>, choisis ta playlist (par exemple <b>SetMate</b>).</li><li>Reviens dans SetMate et passe au son suivant.</li></ol>
+   <div id="amList" class="mt">${AMLIST.map((_,i)=>amRow(i)).join("")}</div>
+   <div class="card mt" style="background:var(--panel2);padding:12px;font-size:13px"><b>Ensuite, dans Serato sur iPhone</b><br>Ouvre l’onglet <b>Apple Music</b> : ta playlist doit apparaître (Serato indique que tes playlists apparaissent toutes seules une fois le compte connecté). <span style="color:var(--orange)">Non testé de bout en bout.</span></div>
+   <details class="mt"><summary class="hint clk">Raccourci iPhone (essai : il trouve les sons mais n’a rien ajouté sur ton iPhone)</summary>
+   <p class="hint mt2">Le raccourci « ${SC_NAME} » reçoit les titres, mais l’action « Ajouter à la playlist » ne les ajoute pas : d’autres utilisateurs le signalent aussi. Je le garde pour d’éventuels essais.</p>
+   <div class="row mt2" style="gap:8px;flex-wrap:wrap"><button class="btn ghost sm" onclick="location.href=amRunUrl(AMTXT)">Lancer mon raccourci</button><button class="btn ghost sm" onclick="navigator.clipboard.writeText(AMTXT).then(()=>toast('Titres copiés.',true),()=>toast('Copie impossible.',false,true))">Copier les titres</button></div></details>
+   <div class="row mt" style="justify-content:flex-end"><button class="btn" onclick="closeModal()">Fermer</button></div>`);
+  for(let i=0;i<AMLIST.length;i++){if(sess!==AMSESS)return;
+    try{AMLIST[i].m=await amMatch(items[i]);}catch(e){AMLIST[i].m=null;if(sess===AMSESS)toast(esc(e.message),false,true);}
+    const e=$("#amr"+i);if(e&&sess===AMSESS)e.outerHTML=amRow(i);}}
 
+
+/* 1.10 · Un seul bouton « Envoyer » pour le set (avant : 5 boutons). Chaque destination dit ce qui a été testé. */
+function sendMenu(){const n=S.set.ids.length;if(!n)return toast("Ton set est vide.",false,true);
+  const ok='<span style="color:var(--green)">Testé</span>',no='<span style="color:var(--orange)">Non testé</span>';
+  const row=(ic,t,d,act,tag)=>`<div class="conn"><div style="flex:1;min-width:0"><b>${svg(ic,14)} ${t}</b><div class="hint">${d} · ${tag}</div></div><button class="btn sm ghost" onclick="closeModal();${act}">Choisir</button></div>`;
+  modal(`<h2>Envoyer mon set</h2><p class="hint mt2">« ${esc(S.set.name)} » · ${pl(n,"son")}</p><div class="mt">
+   ${row("apple","Apple Music, puis Serato sur iPhone","Ouvre chaque son dans Apple Music pour l’ajouter à ta playlist ; Serato mobile affiche tes playlists Apple Music","sendSetToApple()",no)}
+   ${row("dl","Playlist M3U pour Serato (ordinateur)","À glisser dans l’onglet Files puis sur Crates ; tu choisis Windows ou Mac","exportM3Uchoose()",ok+" sur Serato 5, Windows")}
+   ${row("folder","Crate Serato (écrite par SetMate)","Chrome ou Edge, Serato fermé ; apparaît quand tu relances Serato","exportSetCrate()",ok+" sur Serato 5, Windows")}
+   ${row("usb","Clé USB","Copie les fichiers du set sur une clé","exportUsb()",no)}
+   ${row("share","Partager la liste","Texte ou fichier, pour un autre DJ","shareSet()",ok)}
+   ${row("plplus","Enregistrer en playlist SetMate","Garde ce set dans tes playlists","saveList('set')",ok)}
+  </div><div class="row mt" style="justify-content:flex-end"><button class="btn" onclick="closeModal()">Fermer</button></div>`);}
 /* ---------- Historique et playlists depuis les exports officiels ---------- */
 function histoModal(){modal(`<h2>Mon historique et mes playlists</h2><p class="hint mt2">Apple et Spotify te donnent gratuitement un fichier de toutes tes données. SetMate le lit <b>sur ton téléphone</b> (rien n’est envoyé) et en tire tes sons les plus écoutés, puis te propose des sons du même univers.</p>
   <details class="mt" open><summary class="hint clk">Apple Music</summary><ol class="mt2" style="padding-left:20px;line-height:1.7"><li>Sur <b>privacy.apple.com</b>, connecte-toi, « Demander une copie de vos données », coche <b>Apple Media Services</b> (il contient Apple Music).</li><li>Apple prévient par e-mail : compte 4 à 7 jours.</li><li>Télécharge le .zip, décompresse-le dans <b>Fichiers</b>. Dans le dossier « Apple Music Activity », prends le fichier <b>Play Activity</b> ou <b>Play History Daily Tracks</b> (.csv).</li></ol><p class="hint">Les noms de fichiers viennent de guides non officiels et peuvent changer : regarde dans ton dossier.</p></details>
@@ -2129,10 +2202,36 @@ function recRow(t,st){const on=t.dz&&PL&&PL.u==="t"+t.n&&!AU.paused,hasF=!t.wish
     <button class="play ${on?"on":""}" onclick="playTrack(${t.n})" aria-label="Écouter">${svg(on?"pause":"play",12)}</button>
     ${st!=="done"?`<button class="btn sm add" onclick="recMark([${t.n}],'done')" aria-label="Marquer comme récupéré" data-tip="Marquer comme récupéré">${svg("check",15)}</button>`:(t.wish?`<button class="mi" onclick="recMark([${t.n}],'todo')" aria-label="Remettre à récupérer" data-tip="Remettre à récupérer">${svg("refresh",14)}</button>`:"")}
     ${t.wish?`<button class="mi" onclick="rmWish(${t.n})" aria-label="Retirer de ma musique" data-tip="Retirer de ma musique">${svg("x",14)}</button>`:""}</div>`;}
+/* 1.10.4 · « Récupérer sur Apple Music » : tous les sons de « À récupérer » (aucun plafond côté SetMate) vont dans une playlist Apple Music en un transfert.
+   Raccourcis ne sait pas ajouter à une playlist (mesuré sur l'iPhone de Sabri, 07/11/2026) et l'accès officiel demande 99 $/an. Chemin sans compte développeur :
+   un fichier de liste que TuneMyMusic (site tiers) lit, retrouve dans le catalogue Apple Music et ajoute à une nouvelle playlist. Gratuit jusqu'à 500 sons, d'après leur FAQ du 07/11/2026.
+   NON TESTÉ : le format exact de colonnes attendu par leur site, l'usage depuis Safari sur iPhone. D'où le fichier d'essai de 5 sons. */
+const TMM_MAX=500,TMM_URL="https://www.tunemymusic.com/transfer/file-to-apple-music";
+const tmmQ=v=>'"'+String(v==null?"":v).replace(/"/g,'""')+'"';
+function tmmCsv(items,pname){return "Track name,Artist name,Album,Playlist name"+"\r\n"+items.map(x=>[tmmQ(x.t),tmmQ(x.a||""),tmmQ(""),tmmQ(pname)].join(",")).join("\r\n")+"\r\n";}
+function tmmTxt(items){return items.map(x=>(x.a?x.a+" - ":"")+x.t).join("\n")+"\n";}
+function tmmParts(items,max){const m=max||TMM_MAX,out=[];for(let i=0;i<items.length;i+=m)out.push(items.slice(i,i+m));return out;}
+let TMMITEMS=[];
+function tmmGet(part,fmt){const parts=part==="test"?[TMMITEMS.slice(0,5)]:tmmParts(TMMITEMS),it=part==="test"?parts[0]:parts[part];if(!it||!it.length)return;
+  const base=part==="test"?"SetMate - essai 5 sons":"SetMate - a recuperer"+(parts.length>1?" - partie "+(part+1)+" sur "+parts.length:"");
+  download(new Blob([fmt==="txt"?tmmTxt(it):tmmCsv(it,"SetMate")],{type:fmt==="txt"?"text/plain":"text/csv"}),base+(fmt==="txt"?".txt":".csv"));
+  toast(`${pl(it.length,"son")} dans « ${base}.${fmt} » (dossier Fichiers ou Téléchargements).`,true);}
+function recApple(){TMMITEMS=tList().map(t=>({t:t.t,a:t.a}));const n=TMMITEMS.length;if(!n)return toast("Rien dans « À récupérer ».",false,true);
+  const parts=tmmParts(TMMITEMS);
+  modal(`<h2>Récupérer sur Apple Music</h2><p class="hint mt2"><b>${pl(n,"son")}</b> dans « À récupérer », tous envoyés en une fois, sans limite de SetMate.</p>
+   <ol class="mt2" style="padding-left:20px;line-height:1.7;font-size:14px"><li>Télécharge le fichier ci-dessous.</li><li>Ouvre <b>TuneMyMusic</b>, choisis ce fichier, connecte ton Apple Music.</li><li>Il retrouve chaque son dans Apple Music et crée la playlist (ses sons introuvables sont listés dans son rapport).</li><li>Ouvre ensuite Serato sur iPhone, onglet <b>Apple Music</b> : la playlist doit apparaître.</li></ol>
+   <div class="card mt" style="background:var(--panel2);padding:12px"><b>Essai d’abord (5 sons)</b><div class="hint">Pour vérifier que le format est accepté et que la playlist arrive bien dans Apple Music.</div>
+    <div class="row mt2" style="gap:8px;flex-wrap:wrap"><button class="btn sm" onclick="tmmGet('test','csv')">Fichier d’essai CSV</button><button class="btn ghost sm" onclick="tmmGet('test','txt')">Version TXT</button></div></div>
+   <div class="card mt" style="background:var(--panel2);padding:12px"><b>${parts.length>1?`Tes ${n} sons, en ${parts.length} fichiers de ${TMM_MAX} au plus`:`Tes ${n} sons`}</b>
+    <div class="hint">${parts.length>1?`TuneMyMusic annonce une offre gratuite jusqu’à ${TMM_MAX} sons : je découpe pour rester dans cette limite. Au-delà, leur offre payante coûte environ 24 $ par an, ou un seul mois pour un transfert (vérifie le prix sur leur site).`:"Dans la limite gratuite annoncée par TuneMyMusic (500 sons)."}</div>
+    ${parts.map((it,i)=>`<div class="row mt2" style="gap:8px;flex-wrap:wrap;align-items:center"><span class="hint" style="flex:1;min-width:120px">${parts.length>1?`Partie ${i+1} · `:""}${pl(it.length,"son")}</span><button class="btn sm" onclick="tmmGet(${i},'csv')">CSV</button><button class="btn ghost sm" onclick="tmmGet(${i},'txt')">TXT</button></div>`).join("")}</div>
+   <div class="row mt" style="gap:8px;flex-wrap:wrap"><a class="btn ghost sm" href="${TMM_URL}" target="_blank" rel="noopener noreferrer">Ouvrir TuneMyMusic</a></div>
+   <p class="hint mt2"><span style="color:var(--orange)">Non testé de bout en bout.</span> Je ne sais pas encore quel format de fichier leur site préfère : fais l’essai de 5 sons avant d’envoyer tout le reste. Ce service est tiers : il reçoit la liste des titres et se connecte à ton Apple Music.</p>
+   <div class="row mt" style="justify-content:flex-end"><button class="btn" onclick="closeModal()">Fermer</button></div>`);}
 function recView(){const q=qList(),td=tList(),dn=dList(),st=S.recTab||"queue",cur=st==="queue"?q:st==="todo"?td:dn,ug=upgrades();
   const seg=[["queue","File d’attente",q.length],["todo","À récupérer",td.length],["done","Récupérés",dn.length]].map(([k,l,n])=>`<button style="flex:1;text-align:center" class="${st===k?"on":""}" onclick="S.recTab='${k}';SELR.clear();save();softRender()">${l} <b>${n}</b></button>`).join("");
   const main=st==="queue"?`<button class="btn sm" onclick="recEmptyQueue()" ${q.length?"":"disabled"}>${svg("next2",14)}Vider la file vers « À récupérer »</button><button class="btn ghost sm" onclick="recDoneAll('queue')" ${q.length?"":"disabled"}>Tout marquer récupéré</button>`
-    :st==="todo"?`<button class="btn sm" onclick="recDoneAll('todo')" ${td.length?"":"disabled"}>${svg("check",14)}Tout marquer récupéré</button><button class="btn ghost sm" onclick="recBack('todo')" ${td.length?"":"disabled"}>Tout remettre en file</button>`
+    :st==="todo"?`<button class="btn" id="recAppleBtn" onclick="recApple()" ${td.length?"":"disabled"}>${svg("apple",14)}Récupérer sur Apple Music</button><button class="btn ghost sm" onclick="recDoneAll('todo')" ${td.length?"":"disabled"}>${svg("check",14)}Tout marquer récupéré</button><button class="btn ghost sm" onclick="recBack('todo')" ${td.length?"":"disabled"}>Tout remettre en file</button>`
     :`<button class="btn ghost sm" onclick="recBack('done')" ${dn.some(t=>t.wish)?"":"disabled"}>Remettre à récupérer les sons sans fichier</button>`;
   const selbar=SELM?`<span class="hint" style="align-self:center">${SELR.size} coché${SELR.size>1?"s":""}</span><button class="chip" onclick="recSelAll('${st}')">Tout cocher</button>
      ${st!=="done"?`<button class="btn sm" onclick="recSelDo('done')">${svg("check",14)}Récupéré</button>`:""}${st==="queue"?`<button class="btn ghost sm" onclick="recSelDo('todo')">→ À récupérer</button>`:""}${st==="todo"?`<button class="btn ghost sm" onclick="recSelDo('queue')">← File</button>`:""}
@@ -2219,7 +2318,7 @@ function analyzeOff(ab,sec){if(!smwOK||!SMW)return Promise.resolve(smAnalyze(ab,
 
 /* ---------- File d'analyse : un son à la fois, seulement quand l'écran est calme ---------- */
 const _analyzeQueue=analyzeQueue;
-analyzeQueue=function(list){_analyzeQueue(list);if(anaQ.length>60)anaQ.splice(0,anaQ.length-60);};   // on garde les 60 plus récents
+analyzeQueue=function(list,prio){_analyzeQueue(list,prio);while(anaQ.length>60){let i=anaQ.findIndex(y=>!anaPrio.has(y.dz));if(i<0)i=anaQ.length-1;anaQ.splice(i,1);}};   // on garde 60 sons : les plus récents, et ceux de la recherche en cours en priorité
 
 NEWS["1.8.1"]=["<b>Fin des tremblements</b> : l’analyse des sons tourne maintenant en arrière-plan et l’écran ne se redessine plus pendant que ton doigt est posé ou que tu défiles."];
 /* ===================== 1.9 Partager un set d'un DJ à l'autre, garde-fous de compatibilité, signalement =====================
@@ -2325,13 +2424,15 @@ function palRender(){const q=norm($("#palQ").value).trim();
   const acts=[["Accueil",()=>go("home"),"home"],["Préparer un set",()=>go("next"),"next"],["Faire le débrief",()=>go("debrief"),"debrief"],["Tendances",()=>go("trend"),"trend"],["Écouter mes playlists",()=>go("listen"),"listen"],["Importer une playlist",()=>{go("listen");importPlaylist()},"listen"],["Actualiser les tendances",()=>{go("trend");refreshTrends();},"refresh"],["Sons à vérifier",()=>{S.libView="check";go("lib")},"lib"],["Nouvelle soirée",()=>{go("gigs");newGig()},"gigs"],["Importer un historique Serato",()=>{go("gigs");importHistory()},"dl"],["Copier le set sur clé USB",()=>{go("next");exportUsb()},"usb"],["Réglages",()=>go("settings"),"settings"]];
   palItems=[...acts.filter(a=>!q||norm(a[0]).includes(q)).map(a=>({l:esc(a[0]),f:a[1],ic:svg(a[2],16),k:"Action"})),...(q?visible().filter(x=>norm(x.t+" "+x.a+" "+x.sg).includes(q)).slice(0,8).map(x=>({l:`${esc(x.t)} <span class="hint">· ${esc(x.a)}${x.bpm?" · "+Math.round(x.bpm)+" BPM":""}</span>`,f:()=>startFrom(x.n),ic:cover(x),k:"Partir de ce son"})):[])];
   palSel=Math.min(palSel,Math.max(0,palItems.length-1));
-  $("#palR").innerHTML=palItems.map((it,i)=>`<div class="it ${i===palSel?"on":""}" onmouseenter="palSel=${i};palHi()" onclick="palGo(${i})">${it.ic}<span>${it.l}</span><small>${it.k}</small></div>`).join("")||'<div class="empty">Aucun résultat</div>';}
-function palHi(){[...document.querySelectorAll(".pal .it")].forEach((e,i)=>e.classList.toggle("on",i===palSel));}
+  $("#palR").innerHTML=palItems.map((it,i)=>`<div class="it ${i===palSel?"on":""}" onmousemove="palMv(event,${i})" onclick="palGo(${i})">${it.ic}<span>${it.l}</span><small>${it.k}</small></div>`).join("")||'<div class="empty">Aucun résultat</div>';}
+let palXY="";
+function palHi(kb){[...document.querySelectorAll(".pal .it")].forEach((e,i)=>{e.classList.toggle("on",i===palSel);if(kb&&i===palSel)e.scrollIntoView({block:"nearest"});});}
+function palMv(e,i){const p=e.screenX+","+e.screenY;if(p===palXY)return;palXY=p;if(palSel!==i){palSel=i;palHi();}}
 function palGo(i){const it=palItems[i];$("#layer").innerHTML="";it&&it.f();}
 $("#kbdHint").textContent=/Mac|iPhone|iPad/.test(navigator.platform)?"⌘ K":"Ctrl K";
 document.addEventListener("keydown",e=>{const typing=/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName);
   if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==="k"){e.preventDefault();openPalette();return;}
-  if($(".pal")){if(e.key==="ArrowDown"){palSel=Math.min(palSel+1,palItems.length-1);palHi();e.preventDefault();}if(e.key==="ArrowUp"){palSel=Math.max(palSel-1,0);palHi();e.preventDefault();}if(e.key==="Enter")palGo(palSel);}
+  if($(".pal")){if(e.key==="ArrowDown"){palSel=Math.min(palSel+1,palItems.length-1);palHi(1);e.preventDefault();}if(e.key==="ArrowUp"){palSel=Math.max(palSel-1,0);palHi(1);e.preventDefault();}if(e.key==="Enter")palGo(palSel);}
   if(e.key==="Escape"){closeModal();closeNotif();}if(typing)return;
   if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==="z"){e.preventDefault();doUndo();}
   if(e.code==="Space"&&!$(".ov")){e.preventDefault();if(PL)stopPlay();else if(S.screen==="next"&&S.cur)playTrack(S.cur);}});
@@ -2363,7 +2464,9 @@ function soirTick(){const e=$("#soirT");if(!e)return;const s=Math.max(0,Math.flo
   e.textContent=`${Math.floor(s/3600)}:${String(Math.floor(s/60)%60).padStart(2,"0")}:${String(s%60).padStart(2,"0")}`;}
 function soirPick(){const key=S.cur+"|"+S.set.ids.length;
   if(!soirMemo||soirMemo.key!==key)soirMemo={key,list:S.cur?suggestions().filter(o=>!o.c.wish).map(o=>({n:o.c.n,s:o.s})):[]};
-  const p=soirMemo.list.find(o=>!soirSkip.has(o.n));return p?{...p,c:T(p.n)}:null;}
+  let p=soirMemo.list.find(o=>!soirSkip.has(o.n));
+  if(!p&&soirMemo.list.length&&soirSkip.size){soirSkip.clear();p=soirMemo.list[0];}   // toutes écartées : on reprend au début, pas d'impasse
+  return p?{...p,c:T(p.n)}:null;}
 function soirPlay(n){const x=T(n);if(!x)return;const g=soirGig(),o=snapSet(),had=g?g.played.slice():null,at=Date.now();
   if(!S.set.ids.includes(n))S.set.ids.push(n);S.cur=n;S.keyF=null;
   if(g&&!g.played.includes(n))g.played.push(n);
@@ -2394,6 +2497,11 @@ function soirEnd(){const L=S.soir.log,np=L.filter(l=>l.k==="play").length,nu=L.f
   S.soir={on:false,gig:S.soir.gig,t0:0,log:[]};soirAsk=false;clearInterval(soirClock);soirUnwake();soirDraw();save();
   notify(`Soirée terminée : ${pl(np,"son")}, ${nu} ▲, ${nd} ▼, ${pl(nr,"demande")}. Fais ton débrief demain.`,"debrief");softRender();
   toast(`Soirée terminée : ${pl(np,"son")} joué${np>1?"s":""}, ${pl(nr,"demande")} du public.`);}
+let soirQt=0;
+function soirResHtml(){const q=soirDraft.q.trim().toLowerCase();const res=q.length<2?[]:visible().filter(x=>!x.wish&&!x.missing&&((x.t||"")+" "+(x.a||"")).toLowerCase().includes(q)).slice(0,6);
+  return res.map(x=>`<button onclick="soirPlay(${x.n})"><b>${esc(x.t)}</b> <span class="hint">${esc(x.a)}</span></button>`).join("")||(q.length>=2?'<span class="hint">Aucun résultat.</span>':'<span class="hint">Tape au moins 2 lettres.</span>');}
+function soirFind(){clearTimeout(soirQt);const e=$("#soirRes");if(e)e.innerHTML=soirResHtml();}   // ne redessine que la liste : le clavier reste ouvert
+function soirQin(e){soirDraft.q=e.target.value;if(e.isComposing)return;clearTimeout(soirQt);soirQt=setTimeout(soirFind,120);}
 function soirDraw(){let el=$("#soir");
   if(!S.soir.on){if(el)el.remove();document.body.classList.remove("soir-on");return;}
   if(!el){el=document.createElement("div");el.id="soir";el.setAttribute("role","dialog");el.setAttribute("aria-label","Mode soirée");document.body.appendChild(el);}
@@ -2404,9 +2512,9 @@ function soirDraw(){let el=$("#soir");
   const wl=WLst==="ok"?`<div class="sw ok" id="soirWL">● Écran gardé allumé</div>`:WLst===""?`<div class="sw" id="soirWL">Écran : vérification…</div>`:
     `<div class="sw warn" id="soirWL">L’écran peut s’éteindre tout seul (${WLst==="absent"?"ton appareil ne le permet pas":WLst==="perdu"?"le verrou a été perdu":"le téléphone a refusé"}). Réglages › Luminosité › Verrouillage auto › Jamais, pendant la soirée.</div>`;
   let mid;
-  if(!c){const q=soirDraft.q.trim().toLowerCase();const res=q.length<2?[]:visible().filter(x=>!x.wish&&!x.missing&&((x.t||"")+" "+(x.a||"")).toLowerCase().includes(q)).slice(0,6);
-    mid=`<div class="sreq"><b>Quel est le premier son ?</b><div class="row2"><input id="soirQ" type="search" placeholder="Tape le début du titre ou de l’artiste" value="${esc(soirDraft.q)}" oninput="soirDraft.q=this.value" onkeydown="if(event.key==='Enter'){soirDraw()}" aria-label="Chercher le premier son"><button class="sm2" onclick="soirDraw()">Chercher</button></div>
-      <div class="sres">${res.map(x=>`<button onclick="soirPlay(${x.n})"><b>${esc(x.t)}</b> <span class="hint">${esc(x.a)}</span></button>`).join("")||(q.length>=2?'<span class="hint">Aucun résultat.</span>':'<span class="hint">Tape au moins 2 lettres.</span>')}</div></div>`;}
+  if(!c){
+    mid=`<div class="sreq"><b>Quel est le premier son ?</b><div class="row2"><input id="soirQ" type="search" placeholder="Tape le début du titre ou de l’artiste" value="${esc(soirDraft.q)}" oninput="soirQin(event)" oncompositionend="soirDraft.q=this.value;soirFind()" onkeydown="if(event.key==='Enter'){soirFind()}" aria-label="Chercher le premier son"><button class="sm2" onclick="soirFind()">Chercher</button></div>
+      <div class="sres" id="soirRes">${soirResHtml()}</div></div>`;}
   else{const p=soirPick();
     mid=`<div class="scur">${cover(c)}<div class="t"><span class="hint">En cours</span><b>${esc(c.t)}</b><span class="hint">${esc(c.a)}${c.bpm?" · "+Math.round(c.bpm)+" BPM":""}${c.k?" · "+esc(c.k):""}</span></div></div>
       <button class="sbtn sbig" id="soirNextB" onclick="soirNext()" aria-label="Son suivant">${p?`SON SUIVANT<small>${esc(p.c.t)} · ${esc(p.c.a)}</small>`:`PAS DE PROPOSITION<small>Choisis le son à la main dans l’appli</small>`}</button>
