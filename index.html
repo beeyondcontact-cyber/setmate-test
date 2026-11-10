@@ -368,6 +368,62 @@ select.f{color-scheme:dark;-webkit-appearance:none;appearance:none;padding-right
   .sg .btn.add .addl{display:inline}
   .sg .btn.add svg{width:18px;height:18px}
 }
+/* 1.12.6 · couleurs, tailles et animations douces
+   Couleurs : bleu = je touche, orange = à regarder, rouge = j'enregistre ou erreur, vert = c'est bon.
+   Animations : transform et opacity seulement, 150 à 250 ms, coupées par prefers-reduced-motion. */
+.bdg.blue{background:var(--orange);color:#111}
+.dotr{background:var(--orange);box-shadow:0 0 0 3px rgba(255,138,31,.2)}
+.ib .n{background:var(--orange);color:#111;font-size:12px;min-width:20px;height:20px}
+.tag.learn{background:rgba(47,164,255,.14);color:var(--blue)}
+.play.on{background:var(--blue);border-color:var(--blue)}
+.sn.on{background:var(--blue);color:#00203a}
+.bdg{font-size:12px;line-height:18px}
+.tag,.tbl th,.hist .c span,.rank small,.place,.src,.player .info small,.kbd,.navfoot,.pal .it small,.essai,.step .st{font-size:12px}
+.mi sup{font-size:12px}
+.disc{animation:none}
+.screen{animation:none}
+.screen.in{animation:fadein .2s var(--ease)}
+@keyframes fadein{from{opacity:0}}
+@keyframes rise{from{transform:translateY(14px);opacity:0}}
+.ov{animation:fadein .18s var(--ease)}
+.modal{animation:rise .22s var(--ease)}
+.ov.st,.ov.st .modal{animation:none}
+.pal{animation:rise .2s var(--ease)}
+.notif{animation:rise .18s var(--ease)}
+.aide{animation:rise .22s var(--ease)}
+.setrow.flash{animation:flash .25s var(--ease)}
+@keyframes flash{from{transform:scale(1.02);opacity:.55}}
+.cta,.tile2,.gcard,.pillo,.lrow,.play,.mi,.ib,.chip,.tile,.pill,.seg button{transition:transform .15s var(--ease),opacity .15s}
+.sn,.nb{transition:transform .15s var(--ease),background .15s,color .15s}
+.cta:active,.tile2:active,.gcard:active,.pillo:active,.lrow:active,.play:active,.mi:active,.ib:active,.chip:active,.sn:active,.nb:active,.tile:active,.pill:active,.seg button:active{transform:scale(.96);opacity:.85}
+.player .cv{animation:cvgrow .2s var(--ease) both}
+@keyframes cvgrow{to{transform:scale(1.08)}}
+.pbar i{width:100%;transform:scaleX(0);transform-origin:left center;transition:transform .25s linear}
+/* Micro du bilan vocal : plus gros, état « j'écoute » visible */
+.mic{position:relative;width:160px;height:160px}
+.mic svg{width:64px;height:64px}
+.mic::after{content:"";position:absolute;inset:0;border-radius:50%;border:3px solid var(--red);opacity:0;pointer-events:none}
+.mic.rec{animation:none;box-shadow:0 0 0 8px rgba(255,77,94,.35),0 18px 40px rgba(200,20,40,.35)}
+.mic.rec::after{animation:micring 1.2s ease-out infinite}
+@keyframes micring{from{transform:scale(1);opacity:.7}to{transform:scale(1.4);opacity:0}}
+#micTxt{font-size:16px;margin-bottom:6px}
+.mic.rec+#micTxt{color:var(--red);font-weight:700}
+.mic.rec+#micTxt::before{content:"";display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--red);margin-right:8px;vertical-align:middle}
+@media (max-width:760px){
+  .mic{width:144px;height:144px}
+  .nb .bdg{font-size:12px;line-height:18px;padding:0 5px}
+  #soirBtn{background:rgba(47,164,255,.14);border-color:#23466a}
+  .btn,.btn.sm,.chip,.sn,.seg button,.backb,.nb{min-height:48px}
+  .seg button{display:inline-flex;align-items:center}
+  .ib{width:48px;height:48px}
+  .play,.sg .play,.mi,.sg .mi{min-width:48px;min-height:48px}
+  .btn.add,.sg .btn.add{min-height:48px;min-width:48px;height:48px}
+  .banner .x{width:48px;height:48px}.banner .lnk,.lnk2.sm{min-height:48px}
+  .toast button{min-height:48px;padding:0 10px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+}
 </style>
 </head>
 <body>
@@ -402,7 +458,7 @@ select.f{color-scheme:dark;-webkit-appearance:none;appearance:none;padding-right
    SETMATE · assistant DJ pour Serato
    Tout reste dans ce navigateur (IndexedDB) et dans les dossiers que tu autorises.
    ===================================================================== */
-const VERSION="1.12.5";
+const VERSION="1.12.6";
 const $=s=>document.querySelector(s);
 const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 /* 1.12.5 : texte à mettre entre apostrophes DANS un onclick. esc() seul ne suffit pas : le navigateur remet l’apostrophe avant de lire le JavaScript. */
@@ -471,13 +527,13 @@ let saveT=null,tracksDirty=false,saving=null,saveAgain=false;
 /* 1.10.6 : une seule écriture à la fois ; si une demande arrive pendant l'écriture, on repasse derrière (sinon une modification de piste faite pendant l'écriture n'était jamais enregistrée) */
 let RESETTING=false,saveWarned=false;
 const TAB=Math.random().toString(36).slice(2,10);let REVSEEN=null,FAILN=0,FAILT=null,AUTO_WAIT=0,STARTED=false;
-function barre(id,texte,boutons){try{let el=document.getElementById(id);if(!el){el=document.createElement("div");el.id=id;el.className="toast err";document.body.appendChild(el);}
+function barre(id,texte,boutons){try{let el=document.getElementById(id);if(!el){el=document.createElement("div");el.id=id;el.className="toast err";el.setAttribute("role","alert");document.body.appendChild(el);}
   el.style.cssText="position:fixed;left:50%;transform:translateX(-50%);"+(id==="roBar"?"top:10px":"bottom:84px")+";z-index:90;max-width:94vw;flex-wrap:wrap";
   el.innerHTML="<span>"+texte+"</span>"+boutons+'<button onclick="this.parentElement.remove()">Fermer</button>';}catch(e){}}
 const BTN_SAUV='<button onclick="try{exportData()}catch(e){}">Sauvegarder en fichier</button>';
 /* 1.12.5 : un seul onglet écrit. L'autre passe en lecture seule : il ne touche plus à la base, pour ne jamais écraser le travail du premier. */
 function passerLectureSeule(){if(RO)return;RO=true;clearTimeout(saveT);saveT=null;tracksDirty=false;
-  barre("roBar","SetMate est déjà ouvert dans un autre onglet. Ici tu peux regarder, mais rien n’est enregistré. Ferme l’autre onglet, puis recharge.",'<button onclick="location.reload()">Recharger</button>'+BTN_SAUV);}
+  barre("roBar","SetMate est déjà ouvert dans un autre onglet. Ici tu peux regarder, mais rien n’est enregistré. Ferme l’autre onglet, puis recharge.",'<button onclick="location.reload()">Recharger</button><button onclick="confirmerReprise()" aria-label="Utiliser cet onglet pour enregistrer à la place de l’autre">Utiliser cet onglet</button>'+BTN_SAUV);}
 async function prendreVerrou(){
   if(!(navigator.locks&&navigator.locks.request))return;   /* ancien navigateur : le contrôle de révision dans saveNow protège quand même */
   for(let i=0;i<2;i++){
@@ -783,13 +839,14 @@ window.addEventListener("popstate",e=>{const s=e&&e.state&&e.state.sm;
   if(document.querySelector("#layer .ov")){closeModal();try{history.pushState({sm:NAVCUR||S.screen},"");}catch(_){}return;}   /* une fenêtre est ouverte : Retour la ferme et on reste sur l’écran */
   if(typeof s!=="string"||typeof VIEWS[s]!=="function"||s===S.screen){if(typeof s==="string"&&typeof VIEWS[s]==="function")NAVCUR=s;return;}
   NAVPOP=true;try{go(s);}finally{NAVPOP=false;}NAVCUR=s;});
-function go(s){if(recOn&&s!=="debrief")micOff();navPush(s);S.screen=s;grpLast[groupOf(s).k]=s;closeNotif();render();$("#main").scrollTop=0;}
+function go(s){if(recOn&&s!=="debrief")micOff();navPush(s);S.screen=s;grpLast[groupOf(s).k]=s;closeNotif();render();$("#main").scrollTop=0;if(s==="trend")trAuto();}
 const VIEWS={};
 function renderCrash(e){try{logErr("ecran",(e&&e.message)||e,S.screen)}catch(_){}
   const m=document.getElementById("main");if(!m)return;
   const cp=(BK.auto&&BK.auto.length)?"backup_auto_"+BK.auto[BK.auto.length-1].day:"state_prev";
   m.innerHTML='<div class="screen"><div class="card"><h3>Cet écran a rencontré un problème</h3><p class="hint mt2">Tes données ne sont pas effacées. Recharge la page, retourne à l’accueil, ou télécharge une sauvegarde.</p><div class="row mt" style="gap:8px;flex-wrap:wrap"><button class="btn" onclick="location.reload()">Recharger</button><button class="btn ghost" onclick="try{S.screen=\'home\';render()}catch(e){location.reload()}">Accueil</button><button class="btn ghost" onclick="try{exportData()}catch(e){alert(\'Sauvegarde impossible ici : recharge la page.\')}">Télécharger ma sauvegarde</button>'+(cp?'<button class="btn ghost" onclick="try{restoreCopy(\''+cp+'\')}catch(e){location.reload()}">Revenir à la copie de secours</button>':"")+'</div></div></div>';}
-function render(){try{if(typeof VIEWS[S.screen]!=="function")S.screen="home";AIDE=null;renderNav();renderTop();renderBanner();$("#main").innerHTML=`${subNav()}${backBar()}<div class="screen">${VIEWS[S.screen]()}</div>`;if(S.screen==="lib")libTable();if(S.screen==="listen")listenAfter();renderPlayer();showAide();}catch(e){renderCrash(e)}}
+let _lastScr="";
+function render(){try{if(typeof VIEWS[S.screen]!=="function")S.screen="home";AIDE=null;const _nw=S.screen!==_lastScr;_lastScr=S.screen;renderNav();renderTop();renderBanner();$("#main").innerHTML=`${subNav()}${backBar()}<div class="screen${_nw?" in":""}">${VIEWS[S.screen]()}</div>`;if(S.screen==="lib")libTable();if(S.screen==="listen")listenAfter();renderPlayer();showAide();}catch(e){renderCrash(e)}}
 /* 1.12 : une seule petite aide à la fois, en bas de l'écran, qui s'efface toute seule (plus de cadre « Compris » à fermer) */
 function showAide(){const o=document.getElementById("aide");if(!AIDE&&o&&o.dataset.scr===S.screen)return;/* même écran, simple mise à jour : on laisse l'aide et son chrono */
   if(o)o.remove();clearTimeout(aideT);if(!AIDE)return;const a=AIDE;S.tips[a.id]=1;
@@ -1398,7 +1455,7 @@ async function exportUsb(){
    <div class="card mt" style="background:var(--panel2);padding:12px;font-size:13px">${s3?`Je copie ${pl(items.length,"fichier")} dans <code>SetMate/</code> sur la clé, j’ajoute le crate « ${esc(S.set.name)} » dans le Serato 3 de la clé, et je sauvegarde l’ancienne base de la clé avant de la modifier.`
      :`Je copie ${pl(items.length,"fichier")} dans le dossier <code>SetMate/${esc(safeName(S.set.name))}/</code> sur la clé. Je ne touche pas à Serato : en ${esc(SV_LABEL[S.seratoVer||"?"])}, glisse ce dossier dans la zone des crates.`}</div>
    <p class="hint mt2">Platines CDJ : elles ne lisent pas ce format comme une playlist. Pour elles, la clé doit être préparée par rekordbox.${s3?" Premier essai : utilise une clé de test, puis vérifie dans Serato.":""}</p>
-   <div class="row mt" style="justify-content:flex-end"><button class="btn ghost" onclick="closeModal()">Annuler</button><button class="btn orange" id="usbGo">Choisir la clé</button></div>`);
+   <div class="row mt" style="justify-content:flex-end"><button class="btn ghost" onclick="closeModal()">Annuler</button><button class="btn" id="usbGo">Choisir la clé</button></div>`);
   $("#usbGo").onclick=async()=>{let usb;try{usb=await window.showDirectoryPicker({id:"usb",mode:"readwrite"});}catch(e){return;}
     if(!s3){const ui=stepsUI("Copie sur "+usb.name,["Copie des fichiers","Vérification"]);
       try{ui.run(0);const dest=await (await usb.getDirectoryHandle("SetMate",{create:true})).getDirectoryHandle(safeName(S.set.name),{create:true});
@@ -1555,7 +1612,10 @@ function rmWish(n){const t=T(n);if(!t)return;const idx=S.set.ids.indexOf(t.n),L=
 function clearUpgrade(n){const t=T(n);if(!t)return;t.upgrade=false;pushUndo("retrait",()=>{t.upgrade=true;});save(true);liveRefresh();}
 
 /* ---------- Du moment ---------- */
-let trBusy=false;
+let trBusy=false,trFail=false,trAutoTry=false;
+/* 1.12.6 : « Trouver du son » se remplit tout seul à l’ouverture (une seule tentative, reprise quand le réseau revient) */
+function trAuto(){if(trAutoTry||trBusy||S.search.q||(S.trTab||"moment")!=="moment"||S.trends.items.length)return;if(navigator.onLine===false)return;trAutoTry=true;setTimeout(()=>{if(S.screen==="trend"&&!trBusy&&!S.trends.items.length)refreshTrends();},0);}
+window.addEventListener("online",()=>{trAutoTry=false;trFail=false;if(S.screen==="trend")trAuto();});
 async function refreshTrends(silent){
   if(trBusy)return;trBusy=true;if(!silent)softRender();
   const agg=new Map();let ok=0;
@@ -1565,8 +1625,8 @@ async function refreshTrends(silent){
   if(ok&&ok<need&&S.trends.items.length){if(!silent)toast("Classements incomplets : je garde les précédents.",false,true);trBusy=false;if(["trend","home","next"].includes(S.screen))liveRefresh();return;}   /* un classement partiel ne remplace pas le complet */
   if(ok){const prev={};S.trends.items.forEach(x=>prev[x.dz]=x.pos);
     const items=[...agg.values()].sort((a,b)=>b.score-a.score).slice(0,40).map((x,i)=>({...x,pos:i+1,prev:prev[x.dz]||null}));
-    S.trends={date:ok<need?(S.trends.date||0):Date.now(),items};save();notify(`Nouveautés prêtes : ${items.filter(x=>!libMatch(x)).length} sons que tu n’as pas`,"trend");analyzeQueue(items);}
-  else if(!silent)toast("Impossible de joindre Deezer. Vérifie ta connexion internet.",false,true);
+    trFail=false;S.trends={date:ok<need?(S.trends.date||0):Date.now(),items};save();notify(`Nouveautés prêtes : ${items.filter(x=>!libMatch(x)).length} sons que tu n’as pas`,"trend");analyzeQueue(items);}
+  else{trFail=true;if(!silent)toast("Impossible de joindre Deezer. Vérifie ta connexion internet.",false,true);}
   trBusy=false;if(["trend","home","next"].includes(S.screen))liveRefresh();
 }
 
@@ -1649,7 +1709,7 @@ VIEWS.trend=()=>{
   let body="";
   if(tab==="moment"){const age=S.trends.date?Math.round((Date.now()-S.trends.date)/36e5):null;
     body=`<div class="row between mt"><span class="hint">${it.length?`Top France et classements · ${age<1?"à l’instant":age<24?"il y a "+age+" h":"il y a "+Math.round(age/24)+" j"}`:""}</span><button class="chip" onclick="refreshTrends()" ${trBusy?"disabled":""}>${trBusy?"Mise à jour…":"Rafraîchir"}</button></div>
-      <div class="card mt2" style="padding:4px 14px">${it.length?it.map(x=>trRow(x,true)).join(""):`<div class="empty">${trBusy?"Je récupère les classements…":`<button class="btn" onclick="refreshTrends()">Voir les sons du moment</button>`}</div>`}</div>${addAllBtn("moment",it)}`;}
+      <div class="card mt2" style="padding:4px 14px">${it.length?it.map(x=>trRow(x,true)).join(""):`<div class="empty">${trBusy?"Je récupère les classements…":navigator.onLine===false?`<div>Pas de réseau pour le moment.</div><div class="hint mt2">Les sons du moment arrivent dès que tu es connecté.</div>`:trFail?`<div>Impossible de charger. Réessaie.</div><button class="btn mt2" onclick="refreshTrends()">Réessayer</button>`:`<button class="btn" onclick="refreshTrends()">Voir les sons du moment</button>`}</div>`}</div>${addAllBtn("moment",it)}`;}
   if(tab==="decouverte"){
     body=`<p class="hint mt">Des sons <b style="color:var(--txt)">peu connus</b> de tes styles, tirés au hasard. Chaque son ajouté est remplacé par un nouveau.</p>
       <div class="row mt2">${STYLES.map(([k,l])=>`<button class="chip ${S.styles[k]?"on":""}" onclick="toggleStyle('${k}')">${l}</button>`).join("")}</div>
@@ -1729,13 +1789,13 @@ VIEWS.debrief=()=>{const opts=pastGigs().filter(g=>g.type!=="Live / contenu");
     <select class="f" onchange="debGig(this.value)" style="width:100%">${opts.map(o=>`<option value="${o.id}" ${o.id===S.dGig?"selected":""}>${fmtDate(o.date)} · ${esc(o.lieu)}${o.deb?" (déjà fait)":""}</option>`).join("")}</select>
     <p class="hint mt2">${g.played.length?pl(g.played.length,"son")+" joué"+(g.played.length>1?"s":"")+" ce soir-là":"Pas de liste de sons : je chercherai dans toute ta bibliothèque."}</p>
     <div class="guide"><span>Ce qui a marché ?</span><span>Ce qui a flop ?</span><span>Les enchaînements ?</span><span>Les demandes ?</span></div>
-    <button class="mic ${recOn?"rec":""}" onclick="micToggle()" aria-label="Enregistrer">${recOn?'<svg viewBox="0 0 24 24" fill="#fff"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>':'<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3"/></svg>'}</button>
+    <button class="mic ${recOn?"rec":""}" onclick="micToggle()" aria-label="Enregistrer" aria-pressed="${recOn?"true":"false"}">${recOn?'<svg viewBox="0 0 24 24" fill="#fff"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>':'<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3"/></svg>'}</button>
     <p id="micTxt" style="font-weight:600">${recOn?"Je t’écoute… appuie pour terminer":SR?"Appuie pour parler":(isIOS&&installed()?"Micro indisponible depuis l’écran d’accueil de l’iPhone : touche la zone de texte et dicte avec le micro du clavier":"Micro non disponible dans ce navigateur : écris ton débrief")}</p>
     <textarea class="f mt" id="dTxt" placeholder="Ta transcription apparaît ici. Tu peux aussi écrire ou corriger." oninput="S.dTxt=this.value;if(recOn){finalTxt=this.value.trim()?this.value.trim()+' ':'';lastInterim='';}updAn();save()" ${recOn?"readonly":""}>${esc(S.dTxt||"")}</textarea>
     <div class="row mt2" style="justify-content:flex-end"><button class="btn" id="anB" onclick="runAnalyse()" ${(S.dTxt||"").trim().length>8?"":"disabled"}>Analyser ma soirée</button></div>
     <p class="hint mt">La reconnaissance vocale passe par le service de ton navigateur. Le texte est analysé ici, sur ton ordinateur.</p></div>
   <div class="card"><div class="row between"><h3>Voici ce que j’ai compris</h3>${S.dPts?`<span class="hint">${pl(S.dPts.length,"point")}</span>`:""}</div><div id="pts">${ptsHtml()}</div>
-    ${S.dPts&&S.dPts.length?`<button class="btn green block mt" onclick="applyDebrief()">${svg("check",15)}Appliquer les points cochés</button><p class="hint mt2" style="text-align:center">Tu pourras tout annuler.</p>`:""}</div></div>`;};
+    ${S.dPts&&S.dPts.length?`<button class="btn block mt" onclick="applyDebrief()">${svg("check",15)}Appliquer les points cochés</button><p class="hint mt2" style="text-align:center">Tu pourras tout annuler.</p>`:""}</div></div>`;};
 function updAn(){const b=$("#anB");if(b)b.disabled=!((S.dTxt||"").trim().length>8);}
 function debGig(v){if(recOn){toast("Arrête d’abord le micro avant de changer de soirée.",false,true);render();return;}
   const old=S.gigs.find(x=>x.id===S.dGig);if(old&&!old.deb)old.dBrouillon=S.dTxt||"";   // le texte dicté reste avec sa soirée
@@ -1835,8 +1895,12 @@ VIEWS.settings=()=>{const st=k=>H[k]?(PERM[k]==="granted"?'<span class="tag ok">
     <div class="row mt2"><button class="btn ghost sm" onclick="resetExclusions()">Remettre les sons écartés (${excludedCount()})</button><button class="btn ghost sm" onclick="showSuggLog()">Journal des suggestions</button></div></div></div>`;};
 function showSuggLog(){const rows=SESS.log.slice(-60).reverse();
   modal(`<h2>Journal des suggestions</h2><p class="hint">Pourquoi un son n’est plus proposé (cette session seulement, rien n’est envoyé).</p><div class="mt" style="max-height:50vh;overflow:auto">${rows.length?rows.map(r=>`<div class="mini"><span class="hint" style="width:44px">${new Date(r.at).toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"})}</span><div style="flex:1;min-width:0"><b>${esc(r.t)}</b><div class="hint">${esc(r.reason)}</div></div></div>`).join(""):'<p class="hint">Rien pour l’instant.</p>'}</div><div class="row mt" style="justify-content:flex-end"><button class="btn" onclick="closeModal()">OK</button></div>`);}
-function exportData(){download(new Blob([JSON.stringify(buildBackup())],{type:"application/json"}),`SetMate sauvegarde ${new Date().toISOString().slice(0,10)}.json`);markBackup();toast("Sauvegarde téléchargée."+audioNote());}
-function importData(){const i=$("#fileIn");i.accept=".json";i.onchange=async()=>{try{const d=JSON.parse(await i.files[0].text());if(!d.setmate)throw new Error("fichier non reconnu");if(verNum(d.setmate)>verNum(VERSION))throw new Error("cette sauvegarde vient d’une version plus récente de SetMate : recharge la page pour avoir la dernière version");await restoreState(d);}catch(e){toast("Restauration impossible : "+esc(e.message),false,true);}i.value="";};i.click();}
+function exportDataJson(){download(new Blob([JSON.stringify(buildBackup())],{type:"application/json"}),`SetMate sauvegarde ${new Date().toISOString().slice(0,10)}.json`);markBackup();toast("Sauvegarde téléchargée."+audioNote());}
+/* 1.12.6 : sauvegarde compressée (.json.gz) quand le navigateur sait le faire, sinon l’ancien .json. Le format interne ne change pas. */
+async function exportData(){if(typeof CompressionStream==="undefined")return exportDataJson();
+  try{const blob=await gzipBlob(JSON.stringify(buildBackup()));download(blob,`SetMate sauvegarde ${new Date().toISOString().slice(0,10)}.json.gz`);markBackup();toast("Sauvegarde compressée téléchargée (.json.gz, plus petite)."+audioNote());}
+  catch(e){try{logErr("sauvegarde gz",e&&e.message)}catch(_){}exportDataJson();}}
+function importData(){const i=$("#fileIn");i.accept=".json,.gz,.json.gz,application/json,application/gzip";i.onchange=async()=>{try{const d=JSON.parse(await lireFichierSauvegarde(i.files[0]));if(!d.setmate)throw new Error("fichier non reconnu");if(verNum(d.setmate)>verNum(VERSION))throw new Error("cette sauvegarde vient d’une version plus récente de SetMate : recharge la page pour avoir la dernière version");await restoreState(d);}catch(e){toast("Restauration impossible : "+esc(e.message),false,true);}i.value="";};i.click();}
 function resetAll(){modal(`<h2>Tout effacer ?</h2><p class="hint mt2">Efface les données SetMate de ce navigateur : bibliothèque lue, soirées, débriefs, préférences, et aussi les fichiers audio ajoutés sur ce téléphone. Les fichiers de ton ordinateur et ta bibliothèque Serato ne sont pas touchés. C'est définitif : fais d'abord une sauvegarde.${audioNote()}</p><div class="row mt" style="justify-content:flex-end"><button class="btn ghost" id="rstSave" onclick="exportData()">Télécharger une sauvegarde d'abord</button><button class="btn ghost" onclick="closeModal()">Annuler</button><button class="btn red" onclick="doReset()">Effacer</button></div>`);}
 async function doReset(){if(RO)return toast("SetMate est ouvert dans un autre onglet : je n’efface rien ici.",false,true);clearTimeout(saveT);saveT=null;RESETTING=true;try{if(saving)await saving;}catch(e){}
   let ok=false;if(DB.db){ok=await new Promise(res=>{try{const t=DB.db.transaction("kv","readwrite");t.objectStore("kv").clear();t.oncomplete=()=>res(true);t.onerror=t.onabort=()=>res(false);}catch(e){res(false)}});}
@@ -1858,7 +1922,7 @@ async function dzSearch(x){const k=x.a+"|"+x.t;const c0=DZC[k];if(c0&&Date.now()
   const r=(d.data||[]).find(it=>{if(!it.preview)return false;const an=norm(it.artist?.name).trim(),tn=norm(it.title_short||it.title).trim(),tf=norm(it.title).trim();return a0&&(inc(an,a0)||inc(a0,an))&&t0&&(inc(tn,t0)||inc(t0,tn)||inc(tf,t0));});DZC[k]=r?{preview:r.preview,cover:r.album?.cover_medium,t:Date.now()}:{none:true,t:Date.now()};}catch(e){return null;}   /* une erreur de réseau n'est pas mémorisée */const c1=DZC[k];return c1.none?null:c1;}
 async function playDz(dz,force=false,meta=null){const u="dz"+dz;PFAIL=false;if(!force&&PL&&PL.u===u)return stopPlay();if(!force)Q.items=[];stopPlay();const it=meta||findDz(dz)||{t:"…",a:""};PL={u,x:{dz,t:it.t,a:it.a,cover:it.cover,k:S.trendCache[dz]?.k,bpm:S.trendCache[dz]?.bpm},src:"…"};renderPlayer();refreshPlay();
   try{const d=await jsonp(`https://api.deezer.com/track/${dz}`);if(PL?.u!==u)return;AU.src=d.preview;PL.src="extrait 30 s · Deezer";await AU.play();startProg();}catch(e){if(PL?.u!==u)return;PFAIL=true;previewFail();return stopPlay();}renderPlayer();refreshPlay();}
-function startProg(){clearInterval(progT);progT=setInterval(()=>{const b=$("#pbar");if(b&&AU.duration)b.style.width=(AU.currentTime/AU.duration*100)+"%";},250);}
+function startProg(){clearInterval(progT);progT=setInterval(()=>{const b=$("#pbar");if(b&&AU.duration)b.style.transform="scaleX("+Math.min(1,AU.currentTime/AU.duration)+")";},250);}
 function stopPlay(){AU.pause();clearInterval(progT);if(AU.src.startsWith("blob:"))URL.revokeObjectURL(AU.src);
   if(QPRE){if(QPRE.url&&QPRE.url.startsWith("blob:")&&QPRE.url!==AU.src)URL.revokeObjectURL(QPRE.url);QPRE=null;}   /* 1.12.5 : le fichier préparé pour le son suivant est libéré aussi */
   PL=null;renderPlayer();refreshPlay();}
@@ -2823,8 +2887,8 @@ document.addEventListener("visibilitychange",()=>{
 /* ===================== FENÊTRES, RECHERCHE, CLAVIER ===================== */
 let MODFOCUS=null;
 /* 1.12.4 : fenêtre accessible. Le focus entre dans la fenêtre, Tab y reste, Échap ferme, et le focus revient où il était. */
-function modal(html){if(CURARR){arrivals.unshift(CURARR);CURARR=null;}if(!$("#layer .ov")){try{MODFOCUS=document.activeElement;}catch(e){MODFOCUS=null;}}
-  $("#layer").innerHTML=`<div class="ov" onclick="if(event.target===this)closeModal()"><div class="modal" role="dialog" aria-modal="true" tabindex="-1">${html}</div></div>`;
+function modal(html){if(CURARR){arrivals.unshift(CURARR);CURARR=null;}const _was=!!$("#layer .ov");if(!$("#layer .ov")){try{MODFOCUS=document.activeElement;}catch(e){MODFOCUS=null;}}
+  $("#layer").innerHTML=`<div class="ov${_was?" st":""}" onclick="if(event.target===this)closeModal()"><div class="modal" role="dialog" aria-modal="true" tabindex="-1">${html}</div></div>`;
   try{const m=$("#layer .modal"),h=m&&m.querySelector("h2");if(h){if(!h.id)h.id="modT";m.setAttribute("aria-labelledby",h.id);}else if(m)m.setAttribute("aria-label","Fenêtre");
     const f=m&&m.querySelector("input:not([type=hidden]):not([disabled]),textarea:not([disabled]),select:not([disabled])");(f||m).focus({preventScroll:true});}catch(e){}}
 function closeModal(){if(CURARR){arrivals.unshift(CURARR);CURARR=null;}const had=!!$("#layer .ov");$("#layer").innerHTML="";
@@ -2837,7 +2901,7 @@ document.addEventListener("keydown",e=>{if(e.key!=="Tab")return;const m=$("#laye
 let palSel=0,palItems=[];
 function openPalette(){if(!$("#layer .ov")){try{MODFOCUS=document.activeElement;}catch(e){MODFOCUS=null;}}$("#layer").innerHTML=`<div class="ov" onclick="if(event.target===this)closeModal()"><div class="pal" role="dialog" aria-modal="true" aria-label="Recherche et actions"><input id="palQ" placeholder="Un son, un artiste, une action…" oninput="palSel=0;palRender()" autocomplete="off"><div class="res" id="palR"></div></div></div>`;palRender();setTimeout(()=>{const q=$("#palQ");if(q)q.focus();},30);}
 function palRender(){const q=norm($("#palQ").value).trim();
-  const acts=[["Accueil",()=>go("home"),"home"],["Mon set",()=>go("next"),"next","preparer un set"],["Raconter ma soirée",()=>go("debrief"),"debrief","debrief bilan"],["Trouver du son",()=>go("trend"),"trend","tendances"],["Écouter mes playlists",()=>go("listen"),"listen"],["Importer une playlist",()=>{go("listen");importPlaylist()},"listen"],["Actualiser les tendances",()=>{go("trend");refreshTrends();},"refresh"],["Sons à vérifier",()=>{S.libView="check";go("lib")},"lib"],["Nouvelle soirée",()=>{go("gigs");newGig()},"gigs"],["Importer un historique Serato",()=>{go("gigs");importHistory()},"dl"],["Copier le set sur clé USB",()=>{go("next");exportUsb()},"usb"],["Réglages",()=>go("settings"),"settings"]];
+  const acts=[["Accueil",()=>go("home"),"home"],["Mon set",()=>go("next"),"next","preparer un set"],["Raconter ma soirée",()=>go("debrief"),"debrief","debrief bilan"],["Trouver du son",()=>go("trend"),"trend","tendances"],["Écouter mes playlists",()=>go("listen"),"listen"],["Importer une playlist",()=>{go("listen");importPlaylist()},"listen"],["Actualiser les tendances",()=>{go("trend");refreshTrends();},"refresh"],["Sons à vérifier",()=>{S.libView="check";go("lib")},"lib"],["Assistant de tri de playlists",()=>triOpen(),"lib","trier playlist filtrer bpm tonalite doublons"],["Nouvelle soirée",()=>{go("gigs");newGig()},"gigs"],["Importer un historique Serato",()=>{go("gigs");importHistory()},"dl"],["Copier le set sur clé USB",()=>{go("next");exportUsb()},"usb"],["Réglages",()=>go("settings"),"settings"]];
   palItems=[...acts.filter(a=>!q||norm(a[0]).includes(q)||(a[3]&&norm(a[3]).includes(q))).map(a=>({l:esc(a[0]),f:a[1],ic:svg(a[2],16),k:"Action"})),...(q?visible().filter(x=>norm(x.t+" "+x.a+" "+x.sg).includes(q)).slice(0,8).map(x=>({l:`${esc(x.t)} <span class="hint">· ${esc(x.a)}${x.bpm?" · "+Math.round(x.bpm)+" BPM":""}</span>`,f:()=>startFrom(x.n),ic:cover(x),k:"Partir de ce son"})):[])];
   palSel=Math.min(palSel,Math.max(0,palItems.length-1));
   $("#palR").innerHTML=palItems.map((it,i)=>`<div class="it ${i===palSel?"on":""}" onmousemove="palMv(event,${i})" onclick="palGo(${i})">${it.ic}<span>${it.l}</span><small>${it.k}</small></div>`).join("")||'<div class="empty">Aucun résultat</div>';}
@@ -3078,6 +3142,133 @@ function msgStockage(){return DB.whyFail==="bloque"?"SetMate est ouvert dans un 
   :(DB.whyFail==="erreur"||DB.whyFail==="absent")?"Je ne peux pas utiliser le stockage ici. En navigation privée, c’est normal : ouvre SetMate dans une fenêtre normale. Sinon tes données ne seront pas gardées après fermeture."
   :"Stockage indisponible ou trop lent : recharge la page. Si ça continue, tes données ne seront pas gardées après fermeture.";}
 async function verifierPrive(){try{const e=await navigator.storage.estimate();if(e&&e.quota>0&&e.quota<130*1048576&&!installed())barre("privBar","Il semble que tu sois en navigation privée : à la fermeture de la fenêtre, tes données seront perdues. Ouvre SetMate dans une fenêtre normale.","");}catch(e){}}
+
+/* ===================== 1.12.6 · LOT FONCTIONNALITÉS ===================== */
+/* ---------- Masquer tous les doublons (ceux que SetMate a déjà repérés, rien d’autre) ---------- */
+function dupsToHide(){return visible().filter(x=>!x.wish&&!x.notDup&&x.dupOf&&T(x.dupOf));}
+function confirmHideDups(){if(RO)return toast("SetMate est ouvert dans un autre onglet : rien n’est changé ici.",false,true);
+  const list=dupsToHide(),n=list.length;if(!n)return toast("Aucun doublon repéré pour l’instant.");
+  const ids=new Set(list.map(x=>x.n)),inSet=S.set.ids.filter(i=>ids.has(i)).length;
+  modal(`<h2>Masquer ${pl(n,"doublon")} ?</h2><p class="hint mt2">Je masque ${pl(n,"son")} que SetMate a déjà repéré${n>1?"s":""} comme doublon${n>1?"s":""} d’un autre son de ta musique. Je garde à chaque fois le meilleur (fichier sans perte, sinon meilleur débit). Les acapellas, instrumentaux, intros et versions longues ne sont pas des doublons : je n’y touche pas.</p>
+   <p class="hint mt2">Rien n’est effacé : les fichiers restent sur ton disque et dans Serato. Tu peux annuler juste après, ou les réafficher dans Réglages, « Sons masqués ».${inSet?` ${pl(inSet,"son")} ${inSet>1?"sont":"est"} dans ton set : ${inSet>1?"ils en seront retirés":"il en sera retiré"} (annulable aussi).`:""}</p>
+   <div class="row mt" style="justify-content:flex-end;gap:8px"><button class="btn ghost" onclick="closeModal()">Annuler</button><button class="btn" onclick="hideAllDups()" aria-label="Masquer ${pl(n,"doublon")}">Masquer ${pl(n,"doublon")}</button></div>`);}
+function hideAllDups(){closeModal();if(RO)return;const list=dupsToHide();if(!list.length)return toast("Aucun doublon repéré pour l’instant.");
+  const ids=new Set(list.map(x=>x.n)),touch=S.set.ids.some(i=>ids.has(i))||ids.has(S.cur),o=touch?snapSet():null,prev=list.map(x=>[x,x.hiddenFor||null]);
+  list.forEach(x=>{x.hiddenFor=x.dupOf||null;x.hidden=true;});findDups();
+  if(touch){S.set.ids=S.set.ids.filter(i=>!ids.has(i));if(ids.has(S.cur))S.cur=S.set.ids.length?S.set.ids[S.set.ids.length-1]:null;}
+  pushUndo("masquage des doublons",()=>{prev.forEach(([x,h])=>{x.hidden=false;x.hiddenFor=h;});findDups();if(o)restoreSet(o);});
+  S.sel=null;save(true);toast(`${pl(list.length,"doublon")} masqué${list.length>1?"s":""}. Les fichiers restent sur ton disque.`,true);render();}
+
+/* ---------- Un seul onglet écrit : bouton « Utiliser cet onglet » ---------- */
+let BCH=null;try{BCH=new BroadcastChannel("setmate-onglets");}catch(e){BCH=null;}
+if(BCH)BCH.onmessage=async e=>{const m=e.data;if(RO||!m||m.t!=="reprendre")return;
+  try{if(saveT||tracksDirty){clearTimeout(saveT);saveT=null;await saveNow();}else if(saving)await saving;}catch(_){}
+  try{BCH.postMessage({t:"pret",to:m.from});}catch(_){}};   /* l’onglet qui écrit enregistre d’abord ses derniers changements */
+function confirmerReprise(){modal(`<h2>Utiliser cet onglet ?</h2><p class="hint mt2">L’autre onglet SetMate passera en lecture seule : il enregistre d’abord ses derniers changements, rien n’est perdu. Cet onglet se recharge pour relire tes données à jour.</p><p class="hint mt2">Ce que tu as regardé ici sans pouvoir l’enregistrer n’est pas gardé.</p>
+   <div class="row mt" style="justify-content:flex-end;gap:8px"><button class="btn ghost" onclick="closeModal()">Annuler</button><button class="btn" onclick="reprendreOnglet()">Utiliser cet onglet</button></div>`);}
+async function reprendreOnglet(){closeModal();toast("Je prends la main sur cet onglet…");
+  if(BCH)await new Promise(res=>{const to=setTimeout(res,2500),h=e=>{if(e.data&&e.data.t==="pret"&&e.data.to===TAB){clearTimeout(to);try{BCH.removeEventListener("message",h);}catch(_){}res();}};BCH.addEventListener("message",h);try{BCH.postMessage({t:"reprendre",from:TAB});}catch(_){clearTimeout(to);res();}});
+  if(navigator.locks&&navigator.locks.request){try{await new Promise((res,rej)=>{const to=setTimeout(res,3000);navigator.locks.request("setmate-ecriture",{steal:true},lock=>{clearTimeout(to);res(true);return new Promise(()=>{});}).catch(e=>{clearTimeout(to);rej(e);});});}catch(e){try{logErr("reprise onglet",e&&e.message)}catch(_){}}}
+  location.reload();}
+
+/* ---------- Sauvegarde compressée (.json.gz) ---------- */
+async function gzipBlob(txt){const cs=new CompressionStream("gzip"),w=cs.writable.getWriter();w.write(new TextEncoder().encode(txt)).catch(()=>{});w.close().catch(()=>{});
+  const b=await new Response(cs.readable).blob();return new Blob([b],{type:"application/gzip"});}
+async function lireFichierSauvegarde(f){const u=new Uint8Array(await f.arrayBuffer());
+  if(u.length>2&&u[0]===0x1f&&u[1]===0x8b){
+    if(typeof DecompressionStream==="undefined"||typeof Blob.prototype.stream!=="function")throw new Error("ce navigateur ne sait pas ouvrir un fichier compressé (.gz). Ouvre SetMate avec un navigateur à jour, ou utilise une sauvegarde en .json");
+    try{return await new Response(new Blob([u]).stream().pipeThrough(new DecompressionStream("gzip"))).text();}catch(e){throw new Error("le fichier compressé est abîmé ou incomplet");}}
+  return new TextDecoder("utf-8").decode(u);}
+
+/* ---------- Assistant de tri de playlists : règles locales, sans IA, sans réseau ---------- */
+/* TRI-DEBUT */
+const TRI_STOP=new Set("le la les l un une des de du d et ou en a au aux avec sans pour qui que quoi dans sur mes mon ma tes ton ta son sons titre titres musique musiques morceau morceaux chanson chansons playlist playlists liste fais fait faire moi donne donner mets mettre cree creer trouve trouver tout toute tous toutes ce ces cette cet je veux voudrais voir mixer sont est ca c s y il elle bpm tempo tonalite tonalites cle cles key camelot vers autour environ entre genre style artiste".split(" "));
+const TRI_ALIAS=[["rap","Hip-hop"],["hip hop","Hip-hop"],["rnb","R&B"],["r b","R&B"]];
+function triKeysNear(k){const n=parseInt(k),l=String(k).slice(-1),o=l==="A"?"B":"A",w=x=>((x-1+12)%12)+1;return [n+l,w(n-1)+l,w(n+1)+l,n+o];}
+function triParse(txt,tracks){
+  const crit=[];let raw=String(txt||"");
+  raw=raw.replace(/[«"“]([^»"”]{1,40})[»"”]/g,(m,w)=>{const p=norm(w).trim();if(p)crit.push({t:"title",w:p,l:"Titre avec « "+w.trim()+" »",n:"« "+w.trim()+" »"});return " ";});
+  let r=" "+norm(raw).replace(/\s+/g," ").trim()+" ";const eat=(re,fn)=>{r=r.replace(re,(...m)=>{const x=fn(m);return x===false?m[0]:" ";});};
+  eat(/\b(doublons?|en doubles?|doubles?|dupliques?)\b/g,()=>{if(!crit.some(c=>c.t==="dup"))crit.push({t:"dup",l:"Doublons repérés par SetMate",n:"Doublons"});});
+  eat(/\b(?:entre|de)\s+(\d{2,3})\s+(?:et|a)\s+(\d{2,3})(?:\s+bpm)?\b/g,m=>{let a=+m[1],b=+m[2];if(a>b)[a,b]=[b,a];if(a<40||b>250)return false;crit.push({t:"bpm",min:a,max:b,l:`Tempo de ${a} à ${b} BPM`,n:`${a}-${b} BPM`});});
+  eat(/\b(?:autour|vers|environ|alentours|a peu pres)(?:\s+de)?(?:\s+d)?\s+(\d{2,3})(?:\s+bpm)?\b/g,m=>{const v=+m[1];if(v<40||v>250)return false;crit.push({t:"bpm",min:v-5,max:v+5,l:`Autour de ${v} BPM (${v-5} à ${v+5})`,n:`~${v} BPM`});});
+  eat(/\b(?:(\d{2,3})\s*bpm|bpm\s+(\d{2,3})|tempo\s+(\d{2,3}))\b/g,m=>{const v=+(m[1]||m[2]||m[3]);if(v<40||v>250)return false;crit.push({t:"bpm",min:v-3,max:v+3,l:`${v} BPM (à 3 près)`,n:`${v} BPM`});});
+  eat(/\b(lents?|lente?s?|slow)\b/g,()=>{crit.push({t:"bpm",min:0,max:94.99,l:"Tempo lent (moins de 95 BPM)",n:"lents"});});
+  eat(/\b(moyens?|medium|mid)\b/g,()=>{crit.push({t:"bpm",min:95,max:119.99,l:"Tempo moyen (95 à 119 BPM)",n:"tempo moyen"});});
+  eat(/\b(rapides?|fast|speed)\b/g,()=>{crit.push({t:"bpm",min:120,max:999,l:"Tempo rapide (120 BPM et plus)",n:"rapides"});});
+  eat(/\b(calmes?|chill|tranquilles?|doux|douces?|relax\w*|poses?|posees?)\b/g,()=>{crit.push({t:"nrg",min:0,max:4,l:"Énergie calme (1 à 4 sur 10)",n:"calmes"});});
+  eat(/\b(energiques?|dynamiques?|hype|explosifs?|explosives?|peak)\b/g,()=>{crit.push({t:"nrg",min:7,max:10,l:"Énergie forte (7 à 10 sur 10)",n:"énergiques"});});
+  let near=false;eat(/\b(voisin\w*|compatibles?|mixables?|harmoniques?)\b/g,()=>{near=true;});
+  const keys=[];eat(/\b(1[0-2]|[1-9])([ab])\b/g,m=>{const k=(+m[1])+m[2].toUpperCase();if(!keys.includes(k))keys.push(k);});
+  const ignoredX=[];
+  if(keys.length){const all=near?[...new Set(keys.flatMap(triKeysNear))]:keys;
+    crit.push({t:"key",keys:all,l:near?`Tonalité ${keys.join(" et ")} et voisines compatibles (${all.join(", ")})`:`Tonalité ${keys.join(" et ")}`,n:keys.join(" ")+(near?" +voisines":"")});}
+  else if(near)ignoredX.push("voisines (de quelle tonalité ?)");
+  eat(/\b(?:contenant|contient|contiennent|le mot|mot)\s+([a-z0-9]{2,})\b/g,m=>{crit.push({t:"title",w:m[1],l:"Titre avec « "+m[1]+" »",n:"« "+m[1]+" »"});});
+  /* genres, styles et artistes : seulement ceux qui existent dans la bibliothèque */
+  const gv=new Map(),av=new Map();
+  for(const x of tracks){if(x.hidden||x.wish)continue;
+    for(const v of [x.g,x.sg]){if(v&&v!=="?"&&!gv.has(v))gv.set(v,norm(v).trim());}
+    const a=mainArtist(x.a);if(a&&a.length>=3&&!av.has(a))av.set(a,String(x.a).split(/\s*(?:,|&|;|\/|\+|\bfeat\b|\bft\b|\bfeaturing\b)\s*/i)[0].trim());}
+  const hits=[];
+  for(const [v,p] of gv)if(p.length>=2&&r.includes(" "+p+" "))hits.push({ph:p,c:{t:"genre",v,l:"Genre ou style : "+v,n:v}});
+  for(const [al,target] of TRI_ALIAS){if(!r.includes(" "+al+" "))continue;for(const [v,p] of gv)if(p===norm(target).trim())hits.push({ph:al,c:{t:"genre",v,l:"Genre ou style : "+v,n:v}});}
+  for(const [a,disp] of av)if(r.includes(" "+a+" "))hits.push({ph:a,c:{t:"artist",an:a,l:"Artiste : "+disp,n:disp}});
+  const keep=hits.filter(h=>!hits.some(o=>o!==h&&o.ph.length>h.ph.length&&(" "+o.ph+" ").includes(" "+h.ph+" ")));
+  const seen=new Set();for(const h of keep){const id=h.c.t+"|"+(h.c.v||h.c.an);if(seen.has(id))continue;seen.add(id);crit.push(h.c);r=r.split(" "+h.ph+" ").join("  ");}
+  const ignored=r.split(" ").filter(w=>w&&!TRI_STOP.has(w)).concat(ignoredX);
+  return {crit,ignored};}
+function triApply(crit,tracks){
+  const pool=tracks.filter(x=>!x.hidden&&!x.wish),by={};for(const c of crit)(by[c.t]=by[c.t]||[]).push(c);
+  const ok={dup:(x,c)=>!!x.dupOf,bpm:(x,c)=>!!x.bpm&&x.bpm>=c.min&&x.bpm<=c.max,nrg:(x,c)=>x.e!=null&&x.e>=c.min&&x.e<=c.max,key:(x,c)=>!!x.k&&c.keys.includes(String(x.k).toUpperCase()),
+    genre:(x,c)=>x.g===c.v||x.sg===c.v,artist:(x,c)=>mainArtist(x.a)===c.an,title:(x,c)=>norm(x.t).includes(" "+c.w+" ")};
+  const types=Object.keys(by);let sansNrg=0;
+  const pass=(x,skip)=>types.every(t=>t===skip||by[t].some(c=>ok[t](x,c)));
+  const list=pool.filter(x=>pass(x));
+  if(by.nrg)sansNrg=pool.filter(x=>x.e==null&&pass(x,"nrg")).length;
+  if(by.bpm)list.sort((a,b)=>a.bpm-b.bpm||String(a.t).localeCompare(String(b.t)));else list.sort((a,b)=>String(a.a).localeCompare(String(b.a),"fr")||String(a.t).localeCompare(String(b.t),"fr"));
+  return {list,sansNrg};}
+function triName(crit){return crit.map(c=>c.n).join(" · ").slice(0,60)||"Ma playlist";}
+const triLine=x=>(x.a?x.t+" - "+x.a:x.t);
+/* TRI-FIN */
+const TRI_AIDE="Je sais chercher par : le tempo (« vers 100 BPM », « entre 90 et 100 », lent, moyen, rapide), la tonalité Camelot (« 8A et 9A », ajoute « voisines » pour les compatibles), l’énergie (calme ou énergique, quand elle est connue), un genre, un style ou un artiste présent dans ta bibliothèque, un mot du titre (« titre contenant love »), et les doublons.";
+let TRI=null;
+function triOpen(){
+  if(!S.tracks.length)return modal(`<h2>Assistant de tri</h2><p class="hint mt2">Ta bibliothèque est vide pour l’instant. Lis ta musique depuis Serato, ou essaie le mode démo, puis reviens ici.</p><div class="row mt" style="justify-content:flex-end"><button class="btn" onclick="closeModal()">OK</button></div>`);
+  TRI=null;
+  modal(`<h2>Assistant de tri</h2><p class="hint mt2">Écris ce que tu veux en mots simples. SetMate cherche dans ta bibliothèque, sans internet et sans IA. Tu vois un aperçu avant de créer quoi que ce soit. Rien n’est écrit dans Serato ni dans Apple Music.</p>
+   <form class="row mt" style="flex-wrap:nowrap;gap:8px" onsubmit="triGo();return false"><input class="f" id="triQ" style="flex:1;min-width:0" maxlength="140" autocomplete="off" placeholder="Par exemple : sons calmes vers 100 BPM" aria-label="Ta demande pour l’assistant de tri"><button class="btn" type="submit" aria-label="Voir l’aperçu de la demande">Aperçu</button></form>
+   <div class="row mt2" style="flex-wrap:wrap;gap:6px" role="group" aria-label="Exemples de demandes">${["sons calmes vers 100 BPM","sons en 8A et 9A","tout le rap FR énergique","doublons"].map(q=>`<button class="chip" type="button" data-q="${esc(q)}" onclick="triEx(this.dataset.q)">${esc(q)}</button>`).join("")}</div>
+   <div id="triOut" class="mt" aria-live="polite"><p class="hint">${esc(TRI_AIDE)}</p></div>
+   <div class="row mt" style="justify-content:flex-end"><button class="btn ghost" onclick="closeModal()">Fermer</button></div>`);}
+function triEx(q){const i=$("#triQ");if(i){i.value=q;triGo();i.focus();}}
+function triGo(){const out=$("#triOut");if(!out)return;const q=($("#triQ").value||"").trim();
+  if(!q){out.innerHTML=`<p class="hint">Écris une demande courte, ou touche un exemple. ${esc(TRI_AIDE)}</p>`;TRI=null;return;}
+  const p=triParse(q,S.tracks);
+  if(!p.crit.length){TRI=null;out.innerHTML=`<div class="card" style="padding:12px"><b>Je n’ai pas compris cette demande.</b><p class="hint mt2">Je préfère ne rien inventer. ${esc(TRI_AIDE)}</p></div>`;return;}
+  const r=triApply(p.crit,S.tracks),n=r.list.length;TRI={list:r.list,name:triName(p.crit)};
+  const crits=p.crit.map(c=>`<span class="tag info">${esc(c.l)}</span>`).join(" ");
+  const warn=(p.ignored.length?`<p class="hint mt2" style="color:var(--orange)">Je n’ai pas compris : « ${esc(p.ignored.join(" "))} ». Ces mots sont ignorés. ${esc(TRI_AIDE)}</p>`:"")+(r.sansNrg?`<p class="hint mt2">${pl(r.sansNrg,"son")} sans énergie connue ${r.sansNrg>1?"ne sont":"n’est"} pas dans la liste.</p>`:"");
+  if(!n){out.innerHTML=`<div class="mt2">${crits}</div>${warn}<p class="hint mt2"><b>Aucun son ne correspond</b> dans ta bibliothèque. Essaie avec moins de critères.</p>`;return;}
+  out.innerHTML=`<div class="mt2">${crits}</div>${warn}<h3 class="mt">${pl(n,"son")}</h3>
+   <div style="max-height:30vh;overflow:auto" class="mt2">${r.list.slice(0,40).map(x=>`<div class="mini"><div style="flex:1;min-width:0"><b>${esc(x.t)}</b><div class="hint">${esc(x.a||"")}</div></div><span class="hint">${x.bpm?Math.round(x.bpm)+" BPM":""}${x.k?" · "+esc(x.k):""}</span></div>`).join("")}${n>40?`<p class="hint mt2">Et ${n-40} autres.</p>`:""}</div>
+   <label class="hint mt" for="triName">Nom de la playlist (tu peux le changer)</label><input class="f mt2" id="triName" style="width:100%" maxlength="60" value="${esc(TRI.name)}" autocomplete="off">
+   <div class="row mt" style="gap:8px;flex-wrap:wrap"><button class="btn" onclick="triCreer()" aria-label="Créer la playlist SetMate avec ces ${pl(n,"son")}">Créer la playlist</button><button class="btn ghost" onclick="triCopier()" aria-label="Copier la liste, une ligne par son">Copier la liste</button><button class="btn ghost" onclick="triApple()" aria-label="Envoyer cette liste vers Apple Music">Envoyer vers Apple Music</button></div>
+   <p class="hint mt2">La playlist est créée dans SetMate seulement : tes sons, tes crates Serato et Apple Music ne sont pas touchés.</p>`;}
+function triNom(){const v=($("#triName")&&$("#triName").value||"").trim();return v||(TRI&&TRI.name)||"Ma playlist";}
+function triCreer(){if(!TRI||!TRI.list.length)return;if(RO)return toast("SetMate est ouvert dans un autre onglet : rien n’est enregistré ici.",false,true);
+  let name=triNom().slice(0,60);const pris=new Set((S.pls||[]).map(p=>p.name));if(pris.has(name)){let k=2;while(pris.has(name+" ("+k+")"))k++;name=name+" ("+k+")";}
+  const items=TRI.list.map(songOf).filter(x=>x&&x.t);const p={id:"p"+Date.now().toString(36),name,src:"setmate",date:Date.now(),items,cover:(items.find(x=>x.cover)||{}).cover||null};
+  S.pls.unshift(p);save();closeModal();pushUndo("création de la playlist",()=>{S.pls=S.pls.filter(y=>y!==p);save();});
+  toast(`Playlist « ${esc(name)} » créée (${pl(items.length,"son")}). Elle est dans Écouter.`,true);try{softRender();}catch(e){}}
+async function triCopier(){if(!TRI||!TRI.list.length)return;const ok=await copyText(TRI.list.map(triLine).join("\n"));
+  ok?toast(`${pl(TRI.list.length,"son")} copié${TRI.list.length>1?"s":""} : un son par ligne, « Titre - Artiste ».`):toast("Copie impossible ici : garde le doigt sur la liste pour la copier.",false,true);}
+function triApple(){if(!TRI||!TRI.list.length)return;sendListToApple(triNom(),TRI.list.map(x=>({t:x.t,a:x.a})));}
+/* Barre d’outils de l’écran bibliothèque : doublons en un geste + assistant */
+const _vLib126=VIEWS.lib;
+VIEWS.lib=()=>{const h=_vLib126(),i=h.indexOf('<div class="grid g-lib">');if(i<0)return h;const n=dupsToHide().length;
+  const bar=`<div class="row" id="libTools" style="gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px"><button class="btn ghost sm" onclick="triOpen()" aria-label="Ouvrir l’assistant de tri de playlists">Assistant de tri</button>${n?`<button class="btn ghost sm" onclick="confirmHideDups()" aria-label="Masquer tous les doublons (${n}), seulement ceux que SetMate a repérés">Masquer tous les doublons (${n})</button><span class="hint">Seulement ceux que SetMate a repérés. Tu peux annuler.</span>`:`<span class="hint">Aucun doublon repéré.</span>`}</div>`;
+  return h.slice(0,i)+bar+h.slice(i);};
 
 /* ===================== DÉMARRAGE ===================== */
 (async()=>{try{await prendreVerrou();}catch(e){}
